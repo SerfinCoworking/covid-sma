@@ -4,21 +4,8 @@ class Sector < ApplicationRecord
   # Relaciones
   belongs_to :establishment, counter_cache: true
   belongs_to :establishment, counter_cache: :sectors_count
-  has_many :sector_supply_lots, -> { with_deleted }
-  has_many :supply_lots, -> { with_deleted }, through: :sector_supply_lots
-  has_many :supplies, -> { with_deleted.distinct }, through: :supply_lots
   has_many :user_sectors
   has_many :users, :through => :user_sectors
-  has_many :reports, dependent: :destroy
-
-  has_many :provider_external_orders, foreign_key: "provider_sector_id", class_name: "ExternalOrder"
-  has_many :provider_ordering_quantity_supplies, through: :provider_external_orders, source: "quantity_ord_supply_lots"
-
-  has_many :provider_internal_supplies, foreign_key: "provider_sector_id", class_name: "InternalOrder"
-  has_many :provider_internal_quantity_supplies, through: :provider_internal_supplies, source: "quantity_ord_supply_lots"
-
-  has_many :provider_prescriptions, foreign_key: "provider_sector_id", class_name: "Prescription"
-  has_many :provider_prescription_quantity_supplies, through: :provider_prescriptions, source: "quantity_ord_supply_lots"
 
   # Validaciones
   validates_presence_of :name, :establishment_id
@@ -27,11 +14,11 @@ class Sector < ApplicationRecord
 
   # SCOPES #--------------------------------------------------------------------
   pg_search_scope :search_name,
-  against: :name,
-  :using => {
-    :tsearch => {:prefix => true} # Buscar coincidencia desde las primeras letras.
-  },
-  :ignoring => :accents # Ignorar tildes.
+    against: :name,
+    :using => {
+      :tsearch => {:prefix => true} # Buscar coincidencia desde las primeras letras.
+    },
+    :ignoring => :accents # Ignorar tildes.
 
   filterrific(
     default_filter_params: { sorted_by: 'name_asc' },
@@ -71,34 +58,5 @@ class Sector < ApplicationRecord
 
   def sector_and_establishment
     self.name+' de '+self.establishment.name
-  end
-
-  def sum_delivered_external_order_quantities_to(a_supply, since_date, to_date)
-    self.provider_ordering_quantity_supplies.where(supply: a_supply).entregado
-      .dispensed_since(since_date)
-      .dispensed_to(to_date)
-      .sum(:delivered_quantity)
-  end
-
-  def sum_delivered_prescription_quantities_to(a_supply, since_date, to_date)
-    self.provider_prescription_quantity_supplies.where(supply: a_supply).entregado
-      .dispensed_since(since_date)
-      .dispensed_to(to_date)
-      .sum(:delivered_quantity)
-  end
-
-  def sum_delivered_internal_quantities_to(a_supply, since_date, to_date)
-      self.provider_internal_quantity_supplies.where(supply: a_supply).entregado
-        .dispensed_since(since_date)
-        .dispensed_to(to_date)
-        .sum(:delivered_quantity)
-  end
-
-  def delivered_external_order_quantities_by_establishment_to(a_supply)
-    self.provider_ordering_quantity_supplies
-      .where(supply: a_supply)
-      .entregado
-      .group(:quantifiable_id, :quantifiable_type).order("sum_amount DESC")
-      .select(:quantifiable_id, :quantifiable_type, "SUM(delivered_quantity) as sum_amount")
   end
 end

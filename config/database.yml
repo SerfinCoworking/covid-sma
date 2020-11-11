@@ -6,18 +6,18 @@ default: &default
 
 development:
   <<: *default
-  database: sifaho_development
-  username: sifaho
+  database: covid_sma_development
+  username: covidsma
   password: 12345678
 
 test:
   <<: *default
-  database: sifaho_test
-  username: sifaho
+  database: covid_sma_test
+  username: covidsma
   password: 12345678
 
 production:
   <<: *default
-  database: sifaho_production
-  username: sifaho
-  password: <%= ENV['SIFAHO_DATABASE_PASSWORD'] %>
+  database: covid_sma_production
+  username: covidsma
+  password: <%= ENV['COVID_SMA_DATABASE_PASSWORD'] %>

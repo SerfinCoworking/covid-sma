@@ -21,7 +21,7 @@
 
 set :output, "log/cron.log"
 
-every 5.hours do
-  rake 'batch:update_lot_status'
-end
+# every 5.hours do
+#   rake 'batch:update_lot_status'
+# end
 

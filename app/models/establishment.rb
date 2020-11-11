@@ -4,7 +4,6 @@ class Establishment < ApplicationRecord
   # Relaciones
   has_many :sectors
   has_many :users, :through => :sectors
-  has_many :prescriptions
 
   # Validations
   validates_presence_of :name

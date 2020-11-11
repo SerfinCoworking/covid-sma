@@ -3,6 +3,7 @@ class CreateEstablishments < ActiveRecord::Migration[5.1]
     create_table :establishments do |t|
       t.string :code
       t.string :name
+      t.string :short_name
       t.string :cuit
       t.string :domicile
       t.string :phone
@@ -11,6 +12,6 @@ class CreateEstablishments < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_reference :sectors, :establishment, foreign_key: true
+    add_reference :sectors, :establishment, index: true
   end
 end

@@ -7,7 +7,6 @@ class UsersController < ApplicationController
       User,
       params[:filterrific],
       select_options: {
-        with_status: InternalOrder.options_for_status
       },
       persistence_id: false,
       default_filter_params: { sorted_by: 'created_at_desc' },

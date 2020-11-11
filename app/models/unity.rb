@@ -1,2 +1,0 @@
-class Unity < ApplicationRecord
-end

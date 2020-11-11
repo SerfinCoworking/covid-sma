@@ -13,8 +13,6 @@ class User < ApplicationRecord
   has_many :establishments, :through => :sectors
   has_one :profile, :dependent => :destroy
   has_one :professional, :dependent => :destroy
-  has_many :external_order_comments
-  has_many :reports, :dependent => :destroy
   has_many :permission_requests, :dependent => :destroy
 
   accepts_nested_attributes_for :profile, :professional
@@ -96,7 +94,6 @@ class User < ApplicationRecord
   scope :with_sector_id, lambda { |an_id|
     where(sector_id: [*an_id])
   }
-
 
   def full_name
     if self.profile.present?

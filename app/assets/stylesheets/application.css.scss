@@ -117,13 +117,14 @@ td .form-group{
     a.navbar-brand{
       margin-right: 0;
       margin-left: 1rem;
+      color: #363062;
     }
     button#menu-toggle{
       width: 37px;
     }
     button#menu-toggle:hover{
       background-color: $cblue2;
-      color: #fff;
+      color: #d8b9c3;
     }
     button#menu-toggle:focus{
       box-shadow: none!important;

@@ -1,8 +1,6 @@
-[logo]: https://gitlab.com/eugesma/SifahoHSMA/blob/master/app/assets/images/LogoSIFAHO.png
-# SIFAHO
-###### Sistema Farmacéutico Hospitalario 
+# COVID SMA
+###### Sistema de seguimiento COVID SMA
 
-A pharmaceutical stock application for hospitals.
 ***
 ## Installation guide tested in Ubuntu 16.04LTS:
 
@@ -32,9 +30,9 @@ Full guide [here](https://www.digitalocean.com/community/tutorials/how-to-instal
 ```
 rvm install ruby-2.4.2
 
-rvm gemset create sifaho
+rvm gemset create covid-sma
 
-rvm ruby-2.4.2@sifaho
+rvm ruby-2.4.2@covid-sma
 ```
 3. #### Install PostgreSQL  9.5.14
 ```
@@ -44,10 +42,10 @@ sudo apt-get install postgresql postgresql-contrib
 ```
 4. #### Clone the repo and install dependencies 
 
-Place in SifahoHSMA directory and run:
+Place in covid-sma directory and run:
 
 ```
-rvm use ruby-2.4.2@sifaho
+rvm use ruby-2.4.2@covid-sma
 
 /bin/bash --login
 
@@ -55,23 +53,3 @@ rvm use 2.4.2
 
 bundle install
 ```
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
