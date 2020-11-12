@@ -19,6 +19,15 @@
       <span class="ml-2 sb-title">Inicio</span>
     <% end %>
 
+    <% if policy(User).index? %>
+      <%= link_to main_app.users_admin_index_path, class: "list-group-item list-group-item-action list-custom #{active_class('users')}" do %>
+        <span class="sb-icon">
+          <%= fa_icon "virus" %>
+        </span>
+        <span class="ml-2 sb-title">Covid</span>
+      <% end %>
+    <% end %>
+
     <% if policy(Sector).index? %>
       <%= link_to main_app.sectors_path, class: "list-group-item list-group-item-action list-custom #{active_class('sectors')} #{active_class('internal_orders')} #{active_class('internal_order_templates')}" do %>
         <span class="sb-icon">
