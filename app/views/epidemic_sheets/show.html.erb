@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Patient:</strong>
+  <%= @epidemic_sheet.patient %>
+</p>
+
+<p>
+  <strong>Case definition:</strong>
+  <%= @epidemic_sheet.case_definition %>
+</p>
+
+<p>
+  <strong>Init symptom date:</strong>
+  <%= @epidemic_sheet.init_symptom_date %>
+</p>
+
+<p>
+  <strong>Epidemic week:</strong>
+  <%= @epidemic_sheet.epidemic_week %>
+</p>
+
+<p>
+  <strong>Presents sumptoms:</strong>
+  <%= @epidemic_sheet.presents_sumptoms %>
+</p>
+
+<p>
+  <strong>Symptoms observations:</strong>
+  <%= @epidemic_sheet.symptoms_observations %>
+</p>
+
+<p>
+  <strong>Previous symptoms:</strong>
+  <%= @epidemic_sheet.previous_symptoms %>
+</p>
+
+<p>
+  <strong>Prev symptoms observations:</strong>
+  <%= @epidemic_sheet.prev_symptoms_observations %>
+</p>
+
+<p>
+  <strong>Clinic location:</strong>
+  <%= @epidemic_sheet.clinic_location %>
+</p>
+
+<%= link_to 'Edit', edit_epidemic_sheet_path(@epidemic_sheet) %> |
+<%= link_to 'Back', epidemic_sheets_path %>

@@ -8,10 +8,11 @@ class Patient < ApplicationRecord
   # Relaciones
   belongs_to :patient_type
   belongs_to :address, optional: true
+  belongs_to :occupation, optional: true
   has_many :patient_phones, dependent: :destroy
   has_one_base64_attached :avatar
   has_many :patient_phones, :dependent => :destroy
-    accepts_nested_attributes_for :patient_phones, :allow_destroy => true
+  accepts_nested_attributes_for :patient_phones, :allow_destroy => true
 
   # Validaciones
   validates_presence_of :first_name, :last_name, :dni

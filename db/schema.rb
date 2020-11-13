@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_07_155149) do
+ActiveRecord::Schema.define(version: 2020_11_13_140856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 2019_10_07_155149) do
     t.index ["state_id"], name: "index_addresses_on_state_id"
   end
 
+  create_table "case_definitions", force: :cascade do |t|
+    t.integer "case_type", default: 0
+    t.bigint "diagnostic_method_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
+  end
+
   create_table "cities", force: :cascade do |t|
     t.bigint "state_id"
     t.string "name"
@@ -63,6 +71,30 @@ ActiveRecord::Schema.define(version: 2019_10_07_155149) do
     t.string "iso2"
     t.string "iso3"
     t.string "phone_code"
+  end
+
+  create_table "diagnostic_methods", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "epidemic_sheets", force: :cascade do |t|
+    t.bigint "patient_id"
+    t.bigint "case_definition_id"
+    t.bigint "created_by_id"
+    t.date "init_symptom_date"
+    t.integer "epidemic_week"
+    t.boolean "presents_sumptoms"
+    t.text "symptoms_observations"
+    t.boolean "previous_symptoms"
+    t.text "prev_symptoms_observations"
+    t.integer "clinic_location", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
+    t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
+    t.index ["patient_id"], name: "index_epidemic_sheets_on_patient_id"
   end
 
   create_table "establishments", force: :cascade do |t|
@@ -129,6 +161,12 @@ ActiveRecord::Schema.define(version: 2019_10_07_155149) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "occupations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "patient_phones", force: :cascade do |t|
     t.integer "phone_type", default: 1
     t.string "number"
@@ -160,8 +198,10 @@ ActiveRecord::Schema.define(version: 2019_10_07_155149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "address_id"
+    t.bigint "occupation_id"
     t.index ["address_id"], name: "index_patients_on_address_id"
     t.index ["andes_id"], name: "index_patients_on_andes_id"
+    t.index ["occupation_id"], name: "index_patients_on_occupation_id"
   end
 
   create_table "permission_requests", force: :cascade do |t|

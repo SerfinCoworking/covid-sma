@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Epidemic Sheets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Patient</th>
+      <th>Case definition</th>
+      <th>Init symptom date</th>
+      <th>Epidemic week</th>
+      <th>Presents sumptoms</th>
+      <th>Symptoms observations</th>
+      <th>Previous symptoms</th>
+      <th>Prev symptoms observations</th>
+      <th>Clinic location</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @epidemic_sheets.each do |epidemic_sheet| %>
+      <tr>
+        <td><%= epidemic_sheet.patient %></td>
+        <td><%= epidemic_sheet.case_definition %></td>
+        <td><%= epidemic_sheet.init_symptom_date %></td>
+        <td><%= epidemic_sheet.epidemic_week %></td>
+        <td><%= epidemic_sheet.presents_sumptoms %></td>
+        <td><%= epidemic_sheet.symptoms_observations %></td>
+        <td><%= epidemic_sheet.previous_symptoms %></td>
+        <td><%= epidemic_sheet.prev_symptoms_observations %></td>
+        <td><%= epidemic_sheet.clinic_location %></td>
+        <td><%= link_to 'Show', epidemic_sheet %></td>
+        <td><%= link_to 'Edit', edit_epidemic_sheet_path(epidemic_sheet) %></td>
+        <td><%= link_to 'Destroy', epidemic_sheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Epidemic Sheet', new_epidemic_sheet_path %>

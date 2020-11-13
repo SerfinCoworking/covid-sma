@@ -1,0 +1,21 @@
+
+<%= simple_form_for(@epidemic_sheet) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.association :patient %>
+    <%= f.association :case_definition %>
+    <%= f.input :init_symptom_date %>
+    <%= f.input :epidemic_week %>
+    <%= f.input :presents_sumptoms %>
+    <%= f.input :symptoms_observations %>
+    <%= f.input :previous_symptoms %>
+    <%= f.input :prev_symptoms_observations %>
+    <%= f.input :clinic_location %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
