@@ -19,6 +19,15 @@
       <span class="ml-2 sb-title">Inicio</span>
     <% end %>
 
+    <% if policy(EpidemicSheet).index? %>
+      <%= link_to main_app.epidemic_sheets_path, class: "list-group-item list-group-item-action list-custom #{active_class('epidemic_sheets')}" do %>
+        <span class="sb-icon">
+          <%= fa_icon "file-medical-alt" %>
+        </span>
+        <span class="ml-2 sb-title">Fichas epidemio</span>
+      <% end %>
+    <% end %>
+
     <% if policy(User).index? %>
       <%= link_to main_app.users_admin_index_path, class: "list-group-item list-group-item-action list-custom #{active_class('users')}" do %>
         <span class="sb-icon">

@@ -1,43 +1,54 @@
-<p id="notice"><%= notice %></p>
+<%= render 'header' %>
 
-<h1>Epidemic Sheets</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Patient</th>
-      <th>Case definition</th>
-      <th>Init symptom date</th>
-      <th>Epidemic week</th>
-      <th>Presents sumptoms</th>
-      <th>Symptoms observations</th>
-      <th>Previous symptoms</th>
-      <th>Prev symptoms observations</th>
-      <th>Clinic location</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @epidemic_sheets.each do |epidemic_sheet| %>
-      <tr>
-        <td><%= epidemic_sheet.patient %></td>
-        <td><%= epidemic_sheet.case_definition %></td>
-        <td><%= epidemic_sheet.init_symptom_date %></td>
-        <td><%= epidemic_sheet.epidemic_week %></td>
-        <td><%= epidemic_sheet.presents_sumptoms %></td>
-        <td><%= epidemic_sheet.symptoms_observations %></td>
-        <td><%= epidemic_sheet.previous_symptoms %></td>
-        <td><%= epidemic_sheet.prev_symptoms_observations %></td>
-        <td><%= epidemic_sheet.clinic_location %></td>
-        <td><%= link_to 'Show', epidemic_sheet %></td>
-        <td><%= link_to 'Edit', edit_epidemic_sheet_path(epidemic_sheet) %></td>
-        <td><%= link_to 'Destroy', epidemic_sheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Epidemic Sheet', new_epidemic_sheet_path %>
+<% if @epidemic_sheets.present? %>
+  <div class="card fixed-custom-card">
+    <div class="card-header">
+      <%= form_for_filterrific @filterrific do |f| %>
+        <div class="row d-felx justify-content-between">
+          <div class="col-md-3 col-sm-3">
+            <label>DNI</label>
+            <%= f.text_field(
+              :search_dni,
+              class: 'filterrific-periodically-observed form-control input-sm'
+                ) %>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <label>Nombre o Apellido</label>
+            <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
+            <%= f.text_field(
+              :search_fullname,
+              class: 'filterrific-periodically-observed form-control input-sm',
+              autocomplete: 'off'
+            ) %>
+          </div>
+          <div class="col-md-2 col-sm-2">
+            <label>Tipo</label>
+            <%= f.select(:with_patient_type_id,
+              PatientType.all.map{ |type| [type.name.humanize, type.id] },{:include_blank => 'Todos'},
+              { class: "selectpicker show-tick", "data-width"=>"100%"}) %>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <label>Ordenar por</label>
+            <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by],{}, {class: 'form-control input-sm'}) %>
+          </div>
+          <%= link_to reset_filterrific_url, class: "btn btn-sm pull-right" do %>
+            <%= fa_icon "redo" %>
+          <% end %>
+          <!-- Spinner para la carga -->
+          <%= render_filterrific_spinner %>
+        </div>
+      <% end %>
+    </div>
+    <div class="card-body fixed-panel-index">
+      <%= render(
+        partial: 'epidemic_sheets/list',
+        locals: { epidemic_sheets: @epidemic_sheets }
+      ) %>
+    </div>
+  </div>
+<% else %>
+<%= render(
+  partial: 'shared/not_found',
+  locals: { object_name: 'fichas' }
+) %>
+<% end %>

@@ -15,6 +15,9 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets/new
   def new
     @epidemic_sheet = EpidemicSheet.new
+    @case_definitions = CaseDefinition.all
+    @epidemic_sheet.build_case_definition
+    @diagnostic_methods = DiagnosticMethod.all
   end
 
   # GET /epidemic_sheets/1/edit

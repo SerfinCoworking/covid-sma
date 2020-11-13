@@ -1,0 +1,14 @@
+<% content_for :page_header do %>
+  <li class="nav-item non-sel">
+    <%= link_to epidemic_sheets_path, class: "nav-link #{ active_action('index') }" do %>
+      <%= fa_icon "file-medical-alt" %>
+      Fichas epidemio
+    <% end %>
+  </li>
+  <li class="nav-item non-sel">
+    <%= link_to new_epidemic_sheet_path, class: "nav-link #{ active_action('new') }" do %>
+      <%= fa_icon "plus" %>
+      Cargar nueva
+    <% end %>
+  </li>
+<% end %>
