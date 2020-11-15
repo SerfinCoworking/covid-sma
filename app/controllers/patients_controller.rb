@@ -67,11 +67,11 @@ class PatientsController < ApplicationController
   def update
     respond_to do |format|
       if @patient.update(patient_params)
-        flash.now[:success] = @patient.full_info+" se ha modificado correctamente."
-        format.js
+        flash[:success] = @patient.full_info+" se ha modificado correctamente."
+        format.html { redirect_to @patient }
       else
         flash.now[:error] = @patient.full_info+" no se ha podido modificar."
-        format.js
+        format.html { render :edit }
       end
     end
   end

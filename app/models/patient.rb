@@ -6,12 +6,14 @@ class Patient < ApplicationRecord
   enum marital_status: { Soltero: 1, Casado: 2, Separado: 3, Divorciado: 4, Viudo: 5, otro: 6 }
 
   # Relaciones
+  has_one_base64_attached :avatar
+  
   belongs_to :patient_type
   belongs_to :address, optional: true
   belongs_to :occupation, optional: true
+  
   has_many :patient_phones, dependent: :destroy
-  has_one_base64_attached :avatar
-  has_many :patient_phones, :dependent => :destroy
+
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true
 
   # Validaciones

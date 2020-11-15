@@ -24,13 +24,6 @@
               Información
             </a>
           </li>
-          <li class='nav-item'>
-            <a class="nav-link" data-toggle='<%= @patient.prescriptions.count > 0 ? 'tab' : '' %>' href='#prescriptions'>
-              <%= fa_icon "signature" %>
-              Recetas
-              <span class="badge badge-secondary"><%= @patient.prescriptions.count %></span>
-            </a>
-          </li>
         </ul>
         <div class="tab-content">
           <!-- Perfil -->
@@ -93,92 +86,6 @@
                   <p><h5><strong>Dirección</strong></h5><%= @patient.address_line %></p>
                 </div>
               <% end %>
-            </div>
-          </div>
-          <div id='prescriptions' class='tab-pane container fade'>
-            <br>
-            <h5 class="panel-title d-flex items-align-center justify-content-between">
-              <p>
-              <strong>Total </strong><%= @patient.prescriptions.count %>
-              </p>
-              <p>
-                Pendientes 
-                <span class="badge badge-secondary">
-                  <%= @patient.prescriptions.pendiente.count %>
-                </span>
-              </p>
-              <p>
-                Dispensadas parcial
-                <span class="badge badge-primary">
-                <%= @patient.prescriptions.dispensada_parcial.count %>
-                </span>
-              </p>
-              <p> 
-                Dispensadas 
-                <span class="badge badge-success">
-                  <%= @patient.prescriptions.dispensada.count %>
-                </span>
-              </p>
-            </h5>
-            <div class="card">
-              <table class="table table-hover table-sm">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Médico</th>
-                    <th>Estado</th>
-                    <th>Insumos</th>
-                    <th>
-                      Recetada
-                      <%= content_tag(:span, '', class: 'glyphicon glyphicon-calendar') %>
-                    </th>
-                    <th>
-                      Dispensada
-                      <%= content_tag(:span, '', class: 'glyphicon glyphicon-calendar') %>
-                    </th>
-                    <th class="text-center"></th>
-                  </tr>
-                </thead>
-                <tbody id=patients>
-                  <% @patient.prescriptions.each do |prescription| %>
-                    <tr id="prescription_<%= prescription.id %>">
-                      <td><%= prescription.remit_code %></th>
-                      <td class="pres-col-pro"><%= prescription.professional.full_name %></td>
-                      <td>
-                        <span class="badge badge-<%= prescription_status_label(prescription) %>">
-                          <%= prescription.status.underscore.humanize %>
-                        </span>
-                      </td>
-                      <td>
-                        <%= prescription.quantity_ord_supply_lots.count %>
-                      </td>
-                      <td>
-                        <% if prescription.prescribed_date.present? %>
-                          <%= prescription.prescribed_date.strftime("%d/%m/%Y") %>
-                        <% else %>
-                          ------
-                        <% end %>
-                      </td>
-                        <% if prescription.dispensada? %>
-                          <td>
-                          <%= prescription.dispensed_at.strftime("%d/%m/%y %H:%M") %>
-                        <% else %>
-                          <td>
-                          ----
-                        <% end %>
-                      </td>
-                      <td class="actions-col">
-                        <% if policy(prescription).show? %>
-                          <%= link_to prescription_path(prescription), class: 'btn btn-secondary btn-sm',
-                            title: 'Ver detalles', remote: true, data: { toggle: 'tooltip', placement: 'top' } do %>
-                            <%= fa_icon "eye" %>
-                          <% end %>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>

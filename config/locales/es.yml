@@ -76,6 +76,8 @@ es:
         to_date: "Fecha hasta"
         supply_id: "Producto"
         supply: "Producto"
+      patient_phone:
+        number: "Número"
 
   date:
     abbr_day_names:
