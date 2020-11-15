@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_140856) do
     t.bigint "patient_id"
     t.bigint "case_definition_id"
     t.bigint "created_by_id"
+    t.bigint "establishment_id"
     t.date "init_symptom_date"
     t.integer "epidemic_week"
     t.boolean "presents_sumptoms"
@@ -94,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_140856) do
     t.datetime "updated_at", null: false
     t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
     t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
+    t.index ["establishment_id"], name: "index_epidemic_sheets_on_establishment_id"
     t.index ["patient_id"], name: "index_epidemic_sheets_on_patient_id"
   end
 
@@ -195,6 +197,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_140856) do
     t.datetime "birthdate"
     t.string "email", limit: 50
     t.string "cuil"
+    t.bigint "patient_type_id", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "address_id"
@@ -202,6 +205,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_140856) do
     t.index ["address_id"], name: "index_patients_on_address_id"
     t.index ["andes_id"], name: "index_patients_on_andes_id"
     t.index ["occupation_id"], name: "index_patients_on_occupation_id"
+    t.index ["patient_type_id"], name: "index_patients_on_patient_type_id"
   end
 
   create_table "permission_requests", force: :cascade do |t|

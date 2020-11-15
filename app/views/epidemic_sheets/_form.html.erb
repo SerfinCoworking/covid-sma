@@ -20,6 +20,7 @@
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
             <div class="d-flex justify-content-between">
+              <%# CASO %>
               <div class="flex-fill">
                 <%= case_d.input :case_type, label: 'Caso', include_blank: false,
                   collection: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] },
@@ -27,14 +28,15 @@
                   :input_html => {
                     required: true,
                     include_blank: false,
-                    class: 'selectpicker-md',
+                    class: 'selectpicker custom-select-pick case-select',
                     "data-width"=>"100%",
                     "data-size"=>"10",
                     value: "#{ case_d.object.case_type }"
                   }
                 %>
               </div>
-              <div class="flex-fill">
+              <%# MÉTODO %>
+              <div class="flex-fill <%= case_d.object.sospechoso? ? 'invisible' : 'visible' %> diagnostic-method">
                 <%= case_d.input :diagnostic_method_id, label: 'Método',
                   collection: @diagnostic_methods.map {|method|  [method.name, method.id ]},
                   :input_html => {
@@ -52,9 +54,45 @@
             </div>
           <% end %> <!-- End case definition -->
 
-          <h5 class="border-bottom">Identificación del caso</h5>
+          <h5 class="border-bottom">Paciente</h5>
+          <div class="d-flex flex-row">
+            <div class="custom-input-group w-40 pr-1">
+              <%= f.input :patient, as: :string, class: 'form-control',
+                label: 'DNI',
+                placeholder: 'DNI',
+                required: true,
+                readonly: f.object.new_record? ? "" : true,
+                :input_html => {
+                  id: 'patient-dni',
+                  data: { autocomplete_source: get_by_dni_patients_path },
+                  value: "#{if f.object.patient.present?; f.object.patient.dni; end }",
+                }
+              %>
+              <div class="with-loading">
+                <%= fa_icon 'spinner', class: "fa-spin"%>
+              </div>
+            </div>
 
-          <%= f.association :patient %>
+            <div class="custom-input-group flex-fill">
+              <%= f.input :patient, as: :string, class: 'form-control',
+                label: 'Apellido y nombre',
+                placeholder: 'Apellido y nombre',
+                required: true,
+                readonly: f.object.new_record? ? "" : true,
+                :input_html => {
+                  id: 'patient-fullname',
+                  data: { autocomplete_source: get_by_fullname_patients_path },
+                  value: "#{if f.object.patient.present?; f.object.patient.fullname; end }",
+                }
+              %>
+              <div class="with-loading">
+                <%= fa_icon 'spinner', class: "fa-spin"%>
+              </div>
+            </div>
+            <%= f.hidden_field :patient_id, id: "patient_id", value: "#{if f.object.patient.present?; f.object.patient.id; end }" %>
+          </div>
+
+          <h5 class="border-bottom">Información clínica</h5>
           <%= f.input :init_symptom_date %>
           <%= f.input :epidemic_week %>
           <%= f.input :presents_sumptoms %>
