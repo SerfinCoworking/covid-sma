@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :epidemic_sheets
+  resources :epidemic_sheets do
+    member do
+      get :delete
+    end
+  end
   # custom error routes
   match '/404' => 'errors#not_found', :via => :all
   match '/406' => 'errors#not_acceptable', :via => :all

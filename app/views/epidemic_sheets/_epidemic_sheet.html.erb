@@ -1,0 +1,43 @@
+<tr id="epidemic_sheet_<%= epidemic_sheet.id %>">
+  <div class="js-fade fade-in is-paused">
+    <td>
+      <%= epidemic_sheet.patient_dni %>, 
+      <strong><%= epidemic_sheet.patient_last_name %></strong> <%= epidemic_sheet.patient_first_name %>
+    </td>
+    <td><%= epidemic_sheet.patient_age_string %></td>
+    <td>
+      <span class="badge badge-<%= epidemic_sheet.case_definition.sospechoso? ? "secondary" : "danger"%>">
+        <%= epidemic_sheet.case_definition_case_type %>
+      </span>
+    </td>
+    <td>
+      <%= epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
+    </td>
+    <td>
+      <%= epidemic_sheet.clinic_location %>
+    </td>
+    <td>
+      <%= epidemic_sheet.created_by.full_name %>
+    </td>
+    <td class="text-left actions-col">
+      <% if policy(epidemic_sheet).show? %>
+        <%= link_to epidemic_sheet_path(epidemic_sheet), class: 'btn btn-secondary btn-sm',
+              title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "eye" %>
+        <% end %>
+      <% end %>
+      <% if policy(epidemic_sheet).edit? %>
+        <%= link_to edit_epidemic_sheet_path(epidemic_sheet), class: 'btn btn-warning btn-sm',
+              title: 'Editar', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "edit" %>
+        <% end %>
+      <% end %>
+      <% if policy(epidemic_sheet).destroy? %>
+        <%= link_to delete_epidemic_sheet_path(epidemic_sheet), remote: true,
+              class: 'btn btn-danger btn-sm', title: 'Borrar', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "trash" %>
+        <% end %>
+      <% end %>
+    </td>
+  </div>
+</tr>

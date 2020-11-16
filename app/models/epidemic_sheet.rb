@@ -1,5 +1,6 @@
 class EpidemicSheet < ApplicationRecord
-  enum clinic_location: { sospechoso: 0, confirmado: 1 }
+  include PgSearch
+  enum clinic_location: { ambulatorio: 0, internado: 1 }
 
   belongs_to :patient
   belongs_to :case_definition
@@ -13,7 +14,28 @@ class EpidemicSheet < ApplicationRecord
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
+
+  delegate :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
+  delegate :case_type, to: :case_definition, prefix: true
   
+  filterrific(
+    available_filters: [
+      :search_fullname,
+      :search_dni,
+      :case_type
+    ]
+  )
+
+  pg_search_scope :search_dni,
+    :associated_against => { patient: [:dni] },
+    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
+    :ignoring => :accents # Ignorar tildes.
+
+  pg_search_scope :search_fullname,
+    :associated_against => { patient: [ :first_name, :last_name ]},
+    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
+    :ignoring => :accents # Ignorar tildes.  
+
   private
 
   def assign_establishment

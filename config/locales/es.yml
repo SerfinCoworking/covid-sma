@@ -34,24 +34,9 @@ es:
     models:
       external_order: "Pedido abastecimiento"
     attributes:
-      applicant_sector: "Sector solicitante"
-      prescription:
-        professional: "Médico"
-        patient: "Paciente"
-      quantity_ord_supply_lot:
-        supply: "Insumo"
-        requested_quantity: "Solicitado"
-        delivered_quantity: "Dispensado"
-        supply_id: "Insumo"
       sector:
         name: "Nombre"
         establishment_id: "Establecimiento"
-      internal_order:
-        applicant_sector: "Sector solicitante"
-        provider_sector: "Sector proveedor"
-      internal_order_template:
-        name: "Nombre"
-        destination_sector_id: "Solicitante"
       establishment:
         name: "Nombre"      
       professional:
@@ -62,22 +47,10 @@ es:
         dni: "Dni"
         first_name: "Nombre"
         last_name: "Apellido"
-      laboratory:
-        name: "Razón social"
-        cuil: "Cuil"
-        gln: "GLN"
-      internal_order_product_report:
-        since_date: "Fecha desde"
-        to_date: "Fecha hasta"
-        supply_id: "Producto"
-        supply: "Producto"
-      external_order_product_report:
-        since_date: "Fecha desde"
-        to_date: "Fecha hasta"
-        supply_id: "Producto"
-        supply: "Producto"
       patient_phone:
         number: "Número"
+      epidemic_sheet:
+        patient: "Paciente"
 
   date:
     abbr_day_names:
