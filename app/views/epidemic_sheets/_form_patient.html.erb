@@ -1,0 +1,185 @@
+
+<h5 class="border-bottom">Nuevo Paciente</h5>
+<%= form_builder.simple_fields_for form_builder.object.build_patient, html: { role: 'check-modified' } do |patient_form| %>
+  <div class="row">
+    <div class="col-4">
+      <%# Apellido %>
+      <%= patient_form.input :last_name, 
+        as: :string, 
+        class: 'form-control',
+        label: 'Apellido',
+        placeholder: 'Apellido',
+        required: true
+      %>
+    </div>
+
+    <div class="col-4">  
+      <%# Nombre %>
+      <%= patient_form.input :first_name, 
+        as: :string, 
+        class: 'form-control',
+        label: 'Nombre',
+        placeholder: 'Nombre',
+        required: true
+      %>
+    </div>
+    <div class="col-4">
+      <%# DNI %>
+      <%= patient_form.input :dni, 
+        as: :integer, 
+        class: 'form-control',
+        label: 'DNI',
+        placeholder: 'DNI',
+        required: true
+      %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <%# Sexo %>
+      <%= patient_form.input :sex, label: 'Sexo',
+        collection: Patient.sexes,
+        :value_method => :first,
+        required: true,
+        :input_html => {
+          required: true,
+          class: 'selectpicker supply custom-select-pick',
+          "data-width"=>"100%",
+          "data-size"=>"10"
+        }
+      %>
+    </div>
+    <div class="col-6">
+      <%# Fecha nacimiento %>
+      <%= patient_form.input :birthdate, 
+        as: :integer, 
+        class: 'form-control',
+        label: 'Fecha nacimiento',
+        placeholder: 'Fecha nacimiento',
+        required: true
+      %>
+
+    </div>
+  </div>
+
+  <%# Telefonos del paciente %>
+  <%= patient_form.label :patient_phone do %>
+    Teléfonos
+
+    <%= link_to_add_association patient_form, :patient_phones, class: 'btn btn-primary btn-sm',
+      data: {"association-insertion-node" => "tbody.patient_phones", "association-insertion-method" => "append"} do %>
+      <%= fa_icon "plus" %>
+    <% end %>
+
+  <% end %>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Número</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="patient_phones">
+      <%= patient_form.simple_fields_for patient_form.object.patient_phones.build do | form_phones | %>
+        <%= render "patient_phone_fields", :f => form_phones %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%# Direccion Andes %>
+  <%= patient_form.simple_fields_for :addess do |patient_address| %>
+    <%= patient_address.hidden_field :country %>
+    <%= patient_address.hidden_field :state %>
+    <%= patient_address.hidden_field :city %>
+    <%= patient_address.hidden_field :neighborhood %>
+
+    <%= patient_address.hidden_field :line %>
+    <%= patient_address.hidden_field :latitude, as: :integer%>
+    <%= patient_address.hidden_field :longitude, as: :integer%>
+    <%= patient_address.hidden_field :postal_code %>
+  <%end%>
+  
+  <%# Direccion Real %>
+  <h5 class="border-bottom">Domicilio Real</h5>
+  <%= patient_form.simple_fields_for :custom_addess do |patient_custom_address| %>
+    <div class="row">
+      <div class="col-6">
+        <%= patient_custom_address.input :state, 
+          as: :integer, 
+          class: 'form-control',
+          label: 'Provincia',
+          placeholder: 'Provincia',
+          required: true
+        %>
+      </div>
+      <div class="col-6">
+        <%= patient_custom_address.input :city, 
+          as: :integer, 
+          class: 'form-control',
+          label: 'Localidad',
+          placeholder: 'Localidad',
+          required: true
+        %>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-6">
+        <%= patient_custom_address.input :neighborhood, 
+          as: :string, 
+          class: 'form-control',
+          label: 'Barrio',
+          placeholder: 'Barrio',
+          required: true
+        %>
+      </div>
+      <div class="col-6">
+        <%= patient_custom_address.input :street, 
+          as: :string, 
+          class: 'form-control',
+          label: 'Calle',
+          placeholder: 'Calle',
+          required: true
+        %>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-3">
+        <%= patient_custom_address.input :street_number, 
+          as: :string, 
+          class: 'form-control',
+          label: 'N°',
+          placeholder: 'N°'
+        %>
+      </div>
+      <div class="col-3">
+        <%= patient_custom_address.input :floor, 
+          as: :string, 
+          class: 'form-control',
+          label: 'Piso',
+          placeholder: 'Piso'
+        %>
+      </div>        
+      <div class="col-3">        
+        <%= patient_custom_address.input :department, 
+          as: :string, 
+          class: 'form-control',
+          label: 'Depto.',
+          placeholder: 'Depto.'
+        %>
+      </div>
+      <div class="col-3">
+        <%= patient_custom_address.input :postal_code, 
+          as: :integer, 
+          class: 'form-control',
+          label: 'Código postal',
+          placeholder: 'Código postal',
+          required: true
+        %>
+      </div>
+    </div>
+  <%end%>
+<% end %>
