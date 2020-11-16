@@ -1,5 +1,5 @@
 class EpidemicSheetsController < ApplicationController
-  before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy]
+  before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
 
   # GET /epidemic_sheets
   # GET /epidemic_sheets.json
