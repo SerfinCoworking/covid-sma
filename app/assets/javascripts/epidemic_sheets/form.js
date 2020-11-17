@@ -30,7 +30,17 @@ $(document).on('turbolinks:load', function(e){
         // Si viene de andes el paciente, se motrara un formulario precargado con sus datos
         if(ui.item.create){
           $("#patient-form-fields").collapse('show');
-          
+          console.log(ui.item.data.direccion);
+          // setteamos los datos que vienen de andes
+          $("#patient-address-country").val(ui.item.data.direccion[0].ubicacion.pais.nombre);
+          $("#patient-address-state").val(ui.item.data.direccion[0].ubicacion.provincia.nombre);
+          $("#patient-address-city").val(ui.item.data.direccion[0].ubicacion.localidad.nombre);
+          $("#patient-address-line").val(ui.item.data.direccion[0].valor);
+          $("#patient-address-latitude").val(ui.item.data.direccion[0].geoReferencia[0]);
+          $("#patient-address-longitude").val(ui.item.data.direccion[0].geoReferencia[1]);
+          $("#patient-address-postal-code").val(ui.item.data.direccion[0].codigoPostal);
+
+
           $("#patient-form-lastname").val(ui.item.data.apellido).attr('readonly', true);
           $("#patient-form-firstname").val(ui.item.data.nombre).attr('readonly', true);
           $("#patient-form-dni").val(ui.item.data.documento).attr('readonly', true);

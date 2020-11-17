@@ -27,6 +27,7 @@ class EpidemicSheetsController < ApplicationController
     @case_definitions = CaseDefinition.all
     @epidemic_sheet.build_case_definition
     @diagnostic_methods = DiagnosticMethod.all
+    @patient = @epidemic_sheet.build_patient
   end
 
   # GET /epidemic_sheets/1/edit
@@ -88,7 +89,6 @@ class EpidemicSheetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def epidemic_sheet_params
       params.require(:epidemic_sheet).permit(
-        :patient_id, 
         :case_definition_id, 
         :init_symptom_date, 
         :epidemic_week, 
@@ -117,23 +117,15 @@ class EpidemicSheetsController < ApplicationController
             :country,
             :state,
             :city,
-            :neighborhood,
             :line,
             :latitude,
             :longitude,
             :postal_code
           ],
-          custom_address_attributes: [
-            :postal_code,
-            :line,
-            :city_id,
-            :country_id,
-            :state_id,
+          current_address_attributes: [
             :neighborhood,
             :street,
-            :street_number,
-            :floor,
-            :department
+            :street_number
           ],
         ]
       )

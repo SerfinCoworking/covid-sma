@@ -57,7 +57,7 @@
           <h5 class="border-bottom">Paciente</h5>
           <div class="d-flex flex-row">
             <div class="custom-input-group w-40 pr-1">
-              <%= f.input :patient, as: :string, class: 'form-control',
+              <%= f.input :patient_fake, as: :fake, class: 'form-control',
                 label: 'DNI',
                 placeholder: 'DNI',
                 required: true,
@@ -73,27 +73,10 @@
               </div>
             </div>
 
-            <div class="custom-input-group flex-fill">
-              <%= f.input :patient, as: :string, class: 'form-control',
-                label: 'Apellido y nombre',
-                placeholder: 'Apellido y nombre',
-                required: true,
-                readonly: f.object.new_record? ? "" : true,
-                :input_html => {
-                  id: 'patient-fullname',
-                  data: { autocomplete_source: get_by_fullname_patients_path },
-                  value: "#{if f.object.patient.present?; f.object.patient.fullname; end }",
-                }
-              %>
-              <div class="with-loading">
-                <%= fa_icon 'spinner', class: "fa-spin"%>
-              </div>
-            </div>
-            <%= f.hidden_field :patient_id, id: "patient_id", value: "#{if f.object.patient.present?; f.object.patient.id; end }" %>
           </div>
 
           <div class="accordion" id="accordion1">
-            <%= render "form_patient", :form_builder => f %>
+            <%= render "form_patient", :form_builder => f, :patient => @patient %>
           </div>
 
           <h5 class="border-bottom">Información clínica</h5>

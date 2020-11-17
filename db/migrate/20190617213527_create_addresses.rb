@@ -6,7 +6,6 @@ class CreateAddresses < ActiveRecord::Migration[5.2]
       t.references :city, foreign_key: true
       t.references :country, index: true
       t.references :state, index: true
-      t.string :neighborhood
       t.bigint :latitude
       t.bigint :longitude
 

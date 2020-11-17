@@ -9,9 +9,10 @@ class EpidemicSheet < ApplicationRecord
 
   before_create :assign_establishment
 
-  validates_presence_of :patient, :case_definition, :init_symptom_date, :epidemic_week
+  validates_presence_of  :case_definition, :init_symptom_date, :epidemic_week
   validates :epidemic_week, numericality: { only_integer: true, greater_than: 0}
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
+  validates_presence_of :patient
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :patient

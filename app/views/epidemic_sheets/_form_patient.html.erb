@@ -1,6 +1,6 @@
 <div id="patient-form-fields" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
   <h5 class="border-bottom">Nuevo Paciente</h5>
-  <%= form_builder.simple_fields_for form_builder.object.build_patient, html: { role: 'check-modified' } do |patient_form| %>
+  <%= form_builder.simple_fields_for patient, html: { role: 'check-modified' } do |patient_form| %>
     <div class="row">
       <div class="col-4">
         <%# Apellido %>
@@ -103,43 +103,22 @@
 
     <%# Direccion Andes %>
     <%= patient_form.simple_fields_for :addess do |patient_address| %>
-      <%= patient_address.hidden_field :country %>
-      <%= patient_address.hidden_field :state %>
-      <%= patient_address.hidden_field :city %>
-      <%= patient_address.hidden_field :neighborhood %>
+      <%= patient_address.hidden_field :country, id: "patient-address-country" %>
+      <%= patient_address.hidden_field :state, id: "patient-address-state" %>
+      <%= patient_address.hidden_field :city, id: "patient-address-city" %>
 
-      <%= patient_address.hidden_field :line %>
-      <%= patient_address.hidden_field :latitude, as: :integer%>
-      <%= patient_address.hidden_field :longitude, as: :integer%>
-      <%= patient_address.hidden_field :postal_code %>
+      <%= patient_address.hidden_field :line, id: "patient-address-line" %>
+      <%= patient_address.hidden_field :latitude, as: :integer, id: "patient-address-latitude" %>
+      <%= patient_address.hidden_field :longitude, as: :integer, id: "patient-address-longitude" %>
+      <%= patient_address.hidden_field :postal_code, id: "patient-address-postal-code" %>
     <%end%>
     
     <%# Direccion Real %>
     <h5 class="border-bottom">Domicilio Real</h5>
     <%= patient_form.simple_fields_for :custom_addess do |patient_custom_address| %>
+     
       <div class="row">
-        <div class="col-6">
-          <%= patient_custom_address.input :state, 
-            as: :integer, 
-            class: 'form-control',
-            label: 'Provincia',
-            placeholder: 'Provincia',
-            required: false
-          %>
-        </div>
-        <div class="col-6">
-          <%= patient_custom_address.input :city, 
-            as: :integer, 
-            class: 'form-control',
-            label: 'Localidad',
-            placeholder: 'Localidad',
-            required: false
-          %>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-6">
+        <div class="col-5">
           <%= patient_custom_address.input :neighborhood, 
             as: :string, 
             class: 'form-control',
@@ -148,7 +127,7 @@
             required: false
           %>
         </div>
-        <div class="col-6">
+        <div class="col-5">
           <%= patient_custom_address.input :street, 
             as: :string, 
             class: 'form-control',
@@ -157,10 +136,8 @@
             required: false
           %>
         </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-3">
+
+        <div class="col-2">
           <%= patient_custom_address.input :street_number, 
             as: :string, 
             class: 'form-control',
@@ -169,34 +146,8 @@
             required: false
           %>
         </div>
-        <div class="col-3">
-          <%= patient_custom_address.input :floor, 
-            as: :string, 
-            class: 'form-control',
-            label: 'Piso',
-            placeholder: 'Piso',
-            required: false
-          %>
-        </div>        
-        <div class="col-3">        
-          <%= patient_custom_address.input :department, 
-            as: :string, 
-            class: 'form-control',
-            label: 'Depto.',
-            placeholder: 'Depto.',
-            required: false
-          %>
-        </div>
-        <div class="col-3">
-          <%= patient_custom_address.input :postal_code, 
-            as: :integer, 
-            class: 'form-control',
-            label: 'Código postal',
-            placeholder: 'Código postal',
-            required: false
-          %>
-        </div>
       </div>
+    
     <%end%>
   <% end %>
 </div>
