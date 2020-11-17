@@ -92,7 +92,7 @@
             <%= f.hidden_field :patient_id, id: "patient_id", value: "#{if f.object.patient.present?; f.object.patient.id; end }" %>
           </div>
 
-          <div>
+          <div class="accordion" id="accordion1">
             <%= render "form_patient", :form_builder => f %>
           </div>
 
