@@ -100,6 +100,41 @@ class EpidemicSheetsController < ApplicationController
           :id,
           :case_type,
           :diagnostic_method_id
+        ],
+        patient_attributes: [ 
+          :id,
+          :dni,
+          :last_name,
+          :first_name,
+          :sex,
+          :birthdate,
+          patient_phone_attributes: [
+            :id,
+            :phone_type,
+            :number
+          ],
+          address_attributes: [
+            :country,
+            :state,
+            :city,
+            :neighborhood,
+            :line,
+            :latitude,
+            :longitude,
+            :postal_code
+          ],
+          custom_address_attributes: [
+            :postal_code,
+            :line,
+            :city_id,
+            :country_id,
+            :state_id,
+            :neighborhood,
+            :street,
+            :street_number,
+            :floor,
+            :department
+          ],
         ]
       )
     end

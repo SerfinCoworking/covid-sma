@@ -1,4 +1,5 @@
-class Address < ApplicationRecord
+class CustomAddress < ApplicationRecord
+
   belongs_to :country, optional: true
   belongs_to :state, optional: true
   belongs_to :city, optional: true
@@ -14,5 +15,6 @@ class Address < ApplicationRecord
 
   def city_name
     self.city.present? ? self.city.name.humanize : "----"
-  end
+  end  
+
 end

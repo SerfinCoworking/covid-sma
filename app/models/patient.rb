@@ -10,6 +10,7 @@ class Patient < ApplicationRecord
   
   belongs_to :patient_type
   belongs_to :address, optional: true
+  belongs_to :custom_address, optional: true
   belongs_to :occupation, optional: true
   
   has_many :patient_phones, dependent: :destroy
