@@ -15,7 +15,7 @@ class EpidemicSheet < ApplicationRecord
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
 
-  delegate :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
+  delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
   delegate :case_type, to: :case_definition, prefix: true
   
   filterrific(
