@@ -14,6 +14,7 @@ class EpidemicSheet < ApplicationRecord
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
+  accepts_nested_attributes_for :patient
 
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
   delegate :case_type, to: :case_definition, prefix: true
