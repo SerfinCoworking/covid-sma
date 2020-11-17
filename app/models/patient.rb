@@ -16,6 +16,8 @@ class Patient < ApplicationRecord
   has_many :patient_phones, dependent: :destroy
 
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true
+  accepts_nested_attributes_for :address
+  accepts_nested_attributes_for :custom_address
 
   # Validaciones
   validates_presence_of :first_name, :last_name, :dni
