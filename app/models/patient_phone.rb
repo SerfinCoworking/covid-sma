@@ -1,5 +1,5 @@
 class PatientPhone < ApplicationRecord
-  enum phone_type: { Móvil: 1, Casa: 2, Trabajo: 3 }
+  enum phone_type: { Celular: 1, Fijo: 2 }
 
   belongs_to :patient
 

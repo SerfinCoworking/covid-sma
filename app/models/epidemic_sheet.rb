@@ -67,7 +67,7 @@ class EpidemicSheet < ApplicationRecord
         longitude: params[:patient_attributes][:address_attributes][:longitude],
         postal_code: params[:patient_attributes][:address_attributes][:postal_code]
       )
-      self.patient.address = @address
+      self.patient.address_id = @address.id
     end
       
   end

@@ -1,7 +1,7 @@
 <div id="patient-form-fields" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
-  <h5 class="border-bottom">Nuevo Paciente</h5>
+  <%# <h5 class="border-bottom">Paciente</h5> %>
   <%= form_builder.simple_fields_for :patient, html: { role: 'check-modified' } do |patient_form| %>
-    <div class="row">
+    <div class="row andes-fields d-none">
       <div class="col-4">
         <%# Apellido %>
         <%= patient_form.input :last_name, 
@@ -44,8 +44,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-6">
+    <div class="row andes-fields d-none">
+      <div class="col-6 sex-input">
         <%# Sexo %>
         <%= patient_form.input :sex, label: 'Sexo',
           collection: Patient.sexes,
@@ -80,7 +80,7 @@
     <%= patient_form.label :patient_phone do %>
       Teléfonos
 
-      <%= link_to_add_association patient_form, :patient_phones, class: 'btn btn-primary btn-sm',
+      <%= link_to_add_association patient_form, :patient_phones, class: 'btn btn-primary btn-sm', id: "add-phone",
         data: {"association-insertion-node" => "tbody.patient_phones", "association-insertion-method" => "append"} do %>
         <%= fa_icon "plus" %>
       <% end %>
@@ -95,7 +95,7 @@
         </tr>
       </thead>
       <tbody class="patient_phones" id="patient-form-phones">
-        <%= patient_form.simple_fields_for patient_form.object.patient_phones.build do | form_phones | %>
+        <%= patient_form.simple_fields_for :patient_phones do | form_phones | %>
           <%= render "patient_phone_fields", :f => form_phones %>
         <% end %>
       </tbody>
