@@ -1,4 +1,4 @@
-class CustomAddress < ApplicationRecord
+class CurrentAddress < ApplicationRecord
 
   belongs_to :country, optional: true
   belongs_to :state, optional: true

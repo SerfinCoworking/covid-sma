@@ -10,14 +10,14 @@ class Patient < ApplicationRecord
   
   belongs_to :patient_type
   belongs_to :address, optional: true
-  belongs_to :custom_address, optional: true
+  belongs_to :current_address, optional: true
   belongs_to :occupation, optional: true
   
   has_many :patient_phones, dependent: :destroy
 
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true
   accepts_nested_attributes_for :address
-  accepts_nested_attributes_for :custom_address
+  accepts_nested_attributes_for :current_address
 
   # Validaciones
   validates_presence_of :first_name, :last_name, :dni

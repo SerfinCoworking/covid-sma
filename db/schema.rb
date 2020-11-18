@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2020_11_16_133556) do
     t.bigint "city_id"
     t.bigint "country_id"
     t.bigint "state_id"
-    t.string "neighborhood"
     t.bigint "latitude"
     t.bigint "longitude"
     t.datetime "created_at", null: false
@@ -76,22 +75,12 @@ ActiveRecord::Schema.define(version: 2020_11_16_133556) do
     t.string "phone_code"
   end
 
-  create_table "custom_addresses", force: :cascade do |t|
-    t.string "postal_code"
-    t.text "line"
-    t.bigint "city_id"
-    t.bigint "country_id"
-    t.bigint "state_id"
+  create_table "current_addresses", force: :cascade do |t|
     t.string "neighborhood"
     t.string "street"
     t.string "street_number"
-    t.string "floor"
-    t.string "department"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["city_id"], name: "index_custom_addresses_on_city_id"
-    t.index ["country_id"], name: "index_custom_addresses_on_country_id"
-    t.index ["state_id"], name: "index_custom_addresses_on_state_id"
   end
 
   create_table "diagnostic_methods", force: :cascade do |t|
@@ -223,10 +212,10 @@ ActiveRecord::Schema.define(version: 2020_11_16_133556) do
     t.datetime "updated_at", null: false
     t.bigint "address_id"
     t.bigint "occupation_id"
-    t.bigint "custom_address_id"
+    t.bigint "current_address_id"
     t.index ["address_id"], name: "index_patients_on_address_id"
     t.index ["andes_id"], name: "index_patients_on_andes_id"
-    t.index ["custom_address_id"], name: "index_patients_on_custom_address_id"
+    t.index ["current_address_id"], name: "index_patients_on_current_address_id"
     t.index ["occupation_id"], name: "index_patients_on_occupation_id"
     t.index ["patient_type_id"], name: "index_patients_on_patient_type_id"
   end
@@ -345,10 +334,9 @@ ActiveRecord::Schema.define(version: 2020_11_16_133556) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "cities"
   add_foreign_key "cities", "states"
-  add_foreign_key "custom_addresses", "cities"
   add_foreign_key "patient_phones", "patients"
   add_foreign_key "patients", "addresses"
-  add_foreign_key "patients", "custom_addresses"
+  add_foreign_key "patients", "current_addresses"
   add_foreign_key "permission_requests", "users"
   add_foreign_key "states", "countries"
   add_foreign_key "users", "sectors"
