@@ -1,6 +1,6 @@
 <div id="patient-form-fields" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
   <h5 class="border-bottom">Nuevo Paciente</h5>
-  <%= form_builder.simple_fields_for patient, html: { role: 'check-modified' } do |patient_form| %>
+  <%= form_builder.simple_fields_for :patient, html: { role: 'check-modified' } do |patient_form| %>
     <div class="row">
       <div class="col-4">
         <%# Apellido %>
@@ -54,7 +54,7 @@
           :input_html => {
             required: true,
             id: "patient-form-sex",
-            class: 'selectpicker supply custom-select-pick',
+            class: 'selectpicker supply current-select-pick',
             "data-width"=>"100%",
             "data-size"=>"10"
           }
@@ -102,7 +102,7 @@
     </table>
 
     <%# Direccion Andes %>
-    <%= patient_form.simple_fields_for :addess do |patient_address| %>
+    <%= patient_form.simple_fields_for :address do |patient_address| %>
       <%= patient_address.hidden_field :country, id: "patient-address-country" %>
       <%= patient_address.hidden_field :state, id: "patient-address-state" %>
       <%= patient_address.hidden_field :city, id: "patient-address-city" %>
@@ -115,11 +115,11 @@
     
     <%# Direccion Real %>
     <h5 class="border-bottom">Domicilio Real</h5>
-    <%= patient_form.simple_fields_for :custom_addess do |patient_custom_address| %>
+    <%= patient_form.simple_fields_for :current_address do |patient_current_address| %>
      
       <div class="row">
         <div class="col-5">
-          <%= patient_custom_address.input :neighborhood, 
+          <%= patient_current_address.input :neighborhood, 
             as: :string, 
             class: 'form-control',
             label: 'Barrio',
@@ -128,7 +128,7 @@
           %>
         </div>
         <div class="col-5">
-          <%= patient_custom_address.input :street, 
+          <%= patient_current_address.input :street, 
             as: :string, 
             class: 'form-control',
             label: 'Calle',
@@ -138,7 +138,7 @@
         </div>
 
         <div class="col-2">
-          <%= patient_custom_address.input :street_number, 
+          <%= patient_current_address.input :street_number, 
             as: :string, 
             class: 'form-control',
             label: 'N°',

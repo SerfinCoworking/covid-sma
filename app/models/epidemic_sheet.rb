@@ -38,6 +38,40 @@ class EpidemicSheet < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
     :ignoring => :accents # Ignorar tildes.  
 
+  
+  def update_or_create_address(params)
+    # Debemos mapear los valores "string" que vienen de andes
+    @country = Country.where(name: params[:patient_attributes][:address_attributes][:country]).first_or_create(name: params[:patient_attributes][:address_attributes][:country])
+    @state = State.where(name: params[:patient_attributes][:address_attributes][:state]).first_or_create(name: params[:patient_attributes][:address_attributes][:state], country_id: @country.id)
+    @city = City.where(name: params[:patient_attributes][:address_attributes][:city]).first_or_create(name: params[:patient_attributes][:address_attributes][:city], state_id: @state.id )
+
+    # Debemos actualizar o crear una nueva direccion
+    @address = Address.where(id: self.patient.address_id).first
+
+    if @address.present?
+      @address.country = @country
+      @address.state = @state
+      @address.city = @city
+      @address.line = params[:patient_attributes][:address_attributes][:line]
+      @address.latitude = params[:patient_attributes][:address_attributes][:latitude]
+      @address.longitude = params[:patient_attributes][:address_attributes][:longitude]
+      @address.postal_code = params[:patient_attributes][:address_attributes][:postal_code]
+      @address.save!
+    else
+      @address = Address.create(
+        country: @country,
+        state: @state,
+        city: @city,
+        line: params[:patient_attributes][:address_attributes][:line],
+        latitude: params[:patient_attributes][:address_attributes][:latitude],
+        longitude: params[:patient_attributes][:address_attributes][:longitude],
+        postal_code: params[:patient_attributes][:address_attributes][:postal_code]
+      )
+      self.patient.address = @address
+    end
+      
+  end
+
   private
 
   def assign_establishment
@@ -45,4 +79,6 @@ class EpidemicSheet < ApplicationRecord
       self.establishment = self.created_by.establishment
     end
   end
+
+  
 end

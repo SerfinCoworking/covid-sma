@@ -27,7 +27,10 @@ class EpidemicSheetsController < ApplicationController
     @case_definitions = CaseDefinition.all
     @epidemic_sheet.build_case_definition
     @diagnostic_methods = DiagnosticMethod.all
-    @patient = @epidemic_sheet.build_patient
+    @epidemic_sheet.build_patient
+    @epidemic_sheet.patient.build_address
+    @epidemic_sheet.patient.build_current_address
+
   end
 
   # GET /epidemic_sheets/1/edit
@@ -42,9 +45,11 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet = EpidemicSheet.new(epidemic_sheet_params)
     @epidemic_sheet.created_by = current_user
     @epidemic_sheet.establishment = current_user.establishment
+    @epidemic_sheet.update_or_create_address(patient_address_params)
 
     respond_to do |format|
       if @epidemic_sheet.save!
+        
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else
@@ -113,7 +118,20 @@ class EpidemicSheetsController < ApplicationController
             :phone_type,
             :number
           ],
+          current_address_attributes: [
+            :neighborhood,
+            :street,
+            :street_number
+          ],
+        ]
+      )
+    end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def patient_address_params
+      params.require(:epidemic_sheet).permit(
+        patient_attributes:[
           address_attributes: [
+
             :country,
             :state,
             :city,
@@ -121,12 +139,7 @@ class EpidemicSheetsController < ApplicationController
             :latitude,
             :longitude,
             :postal_code
-          ],
-          current_address_attributes: [
-            :neighborhood,
-            :street,
-            :street_number
-          ],
+          ]
         ]
       )
     end
