@@ -7,7 +7,7 @@ class CreateEpidemicSheets < ActiveRecord::Migration[5.2]
       t.references :establishment, index: true
       t.date :init_symptom_date
       t.integer :epidemic_week
-      t.boolean :presents_sumptoms
+      t.boolean :presents_symptoms
       t.text :symptoms_observations
       t.boolean :previous_symptoms
       t.text :prev_symptoms_observations
