@@ -85,7 +85,7 @@
                   required: true,
                   class: "form-control prescribed-date",
                   autocomplete: "off",
-                  value: "#{f.object.new_record? ? DateTime.now.strftime("%d/%m/%Y") : f.object.prescribed_date.strftime("%d/%m/%Y")}"
+                  value: "#{f.object.new_record? ? DateTime.now.strftime("%d/%m/%Y") : f.object.init_symptom_date.strftime("%d/%m/%Y")}"
                 }
               %>
             </div>

@@ -96,10 +96,11 @@ class EpidemicSheetsController < ApplicationController
         :case_definition_id, 
         :init_symptom_date, 
         :epidemic_week, 
-        :presents_sumptoms, 
+        :presents_symptoms, 
         :symptoms_observations, 
         :previous_symptoms, 
         :prev_symptoms_observations,
+        :clinic_location,
         case_definition_attributes: [ 
           :id,
           :case_type,

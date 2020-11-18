@@ -1,48 +1,97 @@
 
-<p>
-  <strong>Patient:</strong>
-  <%= @epidemic_sheet.patient %>
-</p>
+<div class="card fixed-custom-card">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center ml-2">
+      <%= fa_icon "eye" %>
+      <h5 class="card-title mb-0 ml-2">
+        <%= "Viendo ficha epidemiológica" %>
+      </h5>
+    </div>
+    <%= link_to :back, class: 'btn btn-light' do %>
+      <%= fa_icon "times" %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-8 border-right">
 
-<p>
-  <strong>Case definition:</strong>
-  <%= @epidemic_sheet.case_definition %>
-</p>
+        <h5 class="border-bottom">Definición de caso</h5>
+        <div class="d-flex justify-content-between">
+          <div class="flex-fill">
+            <h5>Caso</h5>
+            <span class="badge badge-<%= @epidemic_sheet.case_definition.sospechoso? ? 'warning' : 'danger' %>">
+              <%= @epidemic_sheet.case_definition.case_type.humanize %>
+            </span>
+          </div>
+          <% if @epidemic_sheet.case_definition.confirmado? %>
+            <div class="flex-fill">
+              <h5>Método</h5>
+              <%= @epidemic_sheet.case_definition.diagnostic_method.name %>
+            </div>
+          <% end %>
+        </div>
 
-<p>
-  <strong>Init symptom date:</strong>
-  <%= @epidemic_sheet.init_symptom_date %>
-</p>
+        <h5 class="border-bottom pt-3">Paciente</h5>
+        <div class="d-flex justify-content-between">
+          <div class="flex-fill">
+            <strong>DNI</strong> <%= @epidemic_sheet.patient_dni %>
+            <strong><%= @epidemic_sheet.patient_last_name %></strong>,
+            <%= @epidemic_sheet.patient_first_name %>
+          </div>
+        </div>
 
-<p>
-  <strong>Epidemic week:</strong>
-  <%= @epidemic_sheet.epidemic_week %>
-</p>
+        <h5 class="border-bottom pt-3">Información clínica</h5>
+        <div class="d-flex justify-content-between">
+          <div class="flex-fill">
+            <h5>Fecha inicio</h5>
+            <%= @epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
+          </div>
+          <div class="flex-fill">
+            <h5>Semana epidemiológica</h5>
+            <span class="badge badge-pill badge-secondary"><%= @epidemic_sheet.epidemic_week %></span>
+          </div>
+          <div class="flex-fill">
+            <h5>Situación</h5>
+            <%= @epidemic_sheet.clinic_location.humanize %>
+          </div>
+        </div>
 
-<p>
-  <strong>Presents sumptoms:</strong>
-  <%= @epidemic_sheet.presents_symptoms %>
-</p>
+        <h5 class="border-bottom pt-3">Signos y síntomas</h5>
+        <div class="d-flex justify-content-between">
+          <div class="flex-fill">
+            <%= @epidemic_sheet.presents_symptoms? ? 'Presenta' : 'No presenta' %> síntomas
+          </div>
+          <div class="flex-fill">
+            <p><%= @epidemic_sheet.symptoms_observations %></p>
+          </div>
+        </div>
 
-<p>
-  <strong>Symptoms observations:</strong>
-  <%= @epidemic_sheet.symptoms_observations %>
-</p>
+        <h5 class="border-bottom pt-3">Enfermedades previas</h5>
+        <div class="d-flex justify-content-between">
+          <div class="flex-fill">
+            <%= @epidemic_sheet.previous_symptoms? ? 'Presenta' : 'No presenta' %> enfermedades previas
+          </div>
+          <div class="flex-fill">
+            <p><%= @epidemic_sheet.prev_symptoms_observations %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="d-flex justify-content">
+          <div class="flex-fill text-center">
+            <%= image_tag patient_avatar(@epidemic_sheet.patient), size: '100x100', class:"rounded-circle" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<p>
-  <strong>Previous symptoms:</strong>
-  <%= @epidemic_sheet.previous_symptoms %>
-</p>
-
-<p>
-  <strong>Prev symptoms observations:</strong>
-  <%= @epidemic_sheet.prev_symptoms_observations %>
-</p>
-
-<p>
-  <strong>Clinic location:</strong>
-  <%= @epidemic_sheet.clinic_location %>
-</p>
-
-<%= link_to 'Edit', edit_epidemic_sheet_path(@epidemic_sheet) %> |
-<%= link_to 'Back', epidemic_sheets_path %>
+  <div class="card-footer d-flex justify-content-end">
+    <%= link_to 'Volver', epidemic_sheets_path, class: 'btn mr-2 btn-light' %>
+    <%= link_to edit_epidemic_sheet_path(@epidemic_sheet), class: 'btn btn-warning' do %>
+      <%= fa_icon 'pen' %>
+        Editar
+      
+    <% end %>
+  </div>
+</div>
