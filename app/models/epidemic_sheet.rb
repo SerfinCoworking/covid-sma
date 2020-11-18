@@ -79,6 +79,4 @@ class EpidemicSheet < ApplicationRecord
       self.establishment = self.created_by.establishment
     end
   end
-
-  
 end
