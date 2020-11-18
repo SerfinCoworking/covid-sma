@@ -31,7 +31,6 @@ $(document).on('turbolinks:load', function(e){
         if(ui.item.create){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-fields").collapse('show');
-          console.log(ui.item.data.direccion);
           // setteamos los datos que vienen de andes
           $("#patient-address-country").val(ui.item.data.direccion[0].ubicacion.pais.nombre);
           $("#patient-address-state").val(ui.item.data.direccion[0].ubicacion.provincia.nombre);
@@ -52,6 +51,10 @@ $(document).on('turbolinks:load', function(e){
             if($(item).val() && $(item).val().match(sex)){
               $("#patient-form-sex").val($(item).val());
               $("#patient-form-sex").selectpicker('render');
+              $("#patient-form-sex").selectpicker('hide');
+              // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
+              const sexInputSelect = "<input type='text' name='phone-type-"+index+"' class='form-control string optional input-sm' readonly='readonly' value="+ $(item).val() +">";
+              $("#patient-form-sex").closest('.form-group').first().append(sexInputSelect);
             }
           });
 
@@ -68,6 +71,7 @@ $(document).on('turbolinks:load', function(e){
                 $(phoneSelectType).selectpicker('render');
                 $(phoneSelectType).selectpicker('hide');
                 
+                // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
                 const phoneInputSelect = "<input type='text' name='phone-type-"+i+"' class='form-control string optional input-sm' readonly='readonly' value="+ $(item).val() +">";
                 $(phonesField[i]).find('td').first().prepend(phoneInputSelect);
               }
@@ -82,16 +86,11 @@ $(document).on('turbolinks:load', function(e){
                     
           // precargamos la fecha nacimiento del paciente
           const birthdate = moment(ui.item.data.fechaNacimiento);
-          $("#patient-form-birthdate").val(birthdate.format("DD/MM/YYYY")).attr('readonly', true);;
-          
-          // Falta cargar telefonos
+          $("#patient-form-birthdate").val(birthdate.format("DD/MM/YYYY")).attr('readonly', true);
 
-          // patient-form-phones
-          // console.log(ui.item.data.apellido);
         }else{
           $("#patient-form-fields").collapse('show');
         }
-        // .collapse('show');
       }
     });
 
