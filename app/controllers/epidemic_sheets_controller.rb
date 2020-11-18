@@ -30,6 +30,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.build_patient
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
+    @epidemic_sheet.patient.patient_phones.build
 
   end
 
@@ -131,7 +132,6 @@ class EpidemicSheetsController < ApplicationController
       params.require(:epidemic_sheet).permit(
         patient_attributes:[
           address_attributes: [
-
             :country,
             :state,
             :city,
