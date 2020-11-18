@@ -30,7 +30,6 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.build_patient
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
-
   end
 
   # GET /epidemic_sheets/1/edit
@@ -48,7 +47,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.update_or_create_address(patient_address_params)
 
     respond_to do |format|
-      if @epidemic_sheet.save!
+      if @epidemic_sheet.save
         
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }

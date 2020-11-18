@@ -51,6 +51,8 @@ es:
         number: "Número"
       epidemic_sheet:
         patient: "Paciente"
+        init_symptom_date: "Fecha de inicio"
+        epidemic_week: "Semana epidemiológica" 
 
   date:
     abbr_day_names:
