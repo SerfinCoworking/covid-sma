@@ -23,7 +23,7 @@
               <%= @epidemic_sheet.case_definition.case_type.humanize %>
             </span>
           </div>
-          <% if @epidemic_sheet.case_definition.confirmado? %>
+          <% unless @epidemic_sheet.case_definition.sospechoso? %>
             <div class="flex-fill">
               <h5>Método</h5>
               <%= @epidemic_sheet.case_definition.diagnostic_method.name %>

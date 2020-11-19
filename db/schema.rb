@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_133556) do
+ActiveRecord::Schema.define(version: 2020_11_19_143431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -73,6 +73,17 @@ ActiveRecord::Schema.define(version: 2020_11_16_133556) do
     t.string "iso2"
     t.string "iso3"
     t.string "phone_code"
+  end
+
+  create_table "covid_profiles", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "patient_id"
+    t.date "init_symptom_date"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_covid_profiles_on_epidemic_sheet_id"
+    t.index ["patient_id"], name: "index_covid_profiles_on_patient_id"
   end
 
   create_table "current_addresses", force: :cascade do |t|

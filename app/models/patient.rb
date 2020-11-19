@@ -15,6 +15,8 @@ class Patient < ApplicationRecord
   
   has_many :patient_phones, dependent: :destroy
 
+  has_one :covid_profile
+
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :current_address
@@ -23,8 +25,11 @@ class Patient < ApplicationRecord
   validates_presence_of :first_name, :last_name, :dni
   validates_uniqueness_of :dni
 
+  # Delegaciones
   delegate :country_name, :state_name, :city_name, :line, to: :address, prefix: :address
   delegate :name, to: :patient_type, prefix: :patient_type
+
+  # Callbacks
 
   filterrific(
     default_filter_params: { sorted_by: 'created_at_desc' },

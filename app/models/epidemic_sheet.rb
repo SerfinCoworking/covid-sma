@@ -2,23 +2,29 @@ class EpidemicSheet < ApplicationRecord
   include PgSearch
   enum clinic_location: { ambulatorio: 0, internado: 1 }
 
+  # Relations
   belongs_to :patient
   belongs_to :case_definition
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
+  has_one :covid_profile
 
-  before_create :assign_establishment
-
+  accepts_nested_attributes_for :case_definition, allow_destroy: true
+  accepts_nested_attributes_for :patient
+  
+  # Validations
   validates_presence_of  :case_definition, :init_symptom_date, :epidemic_week
   validates :epidemic_week, numericality: { only_integer: true, greater_than: 0}
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
-
-  accepts_nested_attributes_for :case_definition, allow_destroy: true
-  accepts_nested_attributes_for :patient
-
+  
+  # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
   delegate :case_type, to: :case_definition, prefix: true
+  
+  # Callbacks
+  before_create :assign_establishment
+  after_create :create_covid_profile
   
   filterrific(
     available_filters: [
@@ -78,5 +84,10 @@ class EpidemicSheet < ApplicationRecord
     if self.created_by.present?
       self.establishment = self.created_by.establishment
     end
+  end
+
+  # Create covid profile of the patient with the sheet attributes
+  def create_covid_profile
+    CovidProfile.create_with_epidemic_sheet(self)
   end
 end
