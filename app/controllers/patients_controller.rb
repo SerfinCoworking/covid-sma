@@ -120,8 +120,14 @@ class PatientsController < ApplicationController
           params: {'documento': dni}
         }
       )
-      render json: JSON.parse(andes_patients).map{ |pat| { create: true, label: pat['documento'].to_s+" "+pat['apellido']+" "+pat['nombre'], dni: pat['documento'], fullname: pat['apellido']+" "+pat['nombre'], data: pat  }  }
+      # if JSON.parse(andes_patients).length
+        render json: JSON.parse(andes_patients).map{ |pat| { create: true, label: pat['documento'].to_s+" "+pat['apellido']+" "+pat['nombre'], dni: pat['documento'], fullname: pat['apellido']+" "+pat['nombre'], data: pat  }  }
+      # else
+      #   puts "================ "
+      #   render json: { create: true, dni: params[:term] }  
+      # end
     end
+    
     
   end
 

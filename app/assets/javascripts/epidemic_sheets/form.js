@@ -24,28 +24,28 @@ $(document).on('turbolinks:load', function(e){
       function (event, ui) {
         event.preventDefault();
         $("#patient").tooltip('hide');
-        $("#patient_id").val(ui.item.id);
         $("#patient-dni").val(ui.item.dni);
-        $("#patient-fullname").val(ui.item.fullname);
+
+        console.log(ui.item, "<========== DEBUG ");
         // Si viene de andes el paciente, se motrara un formulario precargado con sus datos
         if(ui.item.create){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-fields").collapse('show');
           // setteamos los datos que vienen de andes
           const location = ui.item.data.direccion[0];
-          if(location.ubicacion.pais?.nombre){
+          if(location.ubicacion.pais){
             $("#patient-address-country").val(location.ubicacion.pais.nombre);
           }
-          if(location.ubicacion.provincia?.nombre){
+          if(location.ubicacion.provincia){
             $("#patient-address-state").val(location.ubicacion.provincia.nombre);
           }
-          if(location.ubicacion.localidad?.nombre){
+          if(location.ubicacion.localidad){
             $("#patient-address-city").val(location.ubicacion.localidad.nombre);
           }
           if(location.valor){
             $("#patient-address-line").val(location.valor);
           }
-          if(location.geoReferencia?.length == 2){
+          if(location.geoReferencia && location.geoReferencia.length == 2){
             $("#patient-address-latitude").val(location.geoReferencia[0]);
             $("#patient-address-longitude").val(location.geoReferencia[1]);
           }
@@ -112,7 +112,8 @@ $(document).on('turbolinks:load', function(e){
             $("#patient-form-birthdate").val(birthdate.format("DD/MM/YYYY")).attr('readonly', true);
           }        
 
-        }else{
+        }else if (ui.item.create && ui.item.dni){
+          $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-fields").collapse('show');
         }
       }
