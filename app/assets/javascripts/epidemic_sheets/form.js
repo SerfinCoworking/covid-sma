@@ -126,6 +126,8 @@ $(document).on('turbolinks:load', function(e){
           body.find("#patient-fullname").text(ui.item.fullname);
           body.find("#patient-dni").text(ui.item.dni);
           body.find("#establishment").text(ui.item.establishment);
+          $('#patient-found-modal').find("a#redirect-sheet").attr('href', ui.item.url);
+
 
         }
       }
