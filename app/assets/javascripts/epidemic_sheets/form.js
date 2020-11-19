@@ -25,10 +25,10 @@ $(document).on('turbolinks:load', function(e){
         event.preventDefault();
         $("#patient").tooltip('hide');
         $("#patient-dni").val(ui.item.dni);
+        resetPatientForm();
 
-        console.log(ui.item, "<========== DEBUG ");
         // Si viene de andes el paciente, se motrara un formulario precargado con sus datos
-        if(ui.item.create){
+        if(ui.item.create && ui.item.data){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-fields").collapse('show');
           // setteamos los datos que vienen de andes
@@ -75,8 +75,8 @@ $(document).on('turbolinks:load', function(e){
             });
           }
 
-          $('.nested-fields.phones-form').remove();
-          $("#add-phone").trigger("click");
+          // $('.nested-fields.phones-form').remove();
+          // $("#add-phone").trigger("click");
           if(ui.item.data.contacto.length){
             for(let i = 0; i < ui.item.data.contacto.length; i++){
 
@@ -114,9 +114,42 @@ $(document).on('turbolinks:load', function(e){
 
         }else if (ui.item.create && ui.item.dni){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
+          $("#patient-form-dni").val(ui.item.dni).attr('readonly', true);
           $("#patient-form-fields").collapse('show');
         }
       }
     });
 
+    function resetPatientForm(){
+      $("#patient-address-country").val('');
+      $("#patient-address-state").val('');
+      $("#patient-address-city").val('');
+      $("#patient-address-line").val('');
+      $("#patient-address-latitude").val('');
+      $("#patient-address-longitude").val('');
+      $("#patient-address-postal-code").val('');
+      $("#patient-form-lastname").val('');
+      $("#patient-form-lastname").removeAttr('readonly');
+
+      $("#patient-form-firstname").val('');
+      $("#patient-form-firstname").removeAttr('readonly');
+      $("#patient-form-dni").val('');
+      $("#patient-form-dni").removeAttr('readonly');
+
+      $("#patient-form-sex").val("Otro");
+      $("#patient-form-sex").selectpicker('render');
+      $("#patient-form-sex").selectpicker('show');
+
+      // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
+      const sexInputSelect = $("#patient-form-sex").closest('.sex-indicator').find('.hidden-input-container').first();
+      $(sexInputSelect).find('input').first().val('');
+      $(sexInputSelect).addClass('d-none');
+
+      // phones
+      $('.nested-fields.phones-form').remove();
+      $("#add-phone").trigger("click");
+
+      $("#patient-form-birthdate").val('');
+      $("#patient-form-birthdate").removeAttr('readonly');
+    }
 });
