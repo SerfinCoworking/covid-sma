@@ -1,23 +1,30 @@
 
 <tr class="nested-fields phones-form">
   <td>
-    <% if f.object.number.present? %>
-      <%= f.input :phone_type_fake, label: false, value: f.object.phone_type, readOnly: true %>
-    <% end %>
-    
-      <%= f.input :phone_type, label: false, include_blank: false,
-        collection: PatientPhone.phone_types,
-        :value_method => :first,
+    <div class="d-none hidden-input-container"> 
+      <%= f.input :sex_fake, 
+        as: :fake, 
+        label: false, 
         :input_html => {
-          required: true,
-          include_blank: false,
-          class: "selectpicker custom-select-pick phone-type #{f.object.number.present? ? 'd-none' : ''}",
-          "data-width"=>"100%",
-          "data-size"=>"10",
-          value: "#{ f.object.phone_type }"
+          readOnly: true, 
+          class: "input-sm"
         }
       %>
-      <%# end %>
+    </div>
+    
+  
+    <%= f.input :phone_type, label: false, include_blank: false,
+      collection: PatientPhone.phone_types,
+      :value_method => :first,
+      :input_html => {
+        required: true,
+        include_blank: false,
+        class: "selectpicker custom-select-pick phone-type #{f.object.number.present? ? 'd-none' : ''}",
+        "data-width"=>"100%",
+        "data-size"=>"10",
+        value: "#{ f.object.phone_type }"
+      }
+    %>
   </td>
   <td>
     <%= f.input :number, label: false, :input_html => { class: "input-sm phone-number"}, value: f.object.number, readOnly: f.object.number.present? %>

@@ -108,7 +108,7 @@ class PatientsController < ApplicationController
   def get_by_dni
     @patients = Patient.search_dni(params[:term])
     if @patients.present?
-      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.last_name+" "+pat.first_name, dni: pat.dni, fullname: pat.fullname }  }
+      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.last_name+" "+pat.first_name, dni: pat.dni, fullname: pat.fullname, data: pat}  }
     else
       
       dni = params[:term]
