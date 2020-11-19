@@ -72,7 +72,7 @@ $(document).on('turbolinks:load', function() {
     }
   );
 
-  $('.since-date, .to-date, .requested-date, .prescribed-date').datepicker({
+  $('.since-date, .to-date, .requested-date, .prescribed-date, #patient-form-birthdate').datepicker({
     closeText: 'Cerrar',
     prevText: '<Ant',
     nextText: 'Sig>',

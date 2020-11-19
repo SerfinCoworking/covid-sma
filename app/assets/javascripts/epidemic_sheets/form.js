@@ -116,6 +116,17 @@ $(document).on('turbolinks:load', function(e){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-dni").val(ui.item.dni).attr('readonly', true);
           $("#patient-form-fields").collapse('show');
+        }else{
+          $("#patient-form-fields").collapse('hide');
+          $('#patient-found-modal').modal('show');
+          
+          // cargamos 
+          // nombre / apellido / establecimiento donde fue cargado
+          const body = $('#patient-found-modal').find("#patient-data");
+          body.find("#patient-fullname").text(ui.item.fullname);
+          body.find("#patient-dni").text(ui.item.dni);
+          body.find("#establishment").text(ui.item.establishment);
+
         }
       }
     });
