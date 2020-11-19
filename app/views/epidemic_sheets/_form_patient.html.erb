@@ -45,9 +45,21 @@
     </div>
 
     <div class="row andes-fields d-none">
-      <div class="col-6 sex-input">
+      <div class="col-6 sex-indicator">
         <%# Sexo %>
-        <%= patient_form.input :sex, label: 'Sexo',
+        <%= patient_form.label "Sexo", class: "w-100" %>
+        <div class="d-none hidden-input-container"> 
+          <%= patient_form.input :sex_fake, 
+            as: :fake, 
+            label: false, 
+            :input_html => {
+              readOnly: true, 
+              class: "input-sm"
+            }
+          %>
+        </div>
+
+        <%= patient_form.input :sex, label: false,
           collection: Patient.sexes,
           :value_method => :first,
           required: true,
