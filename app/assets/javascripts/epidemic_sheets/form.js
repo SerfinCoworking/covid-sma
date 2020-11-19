@@ -75,35 +75,35 @@ $(document).on('turbolinks:load', function(e){
             });
           }
 
-          // $('.nested-fields.phones-form').remove();
-          // $("#add-phone").trigger("click");
           if(ui.item.data.contacto.length){
             for(let i = 0; i < ui.item.data.contacto.length; i++){
+              if(['celular', 'fijo'].includes(ui.item.data.contacto[i].tipo)){
+                const phonesField = $(".phones-form");
+                const phoneType = new RegExp(ui.item.data.contacto[i].tipo, 'i');
+                const phoneSelectType = $(phonesField[i]).find('select.phone-type').first();
+                const phoneNumber = $(phonesField[i]).find('input.phone-number').first();
+                
+                // marcamos el valor correspondiente
+                $(phoneSelectType).find('option').each((index, item) => {
+                  if($(item).val() && $(item).val().match(phoneType) ){
+                    $(phoneSelectType).val($(item).val());
+                    $(phoneSelectType).selectpicker('render');
+                    $(phoneSelectType).selectpicker('hide');
+                    
+                    // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
+                    const phoneInputSelect = $(phoneSelectType).closest('td').find('.hidden-input-container').first();
+                    $(phoneInputSelect).find('input').first().val($(item).val());
+                    $(phoneInputSelect).removeClass('d-none');
 
-              const phonesField = $(".phones-form");
-              const phoneType = new RegExp(ui.item.data.contacto[i].tipo, 'i');
-              const phoneSelectType = $(phonesField[i]).find('select.phone-type').first();
-              const phoneNumber = $(phonesField[i]).find('input.phone-number').first();
-              
-              // marcamos el valor correspondiente
-              $(phoneSelectType).find('option').each((index, item) => {
-                if($(item).val() && $(item).val().match(phoneType)){
-                  $(phoneSelectType).val($(item).val());
-                  $(phoneSelectType).selectpicker('render');
-                  $(phoneSelectType).selectpicker('hide');
-                  
-                  // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
-                  const phoneInputSelect = $(phoneSelectType).closest('td').find('.hidden-input-container').first();
-                  $(phoneInputSelect).find('input').first().val($(item).val());
-                  $(phoneInputSelect).removeClass('d-none');
-
-                }
-              });
-              $(phonesField[i]).find('td').last().find('a.remove-tag').addClass('d-none');
-              // cargamos el numero de telefono
-              $(phoneNumber).val(ui.item.data.contacto[i].valor).attr('readonly', true);
-              $("#add-phone").trigger("click");
+                  }
+                });
+                $(phonesField[i]).find('td').last().find('a.remove-tag').addClass('d-none');
+                // cargamos el numero de telefono
+                $(phoneNumber).val(ui.item.data.contacto[i].valor).attr('readonly', true);
+                $("#add-phone").trigger("click");
+              }
             }//fin for
+
           }
 
           if(ui.item.data.fechaNacimiento){

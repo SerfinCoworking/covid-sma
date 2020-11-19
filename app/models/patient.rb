@@ -15,7 +15,8 @@ class Patient < ApplicationRecord
   
   has_many :patient_phones, dependent: :destroy
 
-  accepts_nested_attributes_for :patient_phones, :allow_destroy => true
+  accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }
+  
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :current_address
 
