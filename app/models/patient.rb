@@ -12,12 +12,12 @@ class Patient < ApplicationRecord
   belongs_to :address, optional: true
   belongs_to :current_address, optional: true
   belongs_to :occupation, optional: true
-  
+  has_one :epidemic_sheet
+  has_one :covid_profile
   has_many :patient_phones, dependent: :destroy
 
-  has_one :covid_profile
-
-  accepts_nested_attributes_for :patient_phones, :allow_destroy => true
+  accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }
+  
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :current_address
 

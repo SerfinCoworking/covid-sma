@@ -114,7 +114,7 @@ class EpidemicSheetsController < ApplicationController
           :first_name,
           :sex,
           :birthdate,
-          patient_phone_attributes: [
+          patient_phones_attributes: [
             :id,
             :phone_type,
             :number

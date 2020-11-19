@@ -25,10 +25,10 @@ $(document).on('turbolinks:load', function(e){
         event.preventDefault();
         $("#patient").tooltip('hide');
         $("#patient-dni").val(ui.item.dni);
+        resetPatientForm();
 
-        console.log(ui.item, "<========== DEBUG ");
         // Si viene de andes el paciente, se motrara un formulario precargado con sus datos
-        if(ui.item.create){
+        if(ui.item.create && ui.item.data){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-fields").collapse('show');
           // setteamos los datos que vienen de andes
@@ -75,35 +75,35 @@ $(document).on('turbolinks:load', function(e){
             });
           }
 
-          $('.nested-fields.phones-form').remove();
-          $("#add-phone").trigger("click");
           if(ui.item.data.contacto.length){
             for(let i = 0; i < ui.item.data.contacto.length; i++){
+              if(['celular', 'fijo'].includes(ui.item.data.contacto[i].tipo)){
+                const phonesField = $(".phones-form");
+                const phoneType = new RegExp(ui.item.data.contacto[i].tipo, 'i');
+                const phoneSelectType = $(phonesField[i]).find('select.phone-type').first();
+                const phoneNumber = $(phonesField[i]).find('input.phone-number').first();
+                
+                // marcamos el valor correspondiente
+                $(phoneSelectType).find('option').each((index, item) => {
+                  if($(item).val() && $(item).val().match(phoneType) ){
+                    $(phoneSelectType).val($(item).val());
+                    $(phoneSelectType).selectpicker('render');
+                    $(phoneSelectType).selectpicker('hide');
+                    
+                    // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
+                    const phoneInputSelect = $(phoneSelectType).closest('td').find('.hidden-input-container').first();
+                    $(phoneInputSelect).find('input').first().val($(item).val());
+                    $(phoneInputSelect).removeClass('d-none');
 
-              const phonesField = $(".phones-form");
-              const phoneType = new RegExp(ui.item.data.contacto[i].tipo, 'i');
-              const phoneSelectType = $(phonesField[i]).find('select.phone-type').first();
-              const phoneNumber = $(phonesField[i]).find('input.phone-number').first();
-              
-              // marcamos el valor correspondiente
-              $(phoneSelectType).find('option').each((index, item) => {
-                if($(item).val() && $(item).val().match(phoneType)){
-                  $(phoneSelectType).val($(item).val());
-                  $(phoneSelectType).selectpicker('render');
-                  $(phoneSelectType).selectpicker('hide');
-                  
-                  // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
-                  const phoneInputSelect = $(phoneSelectType).closest('td').find('.hidden-input-container').first();
-                  $(phoneInputSelect).find('input').first().val($(item).val());
-                  $(phoneInputSelect).removeClass('d-none');
-
-                }
-              });
-              $(phonesField[i]).find('td').last().find('a.remove-tag').addClass('d-none');
-              // cargamos el numero de telefono
-              $(phoneNumber).val(ui.item.data.contacto[i].valor).attr('readonly', true);
-              $("#add-phone").trigger("click");
+                  }
+                });
+                $(phonesField[i]).find('td').last().find('a.remove-tag').addClass('d-none');
+                // cargamos el numero de telefono
+                $(phoneNumber).val(ui.item.data.contacto[i].valor).attr('readonly', true);
+                $("#add-phone").trigger("click");
+              }
             }//fin for
+
           }
 
           if(ui.item.data.fechaNacimiento){
@@ -114,9 +114,53 @@ $(document).on('turbolinks:load', function(e){
 
         }else if (ui.item.create && ui.item.dni){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
+          $("#patient-form-dni").val(ui.item.dni).attr('readonly', true);
           $("#patient-form-fields").collapse('show');
+        }else{
+          $("#patient-form-fields").collapse('hide');
+          $('#patient-found-modal').modal('show');
+          
+          // cargamos 
+          // nombre / apellido / establecimiento donde fue cargado
+          const body = $('#patient-found-modal').find("#patient-data");
+          body.find("#patient-fullname").text(ui.item.fullname);
+          body.find("#patient-dni").text(ui.item.dni);
+          body.find("#establishment").text(ui.item.establishment);
+
         }
       }
     });
 
+    function resetPatientForm(){
+      $("#patient-address-country").val('');
+      $("#patient-address-state").val('');
+      $("#patient-address-city").val('');
+      $("#patient-address-line").val('');
+      $("#patient-address-latitude").val('');
+      $("#patient-address-longitude").val('');
+      $("#patient-address-postal-code").val('');
+      $("#patient-form-lastname").val('');
+      $("#patient-form-lastname").removeAttr('readonly');
+
+      $("#patient-form-firstname").val('');
+      $("#patient-form-firstname").removeAttr('readonly');
+      $("#patient-form-dni").val('');
+      $("#patient-form-dni").removeAttr('readonly');
+
+      $("#patient-form-sex").val("Otro");
+      $("#patient-form-sex").selectpicker('render');
+      $("#patient-form-sex").selectpicker('show');
+
+      // ocultamos el selectpicker y mostramos un input fake con el attribute readonly
+      const sexInputSelect = $("#patient-form-sex").closest('.sex-indicator').find('.hidden-input-container').first();
+      $(sexInputSelect).find('input').first().val('');
+      $(sexInputSelect).addClass('d-none');
+
+      // phones
+      $('.nested-fields.phones-form').remove();
+      $("#add-phone").trigger("click");
+
+      $("#patient-form-birthdate").val('');
+      $("#patient-form-birthdate").removeAttr('readonly');
+    }
 });

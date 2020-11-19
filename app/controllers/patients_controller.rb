@@ -108,7 +108,7 @@ class PatientsController < ApplicationController
   def get_by_dni
     @patients = Patient.search_dni(params[:term])
     if @patients.present?
-      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.last_name+" "+pat.first_name, dni: pat.dni, fullname: pat.fullname, data: pat}  }
+      render json: @patients.map{ |pat| { label: pat.dni.to_s+" "+pat.last_name+" "+pat.first_name, dni: pat.dni, fullname: pat.fullname, establishment: pat.epidemic_sheet.establishment.name}  }
     else
       
       dni = params[:term]
@@ -120,15 +120,12 @@ class PatientsController < ApplicationController
           params: {'documento': dni}
         }
       )
-      # if JSON.parse(andes_patients).length
+      if JSON.parse(andes_patients).count > 0
         render json: JSON.parse(andes_patients).map{ |pat| { create: true, label: pat['documento'].to_s+" "+pat['apellido']+" "+pat['nombre'], dni: pat['documento'], fullname: pat['apellido']+" "+pat['nombre'], data: pat  }  }
-      # else
-      #   puts "================ "
-      #   render json: { create: true, dni: params[:term] }  
-      # end
-    end
-    
-    
+      else
+        render json: [0].map{ |pat| { create: true, dni: params[:term], label: "Agregar paciente" }}
+      end    
+    end    
   end
 
   def get_by_fullname
