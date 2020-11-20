@@ -246,3 +246,7 @@ td .form-group{
     }
   }
 }
+
+.modal#confirm-unsaved{
+  z-index: 2050!important;
+}
