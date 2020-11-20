@@ -1,0 +1,36 @@
+<tr id="covid_profile_<%= covid_profile.id %>">
+  <div class="js-fade fade-in is-paused">
+    <td>
+      <%= covid_profile.patient_dni %>
+      <strong><%= covid_profile.patient_last_name %></strong>, <%= covid_profile.patient_first_name %>
+    </td>
+    <td><%= covid_profile.patient_age_string %></td>
+    <td>
+      <span class="badge badge-<%= label_covid_profile_status(covid_profile) %>">
+        <%= covid_profile.status %>
+      </span>
+    </td>
+    <td><%= covid_profile.clinic_location.humanize %></td>
+    <td><%= covid_profile.patient_sex.humanize %></td>
+    <td class="text-left actions-col">
+      <% if policy(covid_profile).show? %>
+        <%= link_to covid_profile_path(covid_profile), class: 'btn btn-secondary btn-sm',
+              title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "eye" %>
+        <% end %>
+      <% end %>
+      <% if policy(covid_profile).edit? %>
+        <%= link_to edit_covid_profile_path(covid_profile), class: 'btn btn-warning btn-sm',
+              title: 'Editar', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "edit" %>
+        <% end %>
+      <% end %>
+      <% if policy(covid_profile).destroy? %>
+        <%= link_to delete_covid_profile_path(covid_profile), remote: true,
+              class: 'btn btn-danger btn-sm', title: 'Borrar', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "trash" %>
+        <% end %>
+      <% end %>
+    </td>
+  </div>
+</tr>

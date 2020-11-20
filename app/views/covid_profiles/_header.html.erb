@@ -1,0 +1,14 @@
+<% content_for :page_header do %>
+  <li class="nav-item">
+    <%= link_to dashboard_covid_profiles_path, class: "nav-link #{ active_action('dashboard') }" do %>
+      <%= fa_icon "user-injured" %>
+      Covid
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to covid_profiles_path, class: "nav-link #{ active_action('index') }" do %>
+      <%= fa_icon "list" %>
+      Listado
+    <% end %>
+  </li>
+<% end %>

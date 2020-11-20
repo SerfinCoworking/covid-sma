@@ -4,6 +4,15 @@ Rails.application.routes.draw do
       get :delete
     end
   end
+
+  resources :covid_profiles do
+    member do
+      get :delete
+    end
+    collection do
+      get :dashboard
+    end
+  end
   # custom error routes
   match '/404' => 'errors#not_found', :via => :all
   match '/406' => 'errors#not_acceptable', :via => :all

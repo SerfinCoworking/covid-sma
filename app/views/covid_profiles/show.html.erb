@@ -1,0 +1,126 @@
+<%= render 'header' %>
+
+<div class="card fixed-custom-card">
+
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <%= fa_icon "eye" %>
+      <h5 class="card-title mb-0 ml-2">
+        Viendo perfil COVID
+      </h5>
+    </div>
+    <%= link_to covid_profiles_path, class: 'btn' do %>
+      <%= fa_icon 'times' %>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-10">
+        <ul class='nav nav-tabs'>
+          <li class='nav-item'>
+            <a class="nav-link active" data-toggle='tab' href='#profile'>
+              <%= fa_icon "user-injured" %>
+              Información
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <!-- Perfil -->
+          <div id='profile' class='tab-pane container active'>
+            <div class="row">
+              <div class="col-12 pt-3"><h5 class="border-bottom">DATOS BÁSICOS</h5></div>
+              <div class="col-4">
+                <h5><strong>DNI</strong></h5>
+                <%= @covid_profile.patient_dni %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Sexo</strong></h5>
+                <%= @covid_profile.patient_sex %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Fecha nacimiento</strong></h5>
+                <%= @covid_profile.patient_birthdate.present? ? @covid_profile.patient_birthdate.strftime("%d/%m/%Y") : "----" %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Edad</strong></h5>
+                <%= @covid_profile.patient_age_string %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Apellido</strong></h5>
+                <%= @covid_profile.patient_last_name %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Nombre</strong></h5>
+                <%= @covid_profile.patient_first_name %>
+              </div>
+              <div class="col-4">
+                <h5><strong>Estado civil</strong></h5>
+                <%= @covid_profile.patient_marital_status %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-12"><h5 class="border-bottom">DATOS DE CONTACTO</h5></div>
+              <div class="col-5">
+                <h5><strong><span class="glyphicon glyphicon-earphone"></span> Teléfonos</strong></h5>
+                <% @covid_profile.patient_phones.each do |phone| %>
+                  <p><strong><%= phone.phone_type %>:</strong> <%= phone.number %></p>
+                <% end %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <% if @covid_profile.current_address.present? %>
+                <div class="col-12"><h5 class="border-bottom">DATOS DOMICILIO ACTUAL</h5></div>
+                <div class="col-3">
+                  <p><h5><strong>Barrio</strong></h5><%= @covid_profile.current_address.neighborhood %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Calle</strong></h5><%= @covid_profile.current_address.street %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Altura</strong></h5><%= @covid_profile.current_address.street_number %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2 border-left">
+        <%= image_tag patient_avatar(@covid_profile.patient), class:"img-thumbnail" %>
+        <h5 class="mt-3"><strong><%= @covid_profile.patient_last_name %>,</strong> <%= @covid_profile.patient_first_name %></h5>
+
+        <h5 class="mt-3">
+          <%= @covid_profile.patient_dni %>
+          <span class="badge badge-<%= @covid_profile.patient.Temporal? ? "warning" : "success" %>">
+            <%= @covid_profile.patient_status %>
+          </span>
+        </h5>
+
+        <% if @covid_profile.patient_birthdate.present? %>
+          <p class="mb-0 mt-3"><strong>Fecha de nacimiento</strong></p>
+          <p><%= @covid_profile.patient_birthdate.strftime("%d/%m/%Y")%> | <%= @covid_profile.patient_age_string %></h5>
+        <% end %>
+
+        <p class="mb-0 mt-3"><strong>Sexo </strong></p>
+        <p><%= @covid_profile.patient_sex %></p>
+
+        <% @covid_profile.patient_phones.each do |phone| %>
+          <p class="mb-0 mt-3"><strong><%= phone.phone_type %></strong></p> 
+          <p><%= phone.number %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer d-flex justify-content-end">
+    <%= link_to 'Volver', covid_profiles_path, class: "btn mr-2" %>
+    <% if policy(@covid_profile).edit? %>
+      <%= link_to edit_covid_profile_path(@covid_profile), :"data-turbolinks" => false, class: "btn btn-warning" do %>
+        <%= fa_icon "pen" %>
+        Editar
+      <% end %>
+    <% end %>
+  </div>
+</div>
