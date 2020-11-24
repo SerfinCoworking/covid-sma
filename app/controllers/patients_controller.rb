@@ -114,7 +114,7 @@ class PatientsController < ApplicationController
       dni = params[:term]
       token = ENV['ANDES_TOKEN']
       url = ENV['ANDES_MPI_URL']
-      andes_patients = RestClient::Request.execute(method: :get, url: url,
+      andes_patients = RestClient::Request.execute(method: :get, url: "#{url}/search",
         timeout: 30, headers: {
           "Authorization" => "JWT #{token}",
           params: {'documento': dni}
