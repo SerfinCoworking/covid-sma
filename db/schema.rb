@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_151752) do
+ActiveRecord::Schema.define(version: 2020_11_24_160702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_151752) do
     t.bigint "created_by_id"
     t.bigint "establishment_id"
     t.date "init_symptom_date"
-    t.integer "epidemic_week"
+    t.integer "epidemic_week", default: 0
     t.boolean "presents_symptoms"
     t.text "symptoms_observations"
     t.boolean "previous_symptoms"

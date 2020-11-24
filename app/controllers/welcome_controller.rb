@@ -9,6 +9,9 @@ class WelcomeController < ApplicationController
       @count_epidemic_sheets_today = _epidemic_sheets_today.count
       @count_epidemic_sheets_month = _epidemic_sheets_month.count
       @last_epidemic_sheets = @epidemic_sheets.order(created_at: :desc).limit(5)
+
+      @covid_profiles = CovidProfile.all
+      @last_covid_profiles = @covid_profiles.limit(5)
     else
       @permission_request = PermissionRequest.new
     end
