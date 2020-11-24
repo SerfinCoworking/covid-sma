@@ -90,9 +90,6 @@
               %>
             </div>
             <div class="flex-fill p-1">
-              <%= f.input :epidemic_week, label: 'Semana epidemiológica' %>
-            </div>
-            <div class="flex-fill p-1">
               <%= f.input :clinic_location, label: 'Situación', include_blank: false,
                 collection: EpidemicSheet.clinic_locations.keys.map { |ct| [ct.humanize, ct] },
                 :value_method => :second,

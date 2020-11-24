@@ -14,7 +14,7 @@ class EpidemicSheet < ApplicationRecord
   
   # Validations
   validates_presence_of  :case_definition, :init_symptom_date, :epidemic_week
-  validates :epidemic_week, numericality: { only_integer: true, greater_than: 0}
+  validates :epidemic_week, numericality: { only_integer: true, greater_than: 0 }
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
   
@@ -24,6 +24,7 @@ class EpidemicSheet < ApplicationRecord
   
   # Callbacks
   before_create :assign_establishment
+  before_validation :assign_epidemic_week
   after_create :create_covid_profile
   
   filterrific(
@@ -100,6 +101,10 @@ class EpidemicSheet < ApplicationRecord
     if self.created_by.present?
       self.establishment = self.created_by.establishment
     end
+  end
+
+  def assign_epidemic_week
+    self.epidemic_week = self.init_symptom_date.cweek
   end
 
   # Create covid profile of the patient with the sheet attributes
