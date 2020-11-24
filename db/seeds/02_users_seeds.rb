@@ -29,16 +29,30 @@ paul.sector = sectorInformatico
 paul.save!
 Profile.create(user: paul, first_name: "Paul", last_name: "ibaceta", email: "paul@exmaple.com", dni: "37458993")
 
+damian = User.new(
+  :username              => "28989316",
+  :password              => "12345678",
+  :password_confirmation => "12345678",
+)
+
+UserSector.create(user: damian, sector: sectorInformatico)
+damian.add_role :admin
+damian.sector = sectorInformatico
+damian.save!
+Profile.create(user: damian, first_name: "Damián", last_name: "Diez", email: "damian@exmaple.com", dni: "28989316")
 sectorFar =  Sector.where(establishment: Establishment.find_by_name("Dr. Ramón Carrillo"), name: "Farmacia").first
 sectorFarJunin =  Sector.where(establishment: Establishment.find_by_name("Hospital junin"), name: "Farmacia").first
 sectorMedic =  Sector.where(establishment: Establishment.find_by_name("Dr. Ramón Carrillo"), name: "Medicos").first
 sectorMedicJunin =  Sector.where(establishment: Establishment.find_by_name("Hospital junin"), name: "Medicos").first
+
 
 farmaceuticoUser = User.new(
   :username              => "40579158",
   :password              => "12345678",
   :password_confirmation => "12345678"
 )
+
+
 
 UserSector.create(user:farmaceuticoUser, sector: sectorFar)
 farmaceuticoUser.add_role :farmaceutico
