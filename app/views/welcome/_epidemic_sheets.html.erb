@@ -1,53 +1,53 @@
 <!--  Panel graficos de prescripciones -->
-<% if @prescriptions.count > 0 %>
+<% if @epidemic_sheets.count > 0 %>
   <div class="card">
     <div class="card-header d-flex justify-content-between">
 
       <div>
         <span class="navbar-brand">
-            <%= fa_icon "signature" %>
-            Recetas
-          </span>
+          <%= fa_icon "signature" %>
+          Fichas epidemiológicas
+        </span>
       </div>
 
       <ul class="nav nav-tabs card-header-tabs" id="title-chart">
         <li class="nav-item">
           <a class="nav-link active" data-toggle="tab" href="#week">Semana 
-            <span class="badge badge-secondary"><%= @prescriptions.last_week.count %></span> 
+            <span class="badge badge-secondary"><%= @epidemic_sheets.last_week.count %></span> 
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#year">Año
-            <span class="badge badge-secondary"><%= @prescriptions.current_year.count %></span>
+            <span class="badge badge-secondary"><%= @epidemic_sheets.current_year.count %></span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#last">Últimas
-            <span class="badge badge-secondary"><%= @last_prescriptions.count %></span>
+            <span class="badge badge-secondary"><%= @last_epidemic_sheets.count %></span>
           </a>
         </li>
       </ul>
 
       <div class="d-flex align-items-center">
-        <%= link_to prescriptions_path, class: 'btn btn-secondary btn-sm' do %>
+        <%= link_to epidemic_sheets_path, class: 'btn btn-secondary btn-sm' do %>
           Ver más
         <% end %>
       </div>
     </div>
 
-    <div class="card-body pb-2 mb-3">
+    <div class="card-body card-body-dashboard pb-2 mb-3">
       <div class="tab-content">
         <div id="week" class="tab-pane fade show active">
-          <%= line_chart @prescriptions
-            .group_by_day(:prescribed_date,range: 1.weeks.ago.midnight..Time.now, format: "%a %d/%m").count, 
-            discrete: true, label: 'Cantidad', adapter: "highcharts" %>
+          <%= line_chart @epidemic_sheets
+            .group_by_day(:created_at,range: 1.weeks.ago.midnight..Time.now, format: "%a %d/%m").count, 
+            discrete: true, label: 'Cantidad', colors: ["rgb(199,149,109, 1)"], adapter: "highcharts" %>
         </div>
         <div id="year" class="tab-pane fade">
-          <%= column_chart charts_by_month_prescriptions_path,
-            download: "recetadas por mes SIFAHO",
+          <%= column_chart charts_by_month_epidemic_sheets_path,
+            download: "Fichas epidemiológicas cargadas por mes",
             label: "Cantidad",
-            colors: ["rgb(130,165,239, 0.6)"],
-            messages: {empty: "No hay recetas en este año"},
+            colors: ["rgb(150,93,98, 1)"],
+            messages: {empty: "No hay fichas en este año"},
             adapter: "highcharts" %>
         </div>
         <div id="last" class="tab-pane fade pb-0">
@@ -55,27 +55,25 @@
             <table class="table table-hover table-striped">
               <thead>
                 <tr>
-                  <th>Doctor</th>
                   <th>Paciente</th>
                   <th>Estado</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <% @last_prescriptions.each do |pre|%>
+                <% @last_epidemic_sheets.each do |sheet|%>
                   <tr>
-                    <td><%= pre.professional.fullname %></td>
-                    <td><%= pre.patient.fullname %></td>
+                    <td><%= sheet.patient.fullname %></td>
                     <td>
-                      <span class="label label-<%= pre.status_label %>">
-                        <%= pre.status.split('_').map(&:capitalize).join(' ') %>
+                      <span class="badge badge-<%= label_case_definition_status(sheet.case_definition) %>">
+                        <%= sheet.case_definition.case_type.humanize %>
                       </span>
                     </td>
-                    <td>    
-                      <% if policy(pre).show? %>
-                        <%= link_to prescription_path(pre), class: 'btn btn-default btn-xs', 
+                    <td>
+                      <% if policy(sheet).show? %>
+                        <%= link_to epidemic_sheet_path(sheet), class: 'btn btn-secondary btn-sm', 
                           title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
-                          <%= content_tag(:span, '', class: 'glyphicon glyphicon-eye-open') %>
+                          <%= fa_icon 'eye' %>
                         <% end %>
                       <% end %>
                     </td>

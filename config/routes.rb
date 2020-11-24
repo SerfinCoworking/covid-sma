@@ -105,4 +105,8 @@ Rails.application.routes.draw do
       get "get_by_enrollment_and_fullname"
     end
   end
+
+  namespace :charts do
+    get "by_month_epidemic_sheets"
+  end
 end

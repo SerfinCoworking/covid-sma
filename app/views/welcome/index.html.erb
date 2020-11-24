@@ -2,10 +2,9 @@
 <% if current_user.sector.present? %>
   <div class="card fixed-custom-card">
     <div class="card-body">
-      <div class="dashboard-grid">
-        
+      <div class="dashboard-grid">        
         <%# Prescripciones %>
-  
+        <%= render 'epidemic_sheets' %>
       </div>
     </div>
   </div>

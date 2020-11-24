@@ -78,6 +78,22 @@ class EpidemicSheet < ApplicationRecord
       
   end
 
+  def self.current_day
+    where("created_at >= :today", { today: DateTime.now.beginning_of_day })
+  end
+
+  def self.last_week
+    where("created_at >= :last_week", { last_week: 1.weeks.ago.midnight })
+  end
+
+  def self.current_year
+    where("created_at >= :year", { year: DateTime.now.beginning_of_year })
+  end
+
+  def self.current_month
+    where("created_at >= :month", { month: DateTime.now.beginning_of_month })
+  end
+
   private
 
   def assign_establishment
