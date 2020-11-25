@@ -4,7 +4,9 @@ class CovidProfilesController < ApplicationController
   require 'rest-client'
   # GET /covid_profiles
   # GET /covid_profiles.json
-  def dashboard  
+  def dashboard
+    @covid_profiles = CovidProfile.all
+    @last_covid_profiles = @covid_profiles.limit(5)
   end
 
   def index

@@ -4,8 +4,33 @@
   <div class="card-body">
     <div class="dashboard-grid">
     
-    <%# Prescripciones %>
+      <%= line_chart @covid_profiles.positivo
+        .group_by_day(:init_symptom_date, range: 1.weeks.ago.midnight..Time.now, 
+        format: "%a %d/%m").count,
+        discrete: true,
+        colors: ["rgb(170,58,58, 1)"],
+        title: 'Última semana',
+        label: 'Cantidad',
+        adapter: "highcharts" %>
 
+      <%
+        covid_profiles = @covid_profiles.group(:status).count.transform_keys { |key| key.humanize }
+        status_colors = {"Sospechoso" => "#f7f7f7", "Pendiente" => "#f0ad4e", "Positivo" => "#d9534f", "Negativo" => "#4d4c7d", "Recuperado" => "#5cb85c", "Fallecido" => "#292b2c" }
+        colors = []
+        covid_profiles.each do |status, _|
+          colors << status_colors[status]
+        end
+      %>
+      <%= pie_chart covid_profiles, colors: colors, label: 'Cantidad de lotes', adapter: "highcharts" %>
+    
+      <%= line_chart @covid_profiles.positivo
+        .group_by_week(:init_symptom_date, range: 12.months.ago.midnight..Time.now, 
+        format: "%d/%m/%y").count,
+        discrete: true,
+        colors: ["rgb(170,58,58, 1)"],
+        label: 'Cantidad',
+        title: "Últimos 12 meses",
+        adapter: "highcharts" %>
     </div>
   </div>
 </div>
