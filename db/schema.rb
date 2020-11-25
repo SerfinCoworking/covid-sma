@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_160702) do
+ActiveRecord::Schema.define(version: 2020_11_24_170122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -75,6 +75,18 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.string "phone_code"
   end
 
+  create_table "covid_profile_movements", force: :cascade do |t|
+    t.bigint "covid_profile_id"
+    t.bigint "user_id"
+    t.bigint "sector_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["covid_profile_id"], name: "index_covid_profile_movements_on_covid_profile_id"
+    t.index ["sector_id"], name: "index_covid_profile_movements_on_sector_id"
+    t.index ["user_id"], name: "index_covid_profile_movements_on_user_id"
+  end
+
   create_table "covid_profiles", force: :cascade do |t|
     t.bigint "epidemic_sheet_id"
     t.bigint "patient_id"
@@ -99,6 +111,18 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "epidemic_sheet_movements", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "user_id"
+    t.bigint "sector_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_epidemic_sheet_movements_on_epidemic_sheet_id"
+    t.index ["sector_id"], name: "index_epidemic_sheet_movements_on_sector_id"
+    t.index ["user_id"], name: "index_epidemic_sheet_movements_on_user_id"
   end
 
   create_table "epidemic_sheets", force: :cascade do |t|
