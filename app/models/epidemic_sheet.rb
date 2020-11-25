@@ -8,7 +8,7 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
   has_one :covid_profile
-  has_many :movements, class_name: "EpidemiSheetMovement"
+  has_many :movements, class_name: "EpidemicSheetMovement"
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :patient
