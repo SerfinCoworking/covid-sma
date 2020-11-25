@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_170122) do
     t.bigint "created_by_id"
     t.bigint "establishment_id"
     t.date "init_symptom_date"
-    t.integer "epidemic_week"
+    t.integer "epidemic_week", default: 0
     t.boolean "presents_symptoms"
     t.text "symptoms_observations"
     t.boolean "previous_symptoms"
