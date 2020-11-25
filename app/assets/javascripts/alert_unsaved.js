@@ -17,29 +17,29 @@ $(document).on('submit', 'form[role="check-modified"]', function() {
 });
  
  
-$(document).on('turbolinks:before-visit', function(event) {
-  if(unsaved){
-    event.preventDefault();
-    modalConfirm(function(confirm){
-      if(confirm){
-        window.location = event.originalEvent.data.url;
-      }
-    });
-  }
-});
+// $(document).on('turbolinks:before-visit', function(event) {
+//   if(unsaved){
+//     event.preventDefault();
+//     modalConfirm(function(confirm){
+//       if(confirm){
+//         window.location = event.originalEvent.data.url;
+//       }
+//     });
+//   }
+// });
 
-// esta funcion abre el modal de confirmacion, al tratar de abandonar una pagina sin haber guardado
-function modalConfirm(callback){
+// // esta funcion abre el modal de confirmacion, al tratar de abandonar una pagina sin haber guardado
+// function modalConfirm(callback){
 
-  $("#confirm-unsaved").modal('show');
+//   $("#confirm-unsaved").modal('show');
 
-  $("#confirm-unsaved-btn").on("click", function(){
-    callback(true);
-    $("#confirm-unsaved").modal('hide');
-  });
+//   $("#confirm-unsaved-btn").on("click", function(){
+//     callback(true);
+//     $("#confirm-unsaved").modal('hide');
+//   });
   
-  $("#no-confirm-unsaved-btn").on("click", function(){
-    callback(false);
-    $("#confirm-unsaved").modal('hide');
-  });
-};
+//   $("#no-confirm-unsaved-btn").on("click", function(){
+//     callback(false);
+//     $("#confirm-unsaved").modal('hide');
+//   });
+// };
