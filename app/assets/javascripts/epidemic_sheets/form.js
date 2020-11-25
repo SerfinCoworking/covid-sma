@@ -1,5 +1,4 @@
 $(document).on('turbolinks:load', function(e){
-  
   if( _PAGE.controller !== 'epidemic_sheets' && (_PAGE.action !== 'new' || _PAGE.action !== 'edit') ) return false;
 
     // Función para autocompletar DNI de paciente

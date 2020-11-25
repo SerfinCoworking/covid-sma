@@ -41,7 +41,6 @@ class CovidProfilesController < ApplicationController
 
   # GET /covid_profiles/1/edit
   def edit
-    @covid_profile_types = CovidProfileType.all
   end
 
   # POST /covid_profiles
