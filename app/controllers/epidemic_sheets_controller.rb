@@ -66,6 +66,7 @@ class EpidemicSheetsController < ApplicationController
   def update
     respond_to do |format|
       if @epidemic_sheet.update(epidemic_sheet_params)
+        EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }
       else
