@@ -250,3 +250,8 @@ td .form-group{
 .modal#confirm-unsaved{
   z-index: 2050!important;
 }
+
+a {
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+}
