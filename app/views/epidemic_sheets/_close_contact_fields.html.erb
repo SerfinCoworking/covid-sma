@@ -1,0 +1,48 @@
+
+<tr class="nested-fields close-contact-form">
+  <td>
+    <%= f.input :full_name, required: true, label: false, input_html: { class: 'full-name'} %>
+  </td>
+  <td>
+    <%= f.input :dni, label: false %>
+  </td>
+  <td>
+    <%= f.input :phone, label: false %>
+  </td>
+  <td>
+    <%= f.input :address, label: false %>
+  </td>
+  <td>
+    <%= f.input :last_contact_date, as: :string, html5: true, required: true,
+      label: false,
+      :input_html => {
+        required: true,
+        class: "form-control last-contact-date",
+        autocomplete: "off",
+        value: "#{f.object.new_record? ? '' : f.object.last_contact_date.strftime("%d/%m/%Y")}"
+      }
+    %>
+  </td>
+  <td>
+    <%= f.input :contact_type_id, label: false, include_blank: false,
+      collection: ContactType.all.map { |ct| [ct.name, ct.id] },
+      :value_method => :second,
+      :input_html => {
+        required: true,
+        include_blank: false,
+        class: 'selectpicker custom-select-pick',
+        "data-width"=>"100%",
+        "data-size"=>"10",
+        value: "#{ f.object.contact_type_id }"
+      }
+    %>
+  </td>
+  <td>
+    <% unless f.object.full_name.present? %>
+      <%= link_to_remove_association  f, class: 'remove-tag btn btn-warning',
+        title: 'Quitar', data: { toggle: 'tooltip', placement: 'top' } do %>
+        <%= fa_icon "minus" %>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

@@ -33,6 +33,12 @@ es:
   activerecord:
     models:
       external_order: "Pedido abastecimiento"
+      close_contact: "Contacto estrecho"
+      epidemic_sheet: "Ficha epidemiológica"
+      patient: "Paciente"
+      establishment: "Establecimiento"
+      sector: "Sector"
+      covid_profile: "Perfil covid"
     attributes:
       sector:
         name: "Nombre"
@@ -52,7 +58,9 @@ es:
       epidemic_sheet:
         patient: "Paciente"
         init_symptom_date: "Fecha de inicio"
-        epidemic_week: "Semana epidemiológica" 
+        epidemic_week: "Semana epidemiológica"
+      close_contact:
+        contact_type_id: "Tipo de contacto"
 
   date:
     abbr_day_names:

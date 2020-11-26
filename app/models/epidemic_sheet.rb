@@ -8,15 +8,18 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
   has_one :covid_profile
+  has_many :close_contacts
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :patient
-  
+  accepts_nested_attributes_for :close_contacts
+
   # Validations
   validates_presence_of  :case_definition, :init_symptom_date, :epidemic_week
   validates :epidemic_week, numericality: { only_integer: true, greater_than: 0 }
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
+  validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
   
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
@@ -96,6 +99,9 @@ class EpidemicSheet < ApplicationRecord
   end
 
   private
+  # def reject_close_contacts(attributes)
+  #   attributes['full_name'].blank?
+  # end
 
   def assign_establishment
     if self.created_by.present?

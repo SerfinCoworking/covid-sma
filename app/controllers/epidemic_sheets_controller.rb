@@ -31,6 +31,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
+    @epidemic_sheet.close_contacts.build
   end
 
   # GET /epidemic_sheets/1/edit
@@ -124,7 +125,18 @@ class EpidemicSheetsController < ApplicationController
             :street,
             :street_number
           ],
-        ]
+        ],
+        close_contacts_attributes: [ 
+          :id,
+          :full_name,
+          :dni,
+          :phone,
+          :sex,
+          :address,
+          :last_contact_date,
+          :contact_type_id,
+          :_destroy,
+        ],
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.

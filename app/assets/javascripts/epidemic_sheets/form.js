@@ -162,4 +162,9 @@ $(document).on('turbolinks:load', function(e){
       $("#patient-form-birthdate").val('');
       $("#patient-form-birthdate").removeAttr('readonly');
     }
+
+    $('#close-contact-form').on('cocoon:after-insert', function(e, insertedItem, originalEvent) { 
+      insertedItem.find('.full-name').focus();
+      $('.selectpicker').selectpicker({style: 'btn-sm btn-default'});
+    });
 });

@@ -36,7 +36,5 @@ class CovidProfile < ApplicationRecord
   pg_search_scope :search_fullname,
     :associated_against => { patient: [ :first_name, :last_name ]},
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
-    :ignoring => :accents # Ignorar tildes.  
-
-
+    :ignoring => :accents # Ignorar tildes.
 end
