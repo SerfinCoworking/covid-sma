@@ -1,6 +1,5 @@
 <%= render 'header' %>
 
-
 <div class="card fixed-custom-card">
   <div class="card-header bg-warning d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center ml-2">
@@ -88,11 +87,11 @@
           <div class="row">
             <div class="col-4">
               <div class="custom-control custom-switch">
-                <%= f.check_box :presents_symptoms, class: "custom-control-input", id: "customSwitch1"   %>
-                <label class="custom-control-label" for="customSwitch1">Presenta síntomas </label>
+                <%= f.check_box :presents_symptoms, class: "custom-control-input", id: "present-symptoms"   %>
+                <label class="custom-control-label" for="present-symptoms">Presenta síntomas </label>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
               <%# symptoms %>
               <%= f.input :symptom_ids, label: 'Síntomas',
                 collection: @symptoms,
@@ -109,8 +108,13 @@
                 }
               %>
             </div>
-            <div class="col-4">
-              <%= f.input :symptoms_observations, label: 'Observaciones' %>
+            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
+              <%= f.input :symptoms_observations, 
+              label: 'Observaciones', 
+              :input_html => {
+                class: 'observations-field' 
+              }
+              %>
             </div>
           </div>
 
@@ -118,11 +122,11 @@
           <div class="row">
             <div class="col-4">
               <div class="custom-control custom-switch">
-                <%= f.check_box :present_previous_symptoms, class: "custom-control-input", id: "customSwitch2"   %>
-                <label class="custom-control-label" for="customSwitch2">Enfermedades previas </label>
+                <%= f.check_box :present_previous_symptoms, class: "custom-control-input", id: "present-prev-symp"   %>
+                <label class="custom-control-label" for="present-prev-symp">Enfermedades previas </label>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 fade <%= f.object.present_previous_symptoms.present? && f.object.present_previous_symptoms ? "show" : "" %> symptoms-fields">
               <%# Sintomas previos %>
               <%= f.input :previous_symptom_ids, label: 'Síntomas Previos',
                 collection: @previous_symptoms,
@@ -139,8 +143,12 @@
                 }
               %>
             </div>
-            <div class="col-4">
-              <%= f.input :prev_symptoms_observations, label: 'Observaciones' %>
+            <div class="col-4 fade <%= f.object.present_previous_symptoms.present? && f.object.present_previous_symptoms ? "show" : "" %> symptoms-fields">
+              <%= f.input :prev_symptoms_observations, 
+              label: 'Observaciones', 
+              :input_html => {
+                class: 'observations-field' 
+              } %>
             </div>
           </div>
         <% end %>

@@ -1,3 +1,4 @@
+<%= render 'header' %>
 
 <div class="card fixed-custom-card">
   <div class="card-header d-flex align-items-center justify-content-between">
@@ -96,8 +97,8 @@
             </div>
 
             <h5 class="border-bottom pt-3">Signos y síntomas</h5>
-            <div class="d-flex justify-content-between">
-              <div class="flex-fill">
+            <div class="row">
+              <div class="col-5">
                 <%#= @epidemic_sheet.presents_symptoms? ? 'Presenta' : 'No presenta' %>
 
                 <% if @epidemic_sheet.presents_symptoms? && @epidemic_sheet.symptoms.present? %>
@@ -110,14 +111,14 @@
                 <% end %>
               
               </div>
-              <div class="flex-fill">
+              <div class="col-7">
                 <p><%= @epidemic_sheet.symptoms_observations %></p>
               </div>
             </div>
 
             <h5 class="border-bottom pt-3">Enfermedades previas</h5>
-            <div class="d-flex justify-content-between">
-              <div class="flex-fill">
+            <div class="row">
+              <div class="col-5">
                 <%#= @epidemic_sheet.present_previous_symptoms? ? 'Presenta' : 'No presenta' %> 
                 <% if @epidemic_sheet.present_previous_symptoms? && @epidemic_sheet.previous_symptoms.present? %>
                   <% @epidemic_sheet.previous_symptoms.each do |prev_symp| %>
@@ -128,7 +129,7 @@
                   <% end %>
                 <% end %>
               </div>
-              <div class="flex-fill">
+              <div class="col-7">
                 <p><%= @epidemic_sheet.prev_symptoms_observations %></p>
               </div>
             </div>

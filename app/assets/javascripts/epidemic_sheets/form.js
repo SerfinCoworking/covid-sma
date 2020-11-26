@@ -1,5 +1,17 @@
 $(document).on('turbolinks:load', function(e){
   if( !(_PAGE.controller === 'epidemic_sheets' && ['new', 'edit'].includes(_PAGE.action))) return false;
+    $("#present-prev-symp, #present-symptoms").on('change', function(e){
+      if($(e.target).is(":checked")){
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      }else{
+        /* al quitar el check, limpiamos los campos de seleccion y observaciones */
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").removeClass('show');
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
+      }
+    });
+    
+    
 
     // Función para autocompletar DNI de paciente
     $('#patient-dni').autocomplete({
@@ -166,4 +178,14 @@ $(document).on('turbolinks:load', function(e){
       $("#patient-form-birthdate").val('');
       $("#patient-form-birthdate").removeAttr('readonly');
     }
+
+    /* function initialize(){
+      if($("#present-prev-symp").is(":checked")){
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      }
+      
+      if($("#present-symptoms").is(":checked")){
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      }
+    } */
 });
