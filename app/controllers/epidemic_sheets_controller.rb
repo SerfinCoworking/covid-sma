@@ -32,11 +32,13 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
   end
-
+  
   # GET /epidemic_sheets/1/edit
   def edit
     @case_definitions = CaseDefinition.all
     @diagnostic_methods = DiagnosticMethod.all
+    @symptoms = Symptom.all
+    @epidemic_sheet.sheet_symptoms.build
   end
 
   # POST /epidemic_sheets
@@ -101,6 +103,10 @@ class EpidemicSheetsController < ApplicationController
         :previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
+        sheet_symptoms_attributes: [
+          :id,  
+          :symptom_id
+        ],
         case_definition_attributes: [ 
           :id,
           :case_type,
@@ -118,6 +124,7 @@ class EpidemicSheetsController < ApplicationController
         :previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
+        symptom_ids: [],
         case_definition_attributes: [ 
           :id,
           :case_type,

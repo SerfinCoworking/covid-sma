@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_170122) do
+ActiveRecord::Schema.define(version: 2020_11_25_183048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -328,10 +328,25 @@ ActiveRecord::Schema.define(version: 2020_11_24_170122) do
     t.index ["establishment_id"], name: "index_sectors_on_establishment_id"
   end
 
+  create_table "sheet_symptoms", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "symptom_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_sheet_symptoms_on_epidemic_sheet_id"
+    t.index ["symptom_id"], name: "index_sheet_symptoms_on_symptom_id"
+  end
+
   create_table "states", force: :cascade do |t|
     t.bigint "country_id"
     t.string "name"
     t.index ["country_id"], name: "index_states_on_country_id"
+  end
+
+  create_table "symptoms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_sectors", force: :cascade do |t|

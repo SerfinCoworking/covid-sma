@@ -7,10 +7,13 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :case_definition
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
-  has_one :covid_profile
+  has_one :covid_profile, dependent: :destroy
   has_many :movements, class_name: "EpidemicSheetMovement"
+  has_many :sheet_symptoms
+  has_many :symptoms, through: :sheet_symptoms
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
+  accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
   accepts_nested_attributes_for :patient
   
   # Validations
