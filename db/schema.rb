@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_183048) do
+ActiveRecord::Schema.define(version: 2020_11_26_135421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_183048) do
     t.integer "epidemic_week", default: 0
     t.boolean "presents_symptoms"
     t.text "symptoms_observations"
-    t.boolean "previous_symptoms"
+    t.boolean "present_previous_symptoms"
     t.text "prev_symptoms_observations"
     t.integer "clinic_location", default: 0
     t.datetime "created_at", null: false
@@ -268,6 +268,12 @@ ActiveRecord::Schema.define(version: 2020_11_25_183048) do
     t.index ["user_id"], name: "index_permission_requests_on_user_id"
   end
 
+  create_table "previous_symptoms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "professional_types", force: :cascade do |t|
     t.string "name", limit: 50
   end
@@ -326,6 +332,15 @@ ActiveRecord::Schema.define(version: 2020_11_25_183048) do
     t.datetime "updated_at", null: false
     t.bigint "establishment_id"
     t.index ["establishment_id"], name: "index_sectors_on_establishment_id"
+  end
+
+  create_table "sheet_previous_symptoms", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "previous_symptom_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_sheet_previous_symptoms_on_epidemic_sheet_id"
+    t.index ["previous_symptom_id"], name: "index_sheet_previous_symptoms_on_previous_symptom_id"
   end
 
   create_table "sheet_symptoms", force: :cascade do |t|

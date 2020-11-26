@@ -98,7 +98,17 @@
             <h5 class="border-bottom pt-3">Signos y síntomas</h5>
             <div class="d-flex justify-content-between">
               <div class="flex-fill">
-                <%= @epidemic_sheet.presents_symptoms? ? 'Presenta' : 'No presenta' %> síntomas
+                <%#= @epidemic_sheet.presents_symptoms? ? 'Presenta' : 'No presenta' %>
+
+                <% if @epidemic_sheet.presents_symptoms? && @epidemic_sheet.symptoms.present? %>
+                  <% @epidemic_sheet.symptoms.each do |symp| %>
+                    <div class="ml-2 mb-1 mt-1">
+                      <%= fa_icon "dot-circle", class: "far"%>
+                      <span class="font-weight-bold"><%= symp.name%></span>
+                    </div>
+                  <% end %>
+                <% end %>
+              
               </div>
               <div class="flex-fill">
                 <p><%= @epidemic_sheet.symptoms_observations %></p>
@@ -108,7 +118,15 @@
             <h5 class="border-bottom pt-3">Enfermedades previas</h5>
             <div class="d-flex justify-content-between">
               <div class="flex-fill">
-                <%= @epidemic_sheet.previous_symptoms? ? 'Presenta' : 'No presenta' %> enfermedades previas
+                <%#= @epidemic_sheet.present_previous_symptoms? ? 'Presenta' : 'No presenta' %> 
+                <% if @epidemic_sheet.present_previous_symptoms? && @epidemic_sheet.previous_symptoms.present? %>
+                  <% @epidemic_sheet.previous_symptoms.each do |prev_symp| %>
+                    <div class="ml-2 mb-1 mt-1">
+                      <%= fa_icon "dot-circle", class: "far"%>
+                      <span class="font-weight-bold"><%= prev_symp.name%></span>
+                    </div>
+                  <% end %>
+                <% end %>
               </div>
               <div class="flex-fill">
                 <p><%= @epidemic_sheet.prev_symptoms_observations %></p>

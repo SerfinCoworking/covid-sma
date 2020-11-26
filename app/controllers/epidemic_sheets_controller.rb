@@ -1,5 +1,6 @@
 class EpidemicSheetsController < ApplicationController
   before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
+  before_action :set_epidemic_sheet_symptoms, only: [:new, :create, :edit, :update]
 
   # GET /epidemic_sheets
   # GET /epidemic_sheets.json
@@ -37,8 +38,6 @@ class EpidemicSheetsController < ApplicationController
   def edit
     @case_definitions = CaseDefinition.all
     @diagnostic_methods = DiagnosticMethod.all
-    @symptoms = Symptom.all
-    @epidemic_sheet.sheet_symptoms.build
   end
 
   # POST /epidemic_sheets
@@ -93,6 +92,11 @@ class EpidemicSheetsController < ApplicationController
     def set_epidemic_sheet
       @epidemic_sheet = EpidemicSheet.find(params[:id])
     end
+    
+    def set_epidemic_sheet_symptoms
+      @symptoms = Symptom.all
+      @previous_symptoms = PreviousSymptom.all
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def epidemic_sheet_update_params
@@ -100,13 +104,11 @@ class EpidemicSheetsController < ApplicationController
         :init_symptom_date, 
         :presents_symptoms, 
         :symptoms_observations, 
-        :previous_symptoms, 
+        :present_previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
-        sheet_symptoms_attributes: [
-          :id,  
-          :symptom_id
-        ],
+        symptom_ids: [],
+        previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
           :case_type,
@@ -121,10 +123,11 @@ class EpidemicSheetsController < ApplicationController
         :epidemic_week, 
         :presents_symptoms, 
         :symptoms_observations, 
-        :previous_symptoms, 
+        :present_previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
         symptom_ids: [],
+        previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
           :case_type,

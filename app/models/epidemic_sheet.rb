@@ -11,9 +11,12 @@ class EpidemicSheet < ApplicationRecord
   has_many :movements, class_name: "EpidemicSheetMovement"
   has_many :sheet_symptoms
   has_many :symptoms, through: :sheet_symptoms
+  has_many :sheet_previous_symptoms
+  has_many :previous_symptoms, through: :sheet_previous_symptoms
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
+  accepts_nested_attributes_for :sheet_previous_symptoms, allow_destroy: true
   accepts_nested_attributes_for :patient
   
   # Validations
