@@ -1,5 +1,17 @@
 $(document).on('turbolinks:load', function(e){
-  if( _PAGE.controller !== 'epidemic_sheets' && (_PAGE.action !== 'new' || _PAGE.action !== 'edit') ) return false;
+  if( !(_PAGE.controller === 'epidemic_sheets' && ['new', 'edit'].includes(_PAGE.action))) return false;
+    $("#present-prev-symp, #present-symptoms").on('change', function(e){
+      if($(e.target).is(":checked")){
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      }else{
+        /* al quitar el check, limpiamos los campos de seleccion y observaciones */
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").removeClass('show');
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
+        $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
+      }
+    });
+    
+    
 
     // Función para autocompletar DNI de paciente
     $('#patient-dni').autocomplete({
@@ -49,6 +61,9 @@ $(document).on('turbolinks:load', function(e){
           if(location.codigoPostal){
             $("#patient-address-postal-code").val(location.codigoPostal);
           }
+
+          
+          $("#patient-status-code").val("Validado");
 
 
           $("#patient-form-lastname").val(ui.item.data.apellido).attr('readonly', true);
@@ -112,6 +127,7 @@ $(document).on('turbolinks:load', function(e){
         }else if (ui.item.create && ui.item.dni){
           $("#patient-form-fields .andes-fields").removeClass('d-none');
           $("#patient-form-dni").val(ui.item.dni).attr('readonly', true);
+          $("#patient-status-code").val("Temporal");
           $("#patient-form-fields").collapse('show');
         }else{
           $("#patient-form-fields").collapse('hide');

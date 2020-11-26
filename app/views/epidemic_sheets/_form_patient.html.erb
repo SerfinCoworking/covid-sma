@@ -124,6 +124,7 @@
       <%= patient_address.hidden_field :latitude, as: :integer, id: "patient-address-latitude" %>
       <%= patient_address.hidden_field :longitude, as: :integer, id: "patient-address-longitude" %>
       <%= patient_address.hidden_field :postal_code, id: "patient-address-postal-code" %>
+      <%= patient_form.hidden_field :status, id: "patient-status-code" %>
     <%end%>
     
     <%# Direccion Real %>

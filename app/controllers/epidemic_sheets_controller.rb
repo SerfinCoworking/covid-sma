@@ -1,5 +1,6 @@
 class EpidemicSheetsController < ApplicationController
   before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
+  before_action :set_epidemic_sheet_symptoms, only: [:new, :create, :edit, :update]
 
   # GET /epidemic_sheets
   # GET /epidemic_sheets.json
@@ -33,7 +34,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.patient_phones.build
     @epidemic_sheet.close_contacts.build
   end
-
+  
   # GET /epidemic_sheets/1/edit
   def edit
     @case_definitions = CaseDefinition.all
@@ -50,7 +51,7 @@ class EpidemicSheetsController < ApplicationController
 
     respond_to do |format|
       if @epidemic_sheet.save
-        
+        EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "creó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else
@@ -67,6 +68,7 @@ class EpidemicSheetsController < ApplicationController
   def update
     respond_to do |format|
       if @epidemic_sheet.update(epidemic_sheet_params)
+        EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }
       else
@@ -91,18 +93,42 @@ class EpidemicSheetsController < ApplicationController
     def set_epidemic_sheet
       @epidemic_sheet = EpidemicSheet.find(params[:id])
     end
+    
+    def set_epidemic_sheet_symptoms
+      @symptoms = Symptom.all
+      @previous_symptoms = PreviousSymptom.all
+    end
 
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def epidemic_sheet_update_params
+      params.require(:epidemic_sheet).permit(
+        :init_symptom_date, 
+        :presents_symptoms, 
+        :symptoms_observations, 
+        :present_previous_symptoms, 
+        :prev_symptoms_observations,
+        :clinic_location,
+        symptom_ids: [],
+        previous_symptom_ids: [],
+        case_definition_attributes: [ 
+          :id,
+          :case_type,
+          :diagnostic_method_id
+        ]
+      )
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def epidemic_sheet_params
       params.require(:epidemic_sheet).permit(
-        :case_definition_id, 
         :init_symptom_date, 
         :epidemic_week, 
         :presents_symptoms, 
         :symptoms_observations, 
-        :previous_symptoms, 
+        :present_previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
+        symptom_ids: [],
+        previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
           :case_type,
@@ -115,6 +141,7 @@ class EpidemicSheetsController < ApplicationController
           :first_name,
           :sex,
           :birthdate,
+          :status,
           patient_phones_attributes: [
             :id,
             :phone_type,

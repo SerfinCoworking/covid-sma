@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_160702) do
+ActiveRecord::Schema.define(version: 2020_11_26_135421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -75,6 +75,18 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.string "phone_code"
   end
 
+  create_table "covid_profile_movements", force: :cascade do |t|
+    t.bigint "covid_profile_id"
+    t.bigint "user_id"
+    t.bigint "sector_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["covid_profile_id"], name: "index_covid_profile_movements_on_covid_profile_id"
+    t.index ["sector_id"], name: "index_covid_profile_movements_on_sector_id"
+    t.index ["user_id"], name: "index_covid_profile_movements_on_user_id"
+  end
+
   create_table "covid_profiles", force: :cascade do |t|
     t.bigint "epidemic_sheet_id"
     t.bigint "patient_id"
@@ -101,6 +113,18 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "epidemic_sheet_movements", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "user_id"
+    t.bigint "sector_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_epidemic_sheet_movements_on_epidemic_sheet_id"
+    t.index ["sector_id"], name: "index_epidemic_sheet_movements_on_sector_id"
+    t.index ["user_id"], name: "index_epidemic_sheet_movements_on_user_id"
+  end
+
   create_table "epidemic_sheets", force: :cascade do |t|
     t.bigint "patient_id"
     t.bigint "case_definition_id"
@@ -110,7 +134,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.integer "epidemic_week", default: 0
     t.boolean "presents_symptoms"
     t.text "symptoms_observations"
-    t.boolean "previous_symptoms"
+    t.boolean "present_previous_symptoms"
     t.text "prev_symptoms_observations"
     t.integer "clinic_location", default: 0
     t.datetime "created_at", null: false
@@ -244,6 +268,12 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.index ["user_id"], name: "index_permission_requests_on_user_id"
   end
 
+  create_table "previous_symptoms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "professional_types", force: :cascade do |t|
     t.string "name", limit: 50
   end
@@ -304,10 +334,34 @@ ActiveRecord::Schema.define(version: 2020_11_24_160702) do
     t.index ["establishment_id"], name: "index_sectors_on_establishment_id"
   end
 
+  create_table "sheet_previous_symptoms", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "previous_symptom_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_sheet_previous_symptoms_on_epidemic_sheet_id"
+    t.index ["previous_symptom_id"], name: "index_sheet_previous_symptoms_on_previous_symptom_id"
+  end
+
+  create_table "sheet_symptoms", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "symptom_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_sheet_symptoms_on_epidemic_sheet_id"
+    t.index ["symptom_id"], name: "index_sheet_symptoms_on_symptom_id"
+  end
+
   create_table "states", force: :cascade do |t|
     t.bigint "country_id"
     t.string "name"
     t.index ["country_id"], name: "index_states_on_country_id"
+  end
+
+  create_table "symptoms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_sectors", force: :cascade do |t|

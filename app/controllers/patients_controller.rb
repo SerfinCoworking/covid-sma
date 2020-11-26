@@ -110,11 +110,10 @@ class PatientsController < ApplicationController
     if @patients.present?
       render json: @patients.map{ |pat| { label: pat.dni.to_s+" "+pat.last_name+" "+pat.first_name, dni: pat.dni, fullname: pat.fullname, establishment: pat.epidemic_sheet.establishment.name, url: epidemic_sheet_path(pat.epidemic_sheet)}  }
     else
-      
       dni = params[:term]
       token = ENV['ANDES_TOKEN']
       url = ENV['ANDES_MPI_URL']
-      andes_patients = RestClient::Request.execute(method: :get, url: url,
+      andes_patients = RestClient::Request.execute(method: :get, url: "#{url}/",
         timeout: 30, headers: {
           "Authorization" => "JWT #{token}",
           params: {'documento': dni}

@@ -1,0 +1,29 @@
+<div id="filterrific_results">
+  <% if @covid_profiles.present? %>
+    <div class="card">
+      <table class="table table-hover table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Edad</th>
+            <th>Estado</th>
+            <th>Situación</th>
+            <th>Sexo</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="covid_profiles">
+          <%= render @covid_profiles %>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-center" style="height: 50px">
+      <%= will_paginate @covid_profiles, list_classes: %w(pagination mb-0), renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+    </div>
+  <% else %>
+    <%= render(
+      partial: 'shared/not_found_filter',
+      locals: { object_name: 'perfiles covid' }
+    ) %>
+  <% end %>
+</div>

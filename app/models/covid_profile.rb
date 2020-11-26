@@ -5,6 +5,7 @@ class CovidProfile < ApplicationRecord
 
   belongs_to :patient
   belongs_to :epidemic_sheet
+  has_many :movements, class_name: "CovidProfileMovement"
 
   delegate :dni, :last_name, :first_name, :age_string, :sex, :birthdate, :marital_status, :status, to: :patient, prefix: true
   delegate :patient_phones, to: :patient
