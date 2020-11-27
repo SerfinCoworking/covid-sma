@@ -1,6 +1,6 @@
 class SectorPolicy < ApplicationPolicy
   def index?
-    show_roles.any? { |role| user.has_role?(role) }
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def show?
@@ -8,33 +8,19 @@ class SectorPolicy < ApplicationPolicy
   end
 
   def new?
-    destroy_roles.any? { |role| user.has_role?(role) }
+    user.has_any_role?(:admin)
   end
 
   def edit?
-    destroy_roles.any? { |role| user.has_role?(role) }
+    user.has_any_role?(:admin)
   end
 
 
   def destroy?
-    destroy_roles.any? { |role| user.has_role?(role) }
+    user.has_any_role?(:admin)
   end
 
   def delete?
     destroy?
-  end
-
-  private
-
-  def show_roles
-    [ :admin, :farmaceutico, :auxiliar_farmacia, :farmaceutico_central ]
-  end
-
-  def create_roles
-    [ :admin, :farmaceutico, :auxiliar_farmacia ]
-  end
-
-  def destroy_roles
-    [ :admin ]
   end
 end

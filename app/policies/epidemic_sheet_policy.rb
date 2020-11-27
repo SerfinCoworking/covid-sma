@@ -1,6 +1,6 @@
 class EpidemicSheetPolicy < ApplicationPolicy
   def index?
-    user.has_any_role?(:admin, :farmaceutico, :auxiliar_farmacia, :central_farmaceutico, :medic, :enfermero)
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def show?
@@ -8,7 +8,7 @@ class EpidemicSheetPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_any_role?(:admin)
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def new?

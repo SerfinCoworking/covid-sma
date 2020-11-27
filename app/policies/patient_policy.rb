@@ -1,6 +1,6 @@
 class PatientPolicy < ApplicationPolicy
   def index?
-    user.has_any_role?(:admin, :farmaceutico, :auxiliar_farmacia, :enfermero, :abm_paciente)
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def show?
@@ -8,7 +8,7 @@ class PatientPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_any_role?(:admin, :abm_paciente, :farmaceutico, :auxiliar_farmacia)
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def new?
@@ -16,7 +16,7 @@ class PatientPolicy < ApplicationPolicy
   end
 
   def update?
-    user.has_any_role?(:admin, :abm_paciente)
+    user.has_any_role?(:admin, :estadistica)
   end
 
   def edit?

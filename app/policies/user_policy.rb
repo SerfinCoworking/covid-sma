@@ -1,11 +1,11 @@
 class UserPolicy < ApplicationPolicy
 
   def index?
-    index_user.any? { |role| user.has_role?(role) }
+    user.has_any_role?(:admin, :gestor_usuarios)
   end
 
   def update?
-    record == user || update.any? { |role| user.has_role?(role) }
+    record == user || user.has_any_role?(:admin, :gestor_usuarios)
   end
 
   def change_sector?
@@ -22,7 +22,7 @@ class UserPolicy < ApplicationPolicy
     elsif record.has_role? :admin
       return false
     else
-      update_permissions.any? { |role| user.has_role?(role) }
+      user.has_any_role?(:admin, :gestor_usuarios)
     end
   end
 
@@ -31,20 +31,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show_establishment?
-    record.has_role?(:admin)
-  end
-
-  private
-
-  def index_user
-    [ :admin, :gestor_usuarios ]
-  end
-
-  def update
-    [ :admin, :gestor_usuarios ]
-  end
-
-  def update_permissions
-    [ :admin, :gestor_usuarios ]
+    user.has_any_role?(:admin)
   end
 end

@@ -21,18 +21,4 @@ class PermissionRequestPolicy < ApplicationPolicy
       update?
     end
   end
-
-  private
-
-  def index_user
-    [ :admin, :gestor_usuarios ]
-  end
-
-  def update
-    [ :admin, :gestor_usuarios ]
-  end
-
-  def update_permissions
-    [ :admin, :gestor_usuarios ]
-  end
 end
