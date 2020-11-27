@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_26_135421) do
+ActiveRecord::Schema.define(version: 2020_11_27_112137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -66,6 +66,29 @@ ActiveRecord::Schema.define(version: 2020_11_26_135421) do
     t.bigint "state_id"
     t.string "name"
     t.index ["state_id"], name: "index_cities_on_state_id"
+  end
+
+  create_table "close_contacts", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "patient_id"
+    t.bigint "contact_type_id"
+    t.string "full_name"
+    t.string "dni"
+    t.string "phone"
+    t.string "address"
+    t.date "last_contact_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_type_id"], name: "index_close_contacts_on_contact_type_id"
+    t.index ["epidemic_sheet_id"], name: "index_close_contacts_on_epidemic_sheet_id"
+    t.index ["patient_id"], name: "index_close_contacts_on_patient_id"
+  end
+
+  create_table "contact_types", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "countries", force: :cascade do |t|
@@ -249,6 +272,7 @@ ActiveRecord::Schema.define(version: 2020_11_26_135421) do
     t.bigint "address_id"
     t.bigint "occupation_id"
     t.bigint "current_address_id"
+    t.integer "assigned_establishment_id", default: 0
     t.index ["address_id"], name: "index_patients_on_address_id"
     t.index ["andes_id"], name: "index_patients_on_andes_id"
     t.index ["current_address_id"], name: "index_patients_on_current_address_id"
