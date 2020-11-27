@@ -11,16 +11,6 @@ class CovidProfile < ApplicationRecord
   delegate :patient_phones, to: :patient
   delegate :current_address, to: :patient
 
-  def self.create_with_epidemic_sheet(a_sheet)
-    self.create(
-      epidemic_sheet: a_sheet,
-      status: a_sheet.case_definition.case_type,
-      clinic_location: a_sheet.clinic_location,
-      patient: a_sheet.patient,
-      init_symptom_date: a_sheet.init_symptom_date
-    )
-  end
-
   filterrific(
     available_filters: [
       :search_fullname,

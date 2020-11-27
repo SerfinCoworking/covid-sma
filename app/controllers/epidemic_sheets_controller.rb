@@ -2,6 +2,16 @@ class EpidemicSheetsController < ApplicationController
   before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
   before_action :set_epidemic_sheet_symptoms, only: [:new, :create, :edit, :update]
 
+  def dashboard
+    _helper = ActiveSupport::NumberHelper
+    _epidemic_sheets_today = EpidemicSheet.current_day
+    _epidemic_sheets_month = EpidemicSheet.current_month
+    @epidemic_sheets = EpidemicSheet.all
+    @count_epidemic_sheets_today = _epidemic_sheets_today.count
+    @count_epidemic_sheets_month = _epidemic_sheets_month.count
+    @last_epidemic_sheets = @epidemic_sheets.order(created_at: :desc).limit(5)
+  end
+
   # GET /epidemic_sheets
   # GET /epidemic_sheets.json
   def index

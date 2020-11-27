@@ -14,7 +14,6 @@ class Patient < ApplicationRecord
   belongs_to :occupation, optional: true
   belongs_to :assigned_establishment, class_name: "Establishment"
   has_one :epidemic_sheet, dependent: :destroy
-  has_one :covid_profile, dependent: :destroy
   has_many :patient_phones, dependent: :destroy
 
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }

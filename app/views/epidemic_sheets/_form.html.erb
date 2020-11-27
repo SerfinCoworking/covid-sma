@@ -13,8 +13,8 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
-        <div class="col-12">
+      <div class="col-12">
+        <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
           <%= f.error_notification %>
 
           <h5 class="border-bottom">Definición de caso</h5>
@@ -203,8 +203,8 @@
               <% end %>
             </tbody>
           </table>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 

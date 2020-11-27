@@ -130,7 +130,7 @@
         %>
       </div>
       <div class="col-6">
-        <%= patient_form.input :assigned_establishment_id, label: 'Establecimiento',
+        <%= patient_form.input :assigned_establishment_id, label: 'Establecimiento designado',
           collection: @establishments.map {|establishment|  [establishment.name, establishment.id ]},
           :input_html => {
             required: true,

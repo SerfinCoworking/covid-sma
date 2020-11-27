@@ -1,89 +1,71 @@
 <!--  Panel graficos de prescripciones -->
 <% if @epidemic_sheets.count > 0 %>
+  <%= line_chart @epidemic_sheets
+    .group_by_day(:init_symptom_date, 
+    range: 1.weeks.ago.midnight..Time.now, 
+    format: "%a %d/%m").count, 
+    discrete: true, 
+    label: 'Cantidad', 
+    colors: ["rgb(199,149,109, 1)"], 
+    adapter: "highcharts",
+    title: 'Casos positivos última semana' %>
+
+  <%= column_chart charts_by_month_epidemic_sheets_path,
+    download: "Fichas epidemiológicas cargadas por mes",
+    label: "Cantidad",
+    colors: ["rgb(150,93,98, 1)"],
+    messages: {empty: "No hay fichas en este año"},
+    adapter: "highcharts" %>
+       
   <div class="card">
-    <div class="card-header d-flex justify-content-between">
-
-      <div>
-        <span class="navbar-brand">
-          <%= fa_icon "signature" %>
-          Fichas epidemiológicas
-        </span>
-      </div>
-
-      <ul class="nav nav-tabs card-header-tabs" id="title-chart">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#week">Semana 
-            <span class="badge badge-secondary"><%= @epidemic_sheets.last_week.count %></span> 
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#year">Año
-            <span class="badge badge-secondary"><%= @epidemic_sheets.current_year.count %></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#last">Últimas
-            <span class="badge badge-secondary"><%= @last_epidemic_sheets.count %></span>
-          </a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center">
-        <%= link_to epidemic_sheets_path, class: 'btn btn-secondary btn-sm' do %>
-          Ver más
-        <% end %>
-      </div>
-    </div>
-
-    <div class="card-body card-body-dashboard pb-2 mb-3">
-      <div class="tab-content">
-        <div id="week" class="tab-pane fade show active">
-          <%= line_chart @epidemic_sheets
-            .group_by_day(:created_at,range: 1.weeks.ago.midnight..Time.now, format: "%a %d/%m").count, 
-            discrete: true, label: 'Cantidad', colors: ["rgb(199,149,109, 1)"], adapter: "highcharts" %>
-        </div>
-        <div id="year" class="tab-pane fade">
-          <%= column_chart charts_by_month_epidemic_sheets_path,
-            download: "Fichas epidemiológicas cargadas por mes",
-            label: "Cantidad",
-            colors: ["rgb(150,93,98, 1)"],
-            messages: {empty: "No hay fichas en este año"},
-            adapter: "highcharts" %>
-        </div>
-        <div id="last" class="tab-pane fade pb-0">
-          <div class="card">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th>Paciente</th>
-                  <th>Estado</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @last_epidemic_sheets.each do |sheet|%>
-                  <tr>
-                    <td><%= sheet.patient.fullname %></td>
-                    <td>
-                      <span class="badge badge-<%= label_case_definition_status(sheet.case_definition) %>">
-                        <%= sheet.case_definition.case_type.humanize %>
-                      </span>
-                    </td>
-                    <td>
-                      <% if policy(sheet).show? %>
-                        <%= link_to epidemic_sheet_path(sheet), class: 'btn btn-secondary btn-sm', 
-                          title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
-                          <%= fa_icon 'eye' %>
-                        <% end %>
-                      <% end %>
-                    </td>
-                  </tr>
+    <table class="table table-hover table-striped">
+    <div class="h5 p-2">Últimas fichas cargadas</div>
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @last_epidemic_sheets.each do |sheet|%>
+          <tr>
+            <td><%= sheet.patient.fullname %></td>
+            <td>
+              <span class="badge badge-<%= label_case_definition_status(sheet.case_definition) %>">
+                <%= sheet.case_definition.case_type.humanize %>
+              </span>
+            </td>
+            <td>
+              <% if policy(sheet).show? %>
+                <%= link_to epidemic_sheet_path(sheet), class: 'btn btn-secondary btn-sm', 
+                  title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
+                  <%= fa_icon 'eye' %>
                 <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+
+      <%
+      epidemic_sheets = @epidemic_sheets.joins(:case_definition).group("case_definitions.case_type").count.map { |k, v| [CaseDefinition.case_types.key(k).humanize, v] }
+      status_colors = {"Sospechoso" => "#f7f7f7", "Pendiente" => "#f0ad4e", "Positivo" => "#d9534f", "Negativo" => "#4d4c7d", "Recuperado" => "#5cb85c", "Fallecido" => "#292b2c" }
+      colors = []
+      epidemic_sheets.each do |status, _|
+        colors << status_colors[status]
+      end
+    %>
+    <%= pie_chart epidemic_sheets, colors: colors, label: 'Cantidad de lotes', adapter: "highcharts" %>
+  
+    <%= line_chart @epidemic_sheets.joins(:case_definition).where("case_definitions.case_type = 2")
+      .group_by_week(:init_symptom_date, range: 12.months.ago.midnight..Time.now, 
+      format: "%d/%m/%y").count,
+      discrete: true,
+      colors: ["rgb(170,58,58, 1)"],
+      label: 'Cantidad',
+      title: "Últimos 12 meses",
+      adapter: "highcharts" %>
 <% end %>
