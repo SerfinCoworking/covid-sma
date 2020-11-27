@@ -32,7 +32,6 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
-    @epidemic_sheet.close_contacts.build
   end
   
   # GET /epidemic_sheets/1/edit
