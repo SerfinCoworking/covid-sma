@@ -7,14 +7,14 @@
     <td><%= epidemic_sheet.patient_age_string %></td>
     <td>
       <span class="badge badge-<%= epidemic_sheet.case_definition.sospechoso? ? "secondary" : "danger"%>">
-        <%= epidemic_sheet.case_definition_case_type %>
+        <%= epidemic_sheet.case_definition_case_type.humanize %>
       </span>
     </td>
     <td>
       <%= epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
     </td>
     <td>
-      <%= epidemic_sheet.clinic_location %>
+      <%= epidemic_sheet.clinic_location.humanize %>
     </td>
     <td>
       <%= epidemic_sheet.created_by.full_name %>
