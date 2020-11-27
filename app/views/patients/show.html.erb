@@ -16,7 +16,7 @@
 
   <div class="card-body">
     <div class="row">
-      <div class="col-10">
+      <div class="col-8">
         <ul class='nav nav-tabs'>
           <li class='nav-item'>
             <a class="nav-link active" data-toggle='tab' href='#profile'>
@@ -102,36 +102,8 @@
           </div>
         </div>
       </div>
-      <div class="col-2 border-left">
-        <%= image_tag patient_avatar(@patient), class:"img-thumbnail" %>
-        <h5 class="mt-3"><strong><%= @patient.last_name %>,</strong> <%= @patient.first_name %></h5>
-
-        <h5 class="mt-3">
-          <%= @patient.dni %>
-          <span class="badge badge-<%= @patient.Temporal? ? "warning" : "success" %>">
-            <%= @patient.status %>
-          </span>
-        </h5>
-
-        <h5> <%= @patient.email %> </h5>
-
-        <% if @patient.birthdate.present? %>
-          <p class="mb-0 mt-3"><strong>Fecha de nacimiento</strong></p>
-          <p><%= @patient.birthdate.strftime("%d/%m/%Y")%> | <%= @patient.age_string %></h5>
-        <% end %>
-
-        <p class="mb-0 mt-3"><strong>Sexo </strong></p>
-        <p><%= @patient.sex %></p>
-
-        <% if @patient.cuil.present? %>
-          <p class="mb-0 mt-3"><strong>CUIL </strong></p>
-          <p><%= @patient.cuil %></p>
-        <% end %>
-
-        <% @patient.patient_phones.each do |phone| %>
-          <p class="mb-0 mt-3"><strong><%= phone.phone_type %></strong></p> 
-          <p><%= phone.number %></p>
-        <% end %>
+      <div class="col-4 border-left">
+        <%= render "shared/patient_show", :patient => @patient %>
       </div>
     </div>
   </div>
