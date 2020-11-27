@@ -12,6 +12,7 @@ class Patient < ApplicationRecord
   belongs_to :address, optional: true
   belongs_to :current_address, optional: true
   belongs_to :occupation, optional: true
+  belongs_to :assigned_establishment, class_name: "Establishment"
   has_one :epidemic_sheet, dependent: :destroy
   has_one :covid_profile, dependent: :destroy
   has_many :patient_phones, dependent: :destroy

@@ -25,9 +25,7 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets/new
   def new
     @epidemic_sheet = EpidemicSheet.new
-    @case_definitions = CaseDefinition.all
     @epidemic_sheet.build_case_definition
-    @diagnostic_methods = DiagnosticMethod.all
     @epidemic_sheet.build_patient
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
@@ -36,8 +34,6 @@ class EpidemicSheetsController < ApplicationController
   
   # GET /epidemic_sheets/1/edit
   def edit
-    @case_definitions = CaseDefinition.all
-    @diagnostic_methods = DiagnosticMethod.all
   end
 
   # POST /epidemic_sheets
@@ -94,13 +90,18 @@ class EpidemicSheetsController < ApplicationController
     end
     
     def set_epidemic_sheet_symptoms
-      @symptoms = Symptom.all
-      @previous_symptoms = PreviousSymptom.all
+      @symptoms = Symptom.all.sort_by &:name
+      @previous_symptoms = PreviousSymptom.all.sort_by &:name
+      @occupations = Occupation.all.sort_by &:name
+      @case_definitions = CaseDefinition.all
+      @diagnostic_methods = DiagnosticMethod.all
+      @establishments = Establishment.all.sort_by &:name
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def epidemic_sheet_update_params
       params.require(:epidemic_sheet).permit(
+        :occupation_id,
         :init_symptom_date, 
         :presents_symptoms, 
         :symptoms_observations, 
@@ -113,7 +114,10 @@ class EpidemicSheetsController < ApplicationController
           :id,
           :case_type,
           :diagnostic_method_id
-        ]
+        ],
+        patient_attributes: [
+          :assigned_establishment_id
+        ] 
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -141,6 +145,8 @@ class EpidemicSheetsController < ApplicationController
           :sex,
           :birthdate,
           :status,
+          :occupation_id,
+          :assigned_establishment_id,
           patient_phones_attributes: [
             :id,
             :phone_type,

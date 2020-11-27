@@ -85,8 +85,8 @@
             autocomplete: "off",
           }
         %>
-
       </div>
+
     </div>
 
     <%# Telefonos del paciente %>
@@ -113,6 +113,37 @@
         <% end %>
       </tbody>
     </table>
+
+    <div class="row">
+      <div class="col-6">
+        <%= patient_form.input :occupation_id, label: 'Ocupación', include_blank: false,
+          collection: @occupations.map { |occupation| [occupation.name.humanize, occupation.id] },
+          :input_html => {
+            required: true,
+            include_blank: true,
+            title: "Sin informar",
+            class: 'selectpicker custom-select-pick',
+            "data-width"=>"100%",
+            "data-size"=>"10",
+            value: "#{ patient_form.object.occupation.present? ? patient_form.object.occupation : "" }"
+          }
+        %>
+      </div>
+      <div class="col-6">
+        <%= patient_form.input :assigned_establishment_id, label: 'Establecimiento',
+          collection: @establishments.map {|establishment|  [establishment.name, establishment.id ]},
+          :input_html => {
+            required: true,
+            include_blank: false,
+            class: 'selectpicker custom-select-pick',
+            "data-width"=>"100%",
+            "data-size"=>"10",
+            "title"=>"Seleccionar establecimiento",
+            "data-live-search"=> true
+          }
+        %>
+      </div>
+    </div>
 
     <%# Direccion Andes %>
     <%= patient_form.simple_fields_for :address do |patient_address| %>

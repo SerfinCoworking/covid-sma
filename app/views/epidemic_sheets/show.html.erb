@@ -137,38 +137,7 @@
         </div>
       </div>
       <div class="col-4">
-        <div class="flex-fill text-center">
-          <%= image_tag patient_avatar(@epidemic_sheet.patient), size: '100x100', class:"rounded-circle" %>
-        </div>
-
-        <h5 class="mt-3"><strong><%= @epidemic_sheet.patient.last_name %>,</strong> <%= @epidemic_sheet.patient.first_name %></h5>
-
-        <h5 class="mt-3">
-          <%= @epidemic_sheet.patient.dni %>
-          <span class="badge badge-<%= @epidemic_sheet.patient.Temporal? ? "warning" : "success" %>">
-            <%= @epidemic_sheet.patient.status %>
-          </span>
-        </h5>
-
-        <h5> <%= @epidemic_sheet.patient.email %> </h5>
-
-        <% if @epidemic_sheet.patient.birthdate.present? %>
-          <p class="mb-0 mt-3"><strong>Fecha de nacimiento</strong></p>
-          <p><%= @epidemic_sheet.patient.birthdate.strftime("%d/%m/%Y")%> | <%= @epidemic_sheet.patient.age_string %></h5>
-        <% end %>
-
-        <p class="mb-0 mt-3"><strong>Sexo </strong></p>
-        <p><%= @epidemic_sheet.patient.sex %></p>
-
-        <% if @epidemic_sheet.patient.cuil.present? %>
-          <p class="mb-0 mt-3"><strong>CUIL </strong></p>
-          <p><%= @epidemic_sheet.patient.cuil %></p>
-        <% end %>
-
-        <% @epidemic_sheet.patient.patient_phones.each do |phone| %>
-          <p class="mb-0 mt-3"><strong><%= phone.phone_type %></strong></p> 
-          <p><%= phone.number %></p>
-        <% end %>
+        <%= render "shared/patient_show", :patient => @epidemic_sheet.patient %>
       </div>
     </div>
   </div>

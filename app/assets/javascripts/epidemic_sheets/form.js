@@ -10,8 +10,16 @@ $(document).on('turbolinks:load', function(e){
         $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
       }
     });
-    
-    
+
+    // mostramos selector test realizado, si el valor seleccionado no es "sospechoso"
+    $("#case-select").on('change', function(e){
+      console.log(e.target, "asdsadasd");
+      if($(e.target).val() != 'sospechoso'){
+        $(e.target).closest('.case-type-container').siblings('.diagnostic-method').addClass("show");
+      }else{
+        $(e.target).closest('.case-type-container').siblings('.diagnostic-method').removeClass("show");
+      }   
+    });    
 
     // Función para autocompletar DNI de paciente
     $('#patient-dni').autocomplete({
