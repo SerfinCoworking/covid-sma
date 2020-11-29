@@ -48,5 +48,5 @@
   
   <% if patient.assigned_establishment.present? %>
     <p class="mb-0 mt-3"><strong>Establecimiento </strong></p>
-    <p><%= patient.assigned_establishment.name.humanize %></p>
+    <p><%= patient.assigned_establishment.name %></p>
   <% end %>

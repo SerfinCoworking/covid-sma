@@ -7,7 +7,6 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :case_definition
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
-  has_one :covid_profile, dependent: :destroy
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"
   has_many :sheet_symptoms
@@ -35,7 +34,6 @@ class EpidemicSheet < ApplicationRecord
   # Callbacks
   before_create :assign_establishment
   before_validation :assign_epidemic_week
-  after_create :create_covid_profile
   
   filterrific(
     available_filters: [
@@ -118,10 +116,5 @@ class EpidemicSheet < ApplicationRecord
 
   def assign_epidemic_week
     self.epidemic_week = self.init_symptom_date.cweek
-  end
-
-  # Create covid profile of the patient with the sheet attributes
-  def create_covid_profile
-    CovidProfile.create_with_epidemic_sheet(self)
   end
 end
