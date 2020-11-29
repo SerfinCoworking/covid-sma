@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_27_112137) do
+ActiveRecord::Schema.define(version: 2020_11_29_211723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 2020_11_27_112137) do
     t.bigint "diagnostic_method_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "special_device_id"
     t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
+    t.index ["special_device_id"], name: "index_case_definitions_on_special_device_id"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -96,30 +98,6 @@ ActiveRecord::Schema.define(version: 2020_11_27_112137) do
     t.string "iso2"
     t.string "iso3"
     t.string "phone_code"
-  end
-
-  create_table "covid_profile_movements", force: :cascade do |t|
-    t.bigint "covid_profile_id"
-    t.bigint "user_id"
-    t.bigint "sector_id"
-    t.string "action"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["covid_profile_id"], name: "index_covid_profile_movements_on_covid_profile_id"
-    t.index ["sector_id"], name: "index_covid_profile_movements_on_sector_id"
-    t.index ["user_id"], name: "index_covid_profile_movements_on_user_id"
-  end
-
-  create_table "covid_profiles", force: :cascade do |t|
-    t.bigint "epidemic_sheet_id"
-    t.bigint "patient_id"
-    t.date "init_symptom_date"
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "clinic_location", default: 0
-    t.index ["epidemic_sheet_id"], name: "index_covid_profiles_on_epidemic_sheet_id"
-    t.index ["patient_id"], name: "index_covid_profiles_on_patient_id"
   end
 
   create_table "current_addresses", force: :cascade do |t|
@@ -374,6 +352,12 @@ ActiveRecord::Schema.define(version: 2020_11_27_112137) do
     t.datetime "updated_at", null: false
     t.index ["epidemic_sheet_id"], name: "index_sheet_symptoms_on_epidemic_sheet_id"
     t.index ["symptom_id"], name: "index_sheet_symptoms_on_symptom_id"
+  end
+
+  create_table "special_devices", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "states", force: :cascade do |t|
