@@ -132,6 +132,7 @@
       <div class="col-6">
         <%= patient_form.input :assigned_establishment_id, label: 'Establecimiento designado',
           collection: @establishments.map {|establishment|  [establishment.name, establishment.id ]},
+          selected: current_user.establishment.id,
           :input_html => {
             required: true,
             include_blank: false,
@@ -139,7 +140,7 @@
             "data-width"=>"100%",
             "data-size"=>"10",
             "title"=>"Seleccionar establecimiento",
-            "data-live-search"=> true
+            "data-live-search"=> true,            
           }
         %>
       </div>

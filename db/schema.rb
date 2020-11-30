@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_040952) do
+ActiveRecord::Schema.define(version: 2020_11_29_211723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 2020_11_29_040952) do
     t.bigint "diagnostic_method_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "special_device_id", default: 1
     t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
+    t.index ["special_device_id"], name: "index_case_definitions_on_special_device_id"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -350,6 +352,12 @@ ActiveRecord::Schema.define(version: 2020_11_29_040952) do
     t.datetime "updated_at", null: false
     t.index ["epidemic_sheet_id"], name: "index_sheet_symptoms_on_epidemic_sheet_id"
     t.index ["symptom_id"], name: "index_sheet_symptoms_on_symptom_id"
+  end
+
+  create_table "special_devices", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "states", force: :cascade do |t|

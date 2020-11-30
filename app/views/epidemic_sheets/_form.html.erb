@@ -19,38 +19,7 @@
 
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
-            <div class="d-flex justify-content-left">
-              <%# CASO %>
-              <div class="flex-fill case-type-container">
-                <%= case_d.input :case_type, label: 'Caso', include_blank: false,
-                  collection: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] },
-                  :value_method => :second,
-                  :input_html => {
-                    required: true,
-                    include_blank: false,
-                    id: "case-select",
-                    class: 'selectpicker custom-select-pick',
-                    "data-width"=>"100%",
-                    "data-size"=>"10",
-                    value: "#{ case_d.object.case_type }"
-                  }
-                %>
-              </div>
-              <%# MÉTODO %>
-              <div class="flex-fill <%= case_d.object.sospechoso? ? '' : 'show' %> fade diagnostic-method">
-                <%= case_d.input :diagnostic_method_id, label: 'Método',
-                  collection: @diagnostic_methods.map {|method|  [method.name, method.id ]},
-                  :input_html => {
-                    required: true,
-                    include_blank: false,
-                    class: 'selectpicker custom-select-pick',
-                    "data-width"=>"100%",
-                    "data-size"=>"10",
-                    "title"=>"Seleccionar método"
-                  }
-                %>
-              </div>
-            </div>
+            <%= render "case_definition", :case_d => case_d %>
           <% end %> <!-- End case definition -->
 
           <h5 class="border-bottom">Paciente</h5>
@@ -174,9 +143,7 @@
               } %>
             </div>
           </div>
-        </div>
-
-        <div class="col-12">
+     
           <h5 class="border-bottom d-flex justify-content-between">
             Personas que tuvieron contacto
             <%= link_to_add_association f, :close_contacts, class: 'btn btn-primary', id: "add-close-contact",
@@ -203,9 +170,10 @@
               <% end %>
             </tbody>
           </table>
+        
         <% end %>
-      </div>
-    </div>
+      </div> <!-- ./col-->
+    </div> <!-- ./row-->
   </div>
 
   <div class="card-footer d-flex justify-content-end">
@@ -215,6 +183,8 @@
     </button>
   </div>
 </div>
+
+<%# Nodal de ficha existente %>
 
 <div class="modal fade" tabindex="-1" id="patient-found-modal">
   <div class="modal-dialog">
