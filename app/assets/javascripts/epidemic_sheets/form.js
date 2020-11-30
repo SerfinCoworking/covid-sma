@@ -8,16 +8,18 @@ $(document).on('turbolinks:load', function(e){
         $(e.target).closest(".col-4").siblings(".symptoms-fields").removeClass('show');
         $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
         $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
+        
       }
     });
 
     // mostramos selector test realizado, si el valor seleccionado no es "sospechoso"
     $("#case-select").on('change', function(e){
-      console.log(e.target, "asdsadasd");
       if($(e.target).val() != 'sospechoso'){
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').addClass("show");
+        $(e.target).closest('.case-type-container').siblings('.special-device').addClass("show");
       }else{
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').removeClass("show");
+        $(e.target).closest('.case-type-container').siblings('.special-device').removeClass("show");
       }   
     });    
 
@@ -190,5 +192,22 @@ $(document).on('turbolinks:load', function(e){
     $('#close-contact-form').on('cocoon:after-insert', function(e, insertedItem, originalEvent) { 
       insertedItem.find('.full-name').focus();
       $('.selectpicker').selectpicker({style: 'btn-sm btn-default'});
+      $('.last-contact-date').datepicker({
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+      });
     });
 });

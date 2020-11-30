@@ -91,17 +91,23 @@
         
           <div class="tab-pane fade show active" id="epidemic-sheet" role="tabpanel" aria-labelledby="epidemic-sheet-tab">
             <h5 class="border-bottom">Definición de caso</h5>
-            <div class="d-flex justify-content-between">
-              <div class="flex-fill">
+            <div class="row">
+              <div class="col-4">
                 <h5>Caso</h5>
                 <span class="badge badge-<%= @epidemic_sheet.case_definition.sospechoso? ? 'warning' : 'danger' %>">
                   <%= @epidemic_sheet.case_definition.case_type.humanize %>
                 </span>
               </div>
               <% unless @epidemic_sheet.case_definition.sospechoso? %>
-                <div class="flex-fill">
+                <div class="col-4">
                   <h5>Método</h5>
                   <%= @epidemic_sheet.case_definition.diagnostic_method.name %>
+                </div>
+              <% end %>
+              <% unless @epidemic_sheet.case_definition.sospechoso? %>
+                <div class="col-4">
+                  <h5>Dispositivo especial</h5>
+                  <%= @epidemic_sheet.case_definition.special_device.name %>
                 </div>
               <% end %>
             </div>

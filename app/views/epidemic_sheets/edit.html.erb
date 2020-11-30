@@ -11,44 +11,14 @@
     <% end %>
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-8 border-right">
-        <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
+    <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
+      <div class="row border-bottom mb-1">
+        <div class="col-8 border-right">
           <%= f.error_notification %>
 
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
-            <div class="d-flex justify-content-between">
-              <%# CASO %>
-              <div class="flex-fill">
-                <%= case_d.input :case_type, label: 'Caso', include_blank: false,
-                  collection: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] },
-                  :value_method => :second,
-                  :input_html => {
-                    required: true,
-                    include_blank: false,
-                    class: 'selectpicker custom-select-pick case-select',
-                    "data-width"=>"100%",
-                    "data-size"=>"10",
-                    value: "#{ case_d.object.case_type }"
-                  }
-                %>
-              </div>
-              <%# MÉTODO %>
-              <div class="flex-fill <%= case_d.object.sospechoso? ? 'invisible' : 'visible' %> diagnostic-method">
-                <%= case_d.input :diagnostic_method_id, label: 'Método',
-                  collection: @diagnostic_methods.map {|method|  [method.name, method.id ]},
-                  :input_html => {
-                    required: true,
-                    include_blank: false,
-                    class: 'selectpicker custom-select-pick',
-                    "data-width"=>"100%",
-                    "data-size"=>"10",
-                    "title"=>"Seleccionar método"
-                  }
-                %>
-              </div>
-            </div>
+            <%= render "case_definition", :case_d => case_d %>
           <% end %> <!-- End case definition -->
      
 
@@ -150,13 +120,45 @@
               } %>
             </div>
           </div>
-        <% end %>
+        </div>
+        <div class="col-4">
+          <%= render "shared/patient_show", :patient => @epidemic_sheet.patient %>
+        </div>
+      </div><!--  /.row -->
+          
+      <div class="row">
+        <div class="col-12">
+           <h5 class="border-bottom d-flex justify-content-between">
+            Personas que tuvieron contacto
+            <%= link_to_add_association f, :close_contacts, class: 'btn btn-primary', id: "add-close-contact",
+              data: {"association-insertion-node" => "tbody.close_contacts", "association-insertion-method" => "append"} do %>
+              <%= fa_icon "plus" %>
+              Agregar contacto
+            <% end %>
+          </h5>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Apellido y nombre</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Domicilio</th>
+                <th>Fecha último contacto</th>
+                <th>Tipo de contacto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="close_contacts" id="close-contact-form">
+              <%= f.simple_fields_for :close_contacts do | form_close_contact | %>
+                <%= render "close_contact_fields", :f => form_close_contact %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
       
-      <div class="col-4">
-        <%= render "shared/patient_show", :patient => @epidemic_sheet.patient %>
-      </div>
-    </div>
+    <% end %>
+      
   </div>
 
   <div class="card-footer d-flex justify-content-end">

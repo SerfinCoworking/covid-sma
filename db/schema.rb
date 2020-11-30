@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_215949) do
     t.bigint "diagnostic_method_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "special_device_id"
     t.bigint "case_status_id"
+    t.bigint "special_device_id", default: 1
     t.index ["case_status_id"], name: "index_case_definitions_on_case_status_id"
     t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
     t.index ["special_device_id"], name: "index_case_definitions_on_special_device_id"

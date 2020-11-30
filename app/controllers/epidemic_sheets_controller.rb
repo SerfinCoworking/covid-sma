@@ -106,6 +106,7 @@ class EpidemicSheetsController < ApplicationController
       @case_definitions = CaseDefinition.all
       @diagnostic_methods = DiagnosticMethod.all
       @establishments = Establishment.all.sort_by &:name
+      @special_devices = SpecialDevice.all.sort_by &:name
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -123,11 +124,23 @@ class EpidemicSheetsController < ApplicationController
         case_definition_attributes: [ 
           :id,
           :case_type,
+          :special_device_id,
           :diagnostic_method_id
         ],
         patient_attributes: [
           :assigned_establishment_id
-        ] 
+        ],
+        close_contacts_attributes: [ 
+          :id,
+          :full_name,
+          :dni,
+          :phone,
+          :sex,
+          :address,
+          :last_contact_date,
+          :contact_type_id,
+          :_destroy,
+        ], 
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -145,6 +158,7 @@ class EpidemicSheetsController < ApplicationController
         case_definition_attributes: [ 
           :id,
           :case_type,
+          :special_device_id,
           :diagnostic_method_id
         ],
         patient_attributes: [ 

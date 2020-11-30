@@ -27,6 +27,7 @@
       collection: ContactType.all.map { |ct| [ct.name, ct.id] },
       :value_method => :second,
       :input_html => {
+        title: 'Tipo de contacto',
         required: true,
         include_blank: false,
         class: 'selectpicker custom-select-pick',

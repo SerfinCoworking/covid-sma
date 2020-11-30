@@ -1,0 +1,47 @@
+<div class="row">
+  <%# CASO %>
+  <div class="col-4 case-type-container">
+    <%= case_d.input :case_type, label: 'Caso', include_blank: false,
+      collection: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] },
+      :value_method => :second,
+      :input_html => {
+        required: true,
+        include_blank: false,
+        id: "case-select",
+        class: 'selectpicker custom-select-pick',
+        "data-width"=>"100%",
+        "data-size"=>"10",
+        value: "#{ case_d.object.case_type }"
+      }
+    %>
+  </div>
+  <%# MÉTODO %>
+  <div class="col-4 <%= case_d.object.sospechoso? ? '' : 'show' %> fade diagnostic-method">
+    <%= case_d.input :diagnostic_method_id, label: 'Método',
+      collection: @diagnostic_methods.map {|method|  [method.name, method.id ]},
+      :input_html => {
+        required: true,
+        include_blank: false,
+        class: 'selectpicker custom-select-pick',
+        "data-width"=>"100%",
+        "data-size"=>"10",
+        "title"=>"Seleccionar método"
+      }
+    %>
+  </div>
+  
+  <%# ESPECIAL DEVICE %>
+  <div class="col-4 <%= case_d.object.sospechoso? ? '' : 'show' %> fade special-device">
+    <%= case_d.input :special_device_id, label: 'Dispositivo especial',
+      collection: @special_devices.map {|method|  [method.name, method.id ]},
+      :input_html => {
+        required: true,
+        include_blank: false,
+        class: 'selectpicker custom-select-pick',
+        "data-width"=>"100%",
+        "data-size"=>"10",
+        "title"=>"Seleccionar dispositivo especial"
+      }
+    %>
+  </div>
+</div>
