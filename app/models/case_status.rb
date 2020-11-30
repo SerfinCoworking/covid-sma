@@ -1,0 +1,2 @@
+class CaseStatus < ApplicationRecord
+end
