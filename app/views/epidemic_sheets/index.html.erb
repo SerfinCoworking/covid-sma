@@ -23,7 +23,7 @@
           </div>
           <div class="col-md-2 col-sm-2">
             <label>Tipo</label>
-            <%= f.select(:case_type,
+            <%= f.select(:case_status,
               PatientType.all.map{ |type| [type.name.humanize, type.id] },{:include_blank => 'Todos'},
               { class: "selectpicker show-tick", "data-width"=>"100%"}) %>
           </div>

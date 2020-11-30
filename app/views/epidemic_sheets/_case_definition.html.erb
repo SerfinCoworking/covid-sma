@@ -14,7 +14,7 @@
     %>
   </div>
   <%# MÉTODO %>
-  <div class="col-4 <%= case_d.object.sospechoso? ? '' : 'show' %> fade diagnostic-method">
+  <div class="col-4 <%= case_d.object.needs_diagnostic? ? 'show' : '' %> fade diagnostic-method">
     <%= case_d.input :diagnostic_method_id, label: 'Método',
       collection: @diagnostic_methods.map {|method|  [method.name, method.id ]},
       :input_html => {
@@ -29,7 +29,7 @@
   </div>
   
   <%# ESPECIAL DEVICE %>
-  <div class="col-4 <%= case_d.object.sospechoso? ? '' : 'show' %> fade special-device">
+  <div class="col-4 <%= case_d.object.needs_diagnostic? ? 'show' : '' %> fade special-device">
     <%= case_d.input :special_device_id, label: 'Dispositivo especial',
       collection: @special_devices.map {|method|  [method.name, method.id ]},
       :input_html => {

@@ -39,7 +39,7 @@ class EpidemicSheet < ApplicationRecord
     available_filters: [
       :search_fullname,
       :search_dni,
-      :case_type
+      :case_status
     ]
   )
 

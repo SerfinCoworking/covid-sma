@@ -19,7 +19,7 @@ class EpidemicSheetsController < ApplicationController
       EpidemicSheet,
       params[:filterrific],
       select_options: {
-        case_type: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] }
+        case_status: CaseStatus.all.select(:name, :id)
       },
       persistence_id: true,
       default_filter_params: {sorted_by: 'created_at_desc'},
