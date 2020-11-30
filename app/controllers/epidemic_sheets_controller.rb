@@ -129,7 +129,18 @@ class EpidemicSheetsController < ApplicationController
         ],
         patient_attributes: [
           :assigned_establishment_id
-        ] 
+        ],
+        close_contacts_attributes: [ 
+          :id,
+          :full_name,
+          :dni,
+          :phone,
+          :sex,
+          :address,
+          :last_contact_date,
+          :contact_type_id,
+          :_destroy,
+        ], 
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
