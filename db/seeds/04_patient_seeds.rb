@@ -10,3 +10,8 @@ Occupation.create(name: "Prefectura")
 Occupation.create(name: "Ejército")
 Occupation.create(name: "Otro")
 
+ContactType.create(name: 'Conviviente')
+ContactType.create(name: 'Social')
+ContactType.create(name: 'Laboral')
+
+
