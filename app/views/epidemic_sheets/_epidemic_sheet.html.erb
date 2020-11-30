@@ -6,8 +6,8 @@
     </td>
     <td><%= epidemic_sheet.patient_age_string %></td>
     <td>
-      <span class="badge badge-<%= epidemic_sheet.case_definition.sospechoso? ? "secondary" : "danger"%>">
-        <%= epidemic_sheet.case_definition_case_type.humanize %>
+      <span class="badge badge-<%= epidemic_sheet.case_definition_case_status_badge %>">
+        <%= epidemic_sheet.case_definition_case_status_name.humanize %>
       </span>
     </td>
     <td>

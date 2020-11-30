@@ -4,7 +4,7 @@ class EpidemicSheet < ApplicationRecord
 
   # Relations
   belongs_to :patient
-  belongs_to :case_definition
+  belongs_to :case_definition, dependent: :destroy
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
   has_many :close_contacts
@@ -29,7 +29,7 @@ class EpidemicSheet < ApplicationRecord
   
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
-  delegate :case_type, to: :case_definition, prefix: true
+  delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   
   # Callbacks
   before_create :assign_establishment

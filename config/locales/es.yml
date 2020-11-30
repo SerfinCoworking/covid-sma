@@ -60,6 +60,7 @@ es:
         init_symptom_date: "Fecha de inicio"
         epidemic_week: "Semana epidemiológica"
       case_definition:
+        case_status_id: "Case"
         diagnostic_method_id: "Método de diagnóstico"
       close_contact:
         full_name: "Nombre completo"

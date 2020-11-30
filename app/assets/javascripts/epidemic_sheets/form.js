@@ -14,7 +14,7 @@ $(document).on('turbolinks:load', function(e){
 
     // mostramos selector test realizado, si el valor seleccionado no es "sospechoso"
     $("#case-select").on('change', function(e){
-      if($(e.target).val() != 'sospechoso'){
+      if($(e.target).val() != '1'){
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').addClass("show");
         $(e.target).closest('.case-type-container').siblings('.special-device').addClass("show");
       }else{

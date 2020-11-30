@@ -1,17 +1,15 @@
 <div class="row">
   <%# CASO %>
   <div class="col-4 case-type-container">
-    <%= case_d.input :case_type, label: 'Caso', include_blank: false,
-      collection: CaseDefinition.case_types.keys.map { |ct| [ct.humanize, ct] },
-      :value_method => :second,
+    <%= case_d.input :case_status_id, label: 'Caso', include_blank: false,
+      collection: CaseStatus.all,
       :input_html => {
         required: true,
         include_blank: false,
         id: "case-select",
         class: 'selectpicker custom-select-pick',
         "data-width"=>"100%",
-        "data-size"=>"10",
-        value: "#{ case_d.object.case_type }"
+        "data-size"=>"10"
       }
     %>
   </div>

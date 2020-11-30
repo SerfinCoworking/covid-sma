@@ -157,7 +157,7 @@ class EpidemicSheetsController < ApplicationController
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
-          :case_type,
+          :case_status_id,
           :special_device_id,
           :diagnostic_method_id
         ],

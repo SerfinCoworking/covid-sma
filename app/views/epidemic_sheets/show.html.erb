@@ -94,8 +94,8 @@
             <div class="row">
               <div class="col-4">
                 <h5>Caso</h5>
-                <span class="badge badge-<%= @epidemic_sheet.case_definition.sospechoso? ? 'warning' : 'danger' %>">
-                  <%= @epidemic_sheet.case_definition.case_type.humanize %>
+                <span class="badge badge-<%= @epidemic_sheet.case_definition_case_status_badge %>">
+                  <%= @epidemic_sheet.case_definition_case_status_name.humanize %>
                 </span>
               </div>
               <% unless @epidemic_sheet.case_definition.sospechoso? %>
