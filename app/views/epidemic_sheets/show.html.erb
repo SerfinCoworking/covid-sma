@@ -98,13 +98,13 @@
                   <%= @epidemic_sheet.case_definition_case_status_name.humanize %>
                 </span>
               </div>
-              <% unless @epidemic_sheet.case_definition.sospechoso? %>
+              <% unless @epidemic_sheet.case_definition.needs_diagnostic? %>
                 <div class="col-4">
                   <h5>Método</h5>
                   <%= @epidemic_sheet.case_definition.diagnostic_method.name %>
                 </div>
               <% end %>
-              <% unless @epidemic_sheet.case_definition.sospechoso? %>
+              <% unless @epidemic_sheet.case_definition.needs_diagnostic? %>
                 <div class="col-4">
                   <h5>Dispositivo especial</h5>
                   <%= @epidemic_sheet.case_definition.special_device.name %>
