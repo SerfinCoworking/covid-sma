@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_184002) do
+ActiveRecord::Schema.define(version: 2020_12_01_113042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -56,23 +56,37 @@ ActiveRecord::Schema.define(version: 2020_11_30_184002) do
 
   create_table "case_definitions", force: :cascade do |t|
     t.bigint "diagnostic_method_id"
-    t.bigint "case_status_id", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "special_device_id", default: 1
+    t.bigint "case_status_id", default: 1
     t.index ["case_status_id"], name: "index_case_definitions_on_case_status_id"
     t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
     t.index ["special_device_id"], name: "index_case_definitions_on_special_device_id"
   end
 
-  create_table "case_statuses", force: :cascade do |t|
-    t.string "name"
-    t.bigint "case_status_id", default: 1
-    t.string "badge", default: "secondary"
-    t.boolean "needs_diagnostic", default: false
+  create_table "case_evolutions", force: :cascade do |t|
+    t.bigint "case_status_id"
+    t.bigint "diagnostic_method_id"
+    t.bigint "epidemic_sheet_id"
+    t.bigint "patient_id"
+    t.bigint "special_device_id"
+    t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["case_status_id"], name: "index_case_statuses_on_case_status_id"
+    t.index ["case_status_id"], name: "index_case_evolutions_on_case_status_id"
+    t.index ["diagnostic_method_id"], name: "index_case_evolutions_on_diagnostic_method_id"
+    t.index ["epidemic_sheet_id"], name: "index_case_evolutions_on_epidemic_sheet_id"
+    t.index ["patient_id"], name: "index_case_evolutions_on_patient_id"
+    t.index ["special_device_id"], name: "index_case_evolutions_on_special_device_id"
+  end
+
+  create_table "case_statuses", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "badge", default: "secondary"
+    t.boolean "needs_diagnostic", default: false
   end
 
   create_table "cities", force: :cascade do |t|

@@ -15,6 +15,7 @@ class Patient < ApplicationRecord
   belongs_to :assigned_establishment, class_name: "Establishment"
   has_one :epidemic_sheet, dependent: :destroy
   has_many :patient_phones, dependent: :destroy
+  has_many :case_evolutions
 
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }
   accepts_nested_attributes_for :address
