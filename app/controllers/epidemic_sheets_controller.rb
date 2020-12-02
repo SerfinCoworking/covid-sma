@@ -70,7 +70,7 @@ class EpidemicSheetsController < ApplicationController
   # PATCH/PUT /epidemic_sheets/1.json
   def update
     respond_to do |format|
-      if @epidemic_sheet.update(epidemic_sheet_params)
+      if @epidemic_sheet.update!(epidemic_sheet_params)
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }
@@ -121,7 +121,7 @@ class EpidemicSheetsController < ApplicationController
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
-          :case_type,
+          :case_status_id,
           :special_device_id,
           :diagnostic_method_id
         ],
