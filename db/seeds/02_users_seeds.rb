@@ -40,3 +40,17 @@ damian.add_role :admin
 damian.sector = sectorInformatico
 damian.save!
 Profile.create(user: damian, first_name: "Damián", last_name: "Diez", email: "damian@exmaple.com", dni: "28989316")
+
+medico = User.create(username: '22222222', password: '12345678')
+UserSector.create(user: medico, sector: sectorInformatico)
+medico.add_role :medico
+medico.sector = sectorInformatico
+medico.save!
+Profile.create(user: medico, first_name: "Medico", last_name: "de prueba", email: "asd@asd.com", dni: "12345678")
+
+estadistica = User.create(username: '33333333', password: '12345678')
+UserSector.create(user: estadistica, sector: sectorInformatico)
+estadistica.add_role :estadistica
+estadistica.sector = sectorInformatico
+estadistica.save!
+Profile.create(user: estadistica, first_name: "Estadística", last_name: "de prueba", email: "asd@asd.com", dni: "12345678")

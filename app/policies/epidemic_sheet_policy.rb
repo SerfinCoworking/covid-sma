@@ -1,4 +1,8 @@
 class EpidemicSheetPolicy < ApplicationPolicy
+  def dashboard?
+    user.has_any_role?(:admin, :medico, :estadistica)
+  end
+
   def index?
     user.has_any_role?(:admin, :medico, :estadistica)
   end
@@ -16,7 +20,7 @@ class EpidemicSheetPolicy < ApplicationPolicy
   end
 
   def update?
-    user.has_any_role?(:admin)
+    user.has_any_role?(:admin, :medico, :estadistica)
   end
 
   def edit?

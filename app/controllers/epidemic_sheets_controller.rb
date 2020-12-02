@@ -3,6 +3,7 @@ class EpidemicSheetsController < ApplicationController
   before_action :set_epidemic_sheet_symptoms, only: [:new, :create, :edit, :update]
 
   def dashboard
+    authorize EpidemicSheet
     _helper = ActiveSupport::NumberHelper
     _epidemic_sheets_today = EpidemicSheet.current_day
     _epidemic_sheets_month = EpidemicSheet.current_month
@@ -15,6 +16,7 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets
   # GET /epidemic_sheets.json
   def index
+    authorize EpidemicSheet
     @filterrific = initialize_filterrific(
       EpidemicSheet,
       params[:filterrific],
@@ -30,10 +32,12 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets/1
   # GET /epidemic_sheets/1.json
   def show
+    authorize @epidemic_sheet
   end
 
   # GET /epidemic_sheets/new
   def new
+    authorize EpidemicSheet
     @epidemic_sheet = EpidemicSheet.new
     @epidemic_sheet.build_case_definition
     @epidemic_sheet.build_patient
@@ -44,6 +48,7 @@ class EpidemicSheetsController < ApplicationController
   
   # GET /epidemic_sheets/1/edit
   def edit
+    authorize @epidemic_sheet
   end
 
   # POST /epidemic_sheets
@@ -52,6 +57,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet = EpidemicSheet.new(epidemic_sheet_params)
     @epidemic_sheet.created_by = current_user
     @epidemic_sheet.establishment = current_user.establishment
+    authorize @epidemic_sheet
     @epidemic_sheet.update_or_create_address(patient_address_params)
 
     respond_to do |format|
@@ -70,6 +76,7 @@ class EpidemicSheetsController < ApplicationController
   # PATCH/PUT /epidemic_sheets/1
   # PATCH/PUT /epidemic_sheets/1.json
   def update
+    authorize @epidemic_sheet
     respond_to do |format|
       if @epidemic_sheet.update!(epidemic_sheet_params)
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
@@ -85,6 +92,7 @@ class EpidemicSheetsController < ApplicationController
   # DELETE /epidemic_sheets/1
   # DELETE /epidemic_sheets/1.json
   def destroy
+    authorize @epidemic_sheet
     @epidemic_sheet.destroy
     respond_to do |format|
       format.html { redirect_to epidemic_sheets_url, notice: 'La ficha epidemiológica se ha eliminado correctamente.' }
