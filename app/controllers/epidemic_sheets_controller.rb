@@ -57,6 +57,7 @@ class EpidemicSheetsController < ApplicationController
     respond_to do |format|
       if @epidemic_sheet.save!
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "creó", sector: current_user.sector)
+        # @epidemic_sheet.case_definition.record_case_evolution
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else

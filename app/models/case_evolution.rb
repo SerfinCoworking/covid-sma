@@ -5,8 +5,8 @@ class CaseEvolution < ApplicationRecord
   belongs_to :patient
   belongs_to :special_device
 
-  validates_presence_of :case_status, :diagnostic_method, 
-    :epidemic_sheet, :patient, :special_device
+  validates_presence_of :case_status, :epidemic_sheet, :patient      
+  validates_presence_of :diagnostic_method_id, :special_device, if: Proc.new { |case_e| case_e.case_status.needs_diagnostic? }
 
   delegate :name, :badge, to: :case_status, prefix: true
 

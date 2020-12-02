@@ -8,10 +8,9 @@ class CaseDefinition < ApplicationRecord
   delegate :needs_diagnostic?, to: :case_status
 
   validates_presence_of :special_device, :case_status_id
-  validates_presence_of :diagnostic_method_id, if: Proc.new { |case_d| case_d.case_status.needs_diagnostic? }
+  validates_presence_of :diagnostic_method_id, :special_device, if: Proc.new { |case_d| case_d.case_status.needs_diagnostic? }
 
   after_save :record_case_evolution, if: :saved_changes?
-  after_create :record_case_evolution
 
   def record_case_evolution
     CaseEvolution.create!(

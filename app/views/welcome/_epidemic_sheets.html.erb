@@ -17,7 +17,6 @@
     messages: {empty: "No hay fichas en este año"},
     adapter: "highcharts" %>
 
-
   <%
     case_statuses = @epidemic_sheets.joins(case_definition: :case_status).group("case_statuses.name").count #.map { |k, v| [CaseStatus..key(k).humanize, v] }
     status_colors = case_status_colors()
@@ -26,7 +25,7 @@
       colors << status_colors[status]
     end
   %>
-  <%= pie_chart case_statuses, colors: colors, label: 'Cantidad de lotes', adapter: "highcharts" %>
+  <%= pie_chart case_statuses, colors: colors, label: 'Cantidad de casos', adapter: "highcharts" %>
   
   <%= line_chart @epidemic_sheets.joins(:case_definition).where("case_definitions.case_status_id = 3")
     .group_by_week(:init_symptom_date, range: 12.months.ago.midnight..Time.now, 
