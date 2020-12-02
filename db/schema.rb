@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_113042) do
+ActiveRecord::Schema.define(version: 2020_12_02_163633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 2020_12_01_113042) do
     t.index ["city_id"], name: "index_addresses_on_city_id"
     t.index ["country_id"], name: "index_addresses_on_country_id"
     t.index ["state_id"], name: "index_addresses_on_state_id"
+  end
+
+  create_table "case_count_per_days", force: :cascade do |t|
+    t.bigint "case_status_id"
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_status_id"], name: "index_case_count_per_days_on_case_status_id"
   end
 
   create_table "case_definitions", force: :cascade do |t|

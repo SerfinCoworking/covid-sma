@@ -89,7 +89,11 @@ class EpidemicSheet < ApplicationRecord
   end
 
   def self.current_day
-    where("created_at >= :today", { today: DateTime.now.beginning_of_day })
+    where("epidemic_sheets.created_at >= :today_beginning AND epidemic_sheets.created_at <= :today_end", 
+      { today_beginning: DateTime.now.beginning_of_day, 
+        today_end: DateTime.now.end_of_day
+      }
+    )
   end
 
   def self.last_week
