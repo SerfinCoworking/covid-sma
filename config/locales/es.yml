@@ -39,6 +39,34 @@ es:
       establishment: "Establecimiento"
       sector: "Sector"
       covid_profile: "Perfil covid"
+      case_status: "Estado del caso"
+      address: "Dirección"
+      case_definition: "Definición del caso"
+      case_evolution: "Evolución del caso"
+      city: "Ciudad"
+      contact_type: "Tipo de contacto"
+      country: "País"
+      current_address: "Dirección actual"
+      diagnostic_method: "Método de diagnóstico"
+      epidemic_sheet_movement: "Movimiento de ficha"
+      notification: "Notificación"
+      occupation: "Ocupación"
+      patient_phone: "Teléfono paciente"
+      patient_type: "Tipo de paciente"
+      permission_request: "Solicitud de permiso"
+      previous_symptom: "Síntomas previos"
+      professional: "Profesional"
+      professional_type: "Tipo de profesional"
+      profile: "Perfil"
+      role: "Rol"
+      sheet_previous_symptom: "Síntoma previo en ficha"
+      sheet_symptom: "Síntoma en ficha"
+      special_device: "Dispositivo especial"
+      state: "Provincia"
+      symptom: "Síntoma"
+      user: "Usuario"
+      user_sector: "Usuario en sector"
+
     attributes:
       sector:
         name: "Nombre"
@@ -65,6 +93,14 @@ es:
       close_contact:
         full_name: "Nombre completo"
         contact_type_id: "Tipo de contacto"
+      case_status:
+        name: "Nombre"
+        created_at: "Creado"
+        updated_at: "Modificado"
+        badge: "Insignia"
+        needs_diagnostic: "Necesita diagnóstico"
+        case_definition: "Definición del caso"
+        case_evolution: "Evolución del caso"
 
   date:
     abbr_day_names:
