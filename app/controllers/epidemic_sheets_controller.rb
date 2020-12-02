@@ -55,13 +55,11 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.update_or_create_address(patient_address_params)
 
     respond_to do |format|
-      if @epidemic_sheet.save
+      if @epidemic_sheet.save!
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "creó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else
-        @case_definitions = CaseDefinition.all
-        @diagnostic_methods = DiagnosticMethod.all
         format.html { render :new }
         format.json { render json: @epidemic_sheet.errors, status: :unprocessable_entity }
       end

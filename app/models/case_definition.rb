@@ -11,9 +11,9 @@ class CaseDefinition < ApplicationRecord
   validates_presence_of :diagnostic_method_id, if: Proc.new { |case_d| case_d.case_status.needs_diagnostic? }
 
   after_save :record_case_evolution, if: :saved_changes?
+  after_create :record_case_evolution
 
   def record_case_evolution
-    puts "entró "
     CaseEvolution.create!(
       patient: self.epidemic_sheet.patient,
       epidemic_sheet: self.epidemic_sheet,

@@ -2,7 +2,7 @@
   <%# CASO %>
   <div class="col-4 case-type-container">
     <%= case_d.input :case_status_id, label: 'Caso', include_blank: false,
-      collection: CaseStatus.all,
+      collection: CaseStatus.all.map {|cs|  [cs.name, cs.id, { 'data-needs-diagnostic' => cs.needs_diagnostic? }]},
       :input_html => {
         required: true,
         include_blank: false,

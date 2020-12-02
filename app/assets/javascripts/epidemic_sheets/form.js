@@ -13,14 +13,14 @@ $(document).on('turbolinks:load', function(e){
     });
 
     // mostramos selector test realizado, si el valor seleccionado no es "sospechoso"
-    $("#case-select").on('change', function(e){
-      if($(e.target).val() != '1'){
+    $("#case-select").on('change', function(e){     
+      if($(e.target).find('option:selected').first().attr('data-needs-diagnostic') === 'true'){
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').addClass("show");
         $(e.target).closest('.case-type-container').siblings('.special-device').addClass("show");
       }else{
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').removeClass("show");
         $(e.target).closest('.case-type-container').siblings('.special-device').removeClass("show");
-      }   
+      }
     });    
 
     // Función para autocompletar DNI de paciente
