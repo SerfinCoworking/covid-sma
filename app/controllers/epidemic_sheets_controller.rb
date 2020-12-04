@@ -18,7 +18,7 @@ class EpidemicSheetsController < ApplicationController
   def index
     authorize EpidemicSheet
     @filterrific = initialize_filterrific(
-      EpidemicSheet,
+      EpidemicSheet.order(created_at: :desc),
       params[:filterrific],
       select_options: {
         case_status: CaseStatus.all.select(:name, :id)
