@@ -7,6 +7,9 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :case_definition, dependent: :destroy
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
+  belongs_to :parent_contact, class_name: 'EpidemicSheet', optional: true
+  belongs_to :locked_close_contact, class_name: 'CloseContact', optional: true
+  has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"
   has_many :sheet_symptoms

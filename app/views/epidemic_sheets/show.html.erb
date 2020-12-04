@@ -168,29 +168,76 @@
           </div>
           <%# Close contacts %>
           <div class="tab-pane fade" id="close-contacts" role="tabpanel" aria-labelledby="close-contacts-tab">
-            <table class="table table-hover table-striped table-sm">
-              <thead>
-                <tr>
-                  <th class="border-top-0">Paciente</th>
-                  <th class="border-top-0">Teléfono</th>
-                  <th class="border-top-0">Domicilio</th>
-                  <th class="border-top-0">Fecha último contacto</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @epidemic_sheet.close_contacts.order(created_at: :desc).each do |contact| %>
+            <h5 class="border-bottom"><strong>Contacto origen</strong></h5>
+            <% if @epidemic_sheet.parent_contact.present? %>
+              <div class="row d-flex justify-content-between align-items-center">
+                <div class="p-1 pl-4">
+                  <h5>Paciente</h5>
+                  <strong><%= @epidemic_sheet.parent_contact.patient_dni %></strong>, 
+                  <%= @epidemic_sheet.parent_contact.patient_fullname %>
+                </div>
+                <div class="p-1">
+                  <h5>FIS</h5>
+                  <%= @epidemic_sheet.parent_contact.init_symptom_date.strftime("%d/%m/%Y")%>
+                </div>
+                <div class="p-1">
+                  <h5 class="border-top-0">Estado</h5>
+                  <span class="badge badge-<%= @epidemic_sheet.parent_contact.case_definition_case_status_badge %>">
+                    <%= @epidemic_sheet.parent_contact.case_definition_case_status_name %>
+                  </span>
+                </div>
+                <div class="p-1 pr-4">
+                  <%= link_to epidemic_sheet_path(@epidemic_sheet.parent_contact), target: :_blank, class: 'btn btn-secondary',
+                    title: 'Abrir ficha epidemio', data: { toggle: 'tooltip', placement: 'top' } do %>
+                    <%= fa_icon "external-link-alt" %>
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              El contacto origen por el cuál surgió este caso, aún no se ha determinado.
+            <% end %>
+
+            <h5 class="mt-4 border-bottom"><strong>Contactos estrechos</strong></h5>
+            <% if @epidemic_sheet.close_contacts.count > 0 %>
+              <table class="table table-hover table-striped table-sm">
+                <thead>
                   <tr>
-                    <td>
-                      <strong><%= contact.dni %></strong>
-                      <%= contact.full_name %>
-                    </td>
-                    <td><%= contact.phone %></td>
-                    <td><%= contact.address %></td>
-                    <td><%= contact.last_contact_date.strftime("%d/%m/%Y") %></td>
+                    <th class="border-top-0">Paciente</th>
+                    <th class="border-top-0">Teléfono</th>
+                    <th class="border-top-0">Domicilio</th>
+                    <th class="border-top-0">Fecha último contacto</th>
+                    <th class="border-top-0">Estado</th>
                   </tr>
-                <% end %>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <% @epidemic_sheet.close_contacts.order(created_at: :desc).each do |contact| %>
+                    <tr>
+                      <td>
+                        <strong><%= contact.dni %></strong>
+                        <%= contact.full_name %>
+                      </td>
+                      <td><%= contact.phone %></td>
+                      <td><%= contact.address %></td>
+                      <td><%= contact.last_contact_date.strftime("%d/%m/%Y") %></td>
+                      <td>
+                        <% if contact.contact_epidemic_sheet.present? %>
+                          <span class="badge badge-<%= contact.epidemic_sheet.case_definition_case_status_badge %>">
+                            <%= contact.epidemic_sheet.case_definition_case_status_name %>
+                          </span>
+                        <% else %>
+                          <%= link_to new_contact_epidemic_sheets_path(parent_contact_id: @epidemic_sheet.patient_id, close_contact_id: contact.id), class: "btn btn-sm btn-primary" do %>
+                            <%= fa_icon "plus" %>
+                            Agregar ficha
+                          <% end %>
+                        <% end %>                    
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <p>No se relevaron contactos estrechos de este paciente.</p>
+            <% end %>
           </div>
           <%# Movements %>
           <div class="tab-pane fade" id="movements" role="tabpanel" aria-labelledby="movements-tab">

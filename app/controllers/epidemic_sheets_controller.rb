@@ -1,6 +1,6 @@
 class EpidemicSheetsController < ApplicationController
   before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
-  before_action :set_epidemic_sheet_symptoms, only: [:new, :create, :edit, :update]
+  before_action :set_epidemic_sheet_symptoms, only: [:new, :new_contact, :create, :edit, :update]
 
   def dashboard
     authorize EpidemicSheet
@@ -44,6 +44,18 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
+  end
+
+  def new_contact
+    authorize EpidemicSheet
+    @epidemic_sheet = EpidemicSheet.new
+    @epidemic_sheet.build_case_definition
+    @epidemic_sheet.build_patient
+    @epidemic_sheet.patient.build_address
+    @epidemic_sheet.patient.build_current_address
+    @epidemic_sheet.patient.patient_phones.build
+    @origin_contact_patient = Patient.find(params[:parent_contact_id])
+    @close_contact = CloseContact.find(params[:close_contact_id])
   end
   
   # GET /epidemic_sheets/1/edit
@@ -153,11 +165,13 @@ class EpidemicSheetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def epidemic_sheet_params
       params.require(:epidemic_sheet).permit(
-        :init_symptom_date, 
-        :epidemic_week, 
-        :presents_symptoms, 
-        :symptoms_observations, 
-        :present_previous_symptoms, 
+        :parent_contact_id,
+        :locked_close_contact_id,
+        :init_symptom_date,
+        :epidemic_week,
+        :presents_symptoms,
+        :symptoms_observations,
+        :present_previous_symptoms,
         :prev_symptoms_observations,
         :clinic_location,
         symptom_ids: [],

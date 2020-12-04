@@ -1,27 +1,63 @@
+<%= render 'header' %>
 
 <div class="card fixed-custom-card">
-  <div class="card-header <%= @epidemic_sheet.new_record? ? 'bg-primary text-white' : 'bg-warning' %> d-flex align-items-center justify-content-between">
+  <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center ml-2">
-      <%= fa_icon (@epidemic_sheet.new_record? ?  "plus" : "edit")%>
-      <h5 class="card-title mb-0 ml-2">
-        <%= @epidemic_sheet.new_record? ? "Nueva ficha epidemiológica" : "Editando ficha epidemiológica" %>
-      </h5>
+      <%= fa_icon "edit" %>
+      <h5 class="card-title mb-0 ml-2"> Nueva ficha epidemiológica de contacto estrecho</h5>
     </div>
-    <%= link_to :back, class: @epidemic_sheet.new_record? ? 'btn text-white' : 'btn' do %>
+    <%= link_to :back, class:'btn' do %>
       <%= fa_icon "times" %>
     <% end %>
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-12">
-        <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
+    <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
+      <div class="row border-bottom mb-1">
+        <%= f.input :parent_contact_id, as: :hidden, input_html: { value: "#{@origin_contact_patient.id}" } %>
+        <%= f.input :locked_close_contact_id, as: :hidden, input_html: { value: "#{@close_contact.id}" } %>
+        
+        <div class="col-8 border-right">
           <%= f.error_notification %>
 
+          <h5 class="border-bottom">Datos relevados del caso contacto</h5>
+          <div class="row d-flex justify-content-between">
+            <div class="col p-1 pl-4">
+              <% if @close_contact.full_name.present? %>
+                <h5>Apellido y nombre</h5>
+                <%= @close_contact.full_name %>
+              <% end %>
+            </div>
+            <div class="col p-1">
+              <% if @close_contact.dni.present? %>
+                <h5>DNI</h5>
+                <%= @close_contact.dni %>
+              <% end %>
+            </div>
+            <div class="col p-1">
+              <% if @close_contact.full_name.present? %>
+                <h5>Teléfono</h5>
+                <%= @close_contact.phone %>
+              <% end %>
+            </div>
+            <div class="col p-1">
+              <% if @close_contact.full_name.present? %>
+                <h5>Fecha último contacto</h5>
+                <%= @close_contact.full_name %>
+              <% end %>
+            </div>
+            <div class="col">
+              <% if @close_contact.contact_type.present? %>
+                <h5>Tipo de contacto</h5>
+                <%= @close_contact.contact_type_name %>
+              <% end %>
+            </div>
+          </div>
+          
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
             <%= render "case_definition", :case_d => case_d %>
           <% end %> <!-- End case definition -->
-
+     
           <h5 class="border-bottom">Paciente</h5>
           <div class="d-flex flex-row">
             <div class="custom-input-group w-40 pr-1">
@@ -48,9 +84,9 @@
           </div>
 
           <h5 class="border-bottom">Información clínica</h5>
-          <div class="d-flex justify-content-left">
-            <div class="p-1 w-40">
-              <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio Síntomas (FIS)", html5: true, required: true,
+          <div class="d-flex justify-content-between">
+            <div class="flex-fill p-1">
+              <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio", html5: true, required: true,
                 :input_html => {
                   required: true,
                   class: "form-control prescribed-date",
@@ -59,7 +95,10 @@
                 }
               %>
             </div>
-            <div class="p-1 w-40">
+            <div class="flex-fill p-1">
+              <%= f.input :epidemic_week, label: 'Semana epidemiológica', readonly: true %>
+            </div>
+            <div class="flex-fill p-1">
               <%= f.input :clinic_location, label: 'Situación', include_blank: false,
                 collection: EpidemicSheet.clinic_locations.keys.map { |ct| [ct.humanize, ct] },
                 :value_method => :second,
@@ -74,7 +113,6 @@
               %>
             </div>
           </div>
-          
           <h5 class="border-bottom">Signos y sintomas</h5>
           <div class="row">
             <div class="col-4">
@@ -83,7 +121,7 @@
                 <label class="custom-control-label" for="present-symptoms">Presenta síntomas </label>
               </div>
             </div>
-            <div class="col-4 fade symptoms-fields">
+            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
               <%# symptoms %>
               <%= f.input :symptom_ids, label: 'Síntomas',
                 collection: @symptoms,
@@ -100,7 +138,7 @@
                 }
               %>
             </div>
-            <div class="col-4 fade symptoms-fields">
+            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
               <%= f.input :symptoms_observations, 
               label: 'Observaciones', 
               :input_html => {
@@ -109,7 +147,7 @@
               %>
             </div>
           </div>
-          
+
           <h5 class="border-bottom">Enfermedades previas</h5>
           <div class="row">
             <div class="col-4">
@@ -118,7 +156,7 @@
                 <label class="custom-control-label" for="present-prev-symp">Enfermedades previas </label>
               </div>
             </div>
-            <div class="col-4 fade symptoms-fields">
+            <div class="col-4 fade <%= f.object.present_previous_symptoms.present? && f.object.present_previous_symptoms ? "show" : "" %> symptoms-fields">
               <%# Sintomas previos %>
               <%= f.input :previous_symptom_ids, label: 'Síntomas Previos',
                 collection: @previous_symptoms,
@@ -135,7 +173,7 @@
                 }
               %>
             </div>
-            <div class="col-4 fade symptoms-fields">
+            <div class="col-4 fade <%= f.object.present_previous_symptoms.present? && f.object.present_previous_symptoms ? "show" : "" %> symptoms-fields">
               <%= f.input :prev_symptoms_observations, 
               label: 'Observaciones', 
               :input_html => {
@@ -143,8 +181,15 @@
               } %>
             </div>
           </div>
-     
-          <h5 class="border-bottom d-flex justify-content-between">
+        </div>
+        <div class="col-4">
+          <%= render "shared/origin_contact_patient_show", :patient => @origin_contact_patient %>
+        </div>
+      </div><!--  /.row -->
+          
+      <div class="row">
+        <div class="col-12">
+           <h5 class="border-bottom d-flex justify-content-between">
             Personas que tuvieron contacto
             <%= link_to_add_association f, :close_contacts, class: 'btn btn-primary', id: "add-close-contact",
               data: {"association-insertion-node" => "tbody.close_contacts", "association-insertion-method" => "append"} do %>
@@ -170,10 +215,11 @@
               <% end %>
             </tbody>
           </table>
-        
-        <% end %>
-      </div> <!-- ./col-->
-    </div> <!-- ./row-->
+        </div>
+      </div>
+      
+    <% end %>
+      
   </div>
 
   <div class="card-footer d-flex justify-content-end">
@@ -184,5 +230,4 @@
   </div>
 </div>
 
-<%# Nodal de ficha existente %>
 <%= render 'shared/modal_existent_sheet' %>

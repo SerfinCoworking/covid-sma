@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', function(e){
-  if( !(_PAGE.controller === 'epidemic_sheets' && ['new', 'edit'].includes(_PAGE.action))) return false;
+  if( !(_PAGE.controller === 'epidemic_sheets' && ['new', 'edit', 'new_contact'].includes(_PAGE.action))) return false;
     $("#present-prev-symp, #present-symptoms").on('change', function(e){
       if($(e.target).is(":checked")){
         $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');

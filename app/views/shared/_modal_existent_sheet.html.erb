@@ -1,0 +1,36 @@
+<div class="modal fade" tabindex="-1" id="patient-found-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+            <i class="fas fa-exclamation mr-2"></i>
+            Ficha existente
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="patient-data">
+          <span>
+            El paciente
+          </span>
+          <span id="patient-fullname"></span>
+          <span>posee una ficha.</span>
+          <div>
+            <span>Dni: </span>
+            <span id="patient-dni"></span>
+          </div>
+          <div>
+            <span>Registrado en el establecimiento: </span>
+            <span id="establishment"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Buscar otro paciente</button>
+        <a href="#" class="btn btn-primary" id="redirect-sheet">Ir a ficha</a>
+      </div>
+    </div>
+  </div>
+</div>

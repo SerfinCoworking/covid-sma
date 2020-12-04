@@ -1,0 +1,52 @@
+<h5 class="border-bottom mb-0 ml-2">Contacto origen</h5>
+  <div class="text-center mt-2">
+    <%= image_tag patient_avatar(@origin_contact_patient), class:"img-thumbnail patient-avatar" %>
+  </div>
+
+  <h5 class="mt-3"><strong><%= @origin_contact_patient.last_name %>,</strong> <%= @origin_contact_patient.first_name %></h5>
+
+  <h5 class="mt-3">
+    <%= @origin_contact_patient.dni %>
+    <span class="badge badge-<%= @origin_contact_patient.Temporal? ? "warning" : "success" %>">
+      <%= @origin_contact_patient.status %>
+    </span>
+  </h5>
+
+  <h5> <%= @origin_contact_patient.email %> </h5>
+
+  <div class="row">
+    <div class="col-6">
+      <% if @origin_contact_patient.birthdate.present? %>
+        <p class="mb-0 mt-3"><strong>Fecha de nacimiento</strong></p>
+        <p><%= @origin_contact_patient.birthdate.strftime("%d/%m/%Y")%> | <%= @origin_contact_patient.age_string %></h5>
+      <% end %>
+    </div>
+
+    <div class="col-6">
+      <p class="mb-0 mt-3"><strong>Sexo </strong></p>
+      <p><%= @origin_contact_patient.sex %></p>
+    </div>
+  </div>
+
+  <% if @origin_contact_patient.cuil.present? %>
+    <p class="mb-0 mt-3"><strong>CUIL </strong></p>
+    <p><%= @origin_contact_patient.cuil %></p>
+  <% end %>
+  <div class="row">
+    <% @origin_contact_patient.patient_phones.each do |phone| %>
+      <div class="col-6">
+        <p class="mb-0 mt-3"><strong><%= phone.phone_type %></strong></p> 
+        <p><%= phone.number %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @origin_contact_patient.occupation.present? %>
+    <p class="mb-0 mt-3"><strong>Ocupación </strong></p>
+    <p><%= @origin_contact_patient.occupation.name.humanize %></p>
+  <% end %>
+  
+  <% if @origin_contact_patient.assigned_establishment.present? %>
+    <p class="mb-0 mt-3"><strong>Establecimiento </strong></p>
+    <p><%= @origin_contact_patient.assigned_establishment.name %></p>
+  <% end %>

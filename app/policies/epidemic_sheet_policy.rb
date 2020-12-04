@@ -19,6 +19,10 @@ class EpidemicSheetPolicy < ApplicationPolicy
     create?
   end
 
+  def new_contact?
+    create?
+  end
+
   def update?
     user.has_any_role?(:admin, :medico, :estadistica)
   end

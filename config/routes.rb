@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resources :epidemic_sheets do
+  resources :epidemic_sheets, path: :fichas_epidemiologicas do
     member do
       get :delete
+    end
+    collection do
+      get :new_contact, path: :nueva_ficha_de_contacto
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_163633) do
+ActiveRecord::Schema.define(version: 2020_12_04_155316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -115,6 +115,8 @@ ActiveRecord::Schema.define(version: 2020_12_02_163633) do
     t.date "last_contact_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "contact_id"
+    t.index ["contact_id"], name: "index_close_contacts_on_contact_id"
     t.index ["contact_type_id"], name: "index_close_contacts_on_contact_type_id"
     t.index ["epidemic_sheet_id"], name: "index_close_contacts_on_epidemic_sheet_id"
     t.index ["patient_id"], name: "index_close_contacts_on_patient_id"
@@ -174,9 +176,13 @@ ActiveRecord::Schema.define(version: 2020_12_02_163633) do
     t.integer "clinic_location", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "parent_contact_id"
+    t.bigint "locked_close_contact_id"
     t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
     t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
     t.index ["establishment_id"], name: "index_epidemic_sheets_on_establishment_id"
+    t.index ["locked_close_contact_id"], name: "index_epidemic_sheets_on_locked_close_contact_id"
+    t.index ["parent_contact_id"], name: "index_epidemic_sheets_on_parent_contact_id"
     t.index ["patient_id"], name: "index_epidemic_sheets_on_patient_id"
   end
 
