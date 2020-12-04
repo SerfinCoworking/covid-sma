@@ -24,6 +24,6 @@ set :output, "log/cron.log"
 # every 5.hours do
 #   rake 'batch:update_lot_status'
 # end
-every 1.day, at: '23:30 pm' do
+every 1.day, at: '11:30 pm' do
   rake "batch:save_case_count_per_days"
 end
