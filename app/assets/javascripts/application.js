@@ -40,6 +40,11 @@ window.setTimeout(function() {
   });
 }, 10000);
 
+$.fn.selectpicker.defaults = {
+  selectAllText: 'Todos',
+  deselectAllText: 'Ninguno'
+};
+
 $('[data-toggle="tooltip"]').tooltip({
   'selector': '',
   'container':'body'

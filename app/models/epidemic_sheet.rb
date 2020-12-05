@@ -40,12 +40,27 @@ class EpidemicSheet < ApplicationRecord
   before_validation :assign_epidemic_week
   
   filterrific(
+    default_filter_params: { sorted_by: 'created_at_desc' },
     available_filters: [
-      :search_fullname,
+      :sorted_by,
       :search_dni,
-      :case_status
+      :search_fullname,
+      :by_case_statuses
     ]
   )
+
+  scope :sorted_by, lambda { |sort_option|
+    # extract the sort direction from the param value.
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    case sort_option.to_s
+    when /^created_at_/
+      # Ordenamiento por fecha de recepción
+      order("epidemic_sheets.created_at #{ direction }")
+    else
+      # Si no existe la opcion de ordenamiento se levanta la excepcion
+      raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
+    end
+  }
 
   pg_search_scope :search_dni,
     :associated_against => { patient: [:dni] },
@@ -55,9 +70,10 @@ class EpidemicSheet < ApplicationRecord
   pg_search_scope :search_fullname,
     :associated_against => { patient: [ :first_name, :last_name ]},
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
-    :ignoring => :accents # Ignorar tildes.  
+    :ignoring => :accents # Ignorar tildes.
 
-  
+  scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
+
   def update_or_create_address(params)
     # Debemos mapear los valores "string" que vienen de andes
     @country = Country.where(name: params[:patient_attributes][:address_attributes][:country]).first_or_create(name: params[:patient_attributes][:address_attributes][:country])

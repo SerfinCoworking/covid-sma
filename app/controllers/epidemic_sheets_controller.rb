@@ -18,11 +18,8 @@ class EpidemicSheetsController < ApplicationController
   def index
     authorize EpidemicSheet
     @filterrific = initialize_filterrific(
-      EpidemicSheet.order(created_at: :desc),
+      EpidemicSheet.all,
       params[:filterrific],
-      select_options: {
-        case_status: CaseStatus.all.select(:name, :id)
-      },
       persistence_id: true,
       default_filter_params: {sorted_by: 'created_at_desc'},
     ) or return
