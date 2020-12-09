@@ -61,6 +61,12 @@ $('#filterrific_filter').on(
 );
 
 $(document).on('turbolinks:load', function() {
+  $('form').on('keypress', e => {
+      if (e.keyCode == 13) {
+          return false;
+      }
+  });
+
   $(document).ready(function($) {
     $(".table-row").click(function() {
         window.document.location = $(this).data("href");
