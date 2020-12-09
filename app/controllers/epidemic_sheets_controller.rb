@@ -70,7 +70,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.update_or_create_address(patient_address_params)
 
     respond_to do |format|
-      if @epidemic_sheet.save!
+      if @epidemic_sheet.save
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "creó", sector: current_user.sector)
         # @epidemic_sheet.case_definition.record_case_evolution
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
@@ -87,7 +87,7 @@ class EpidemicSheetsController < ApplicationController
   def update
     authorize @epidemic_sheet
     respond_to do |format|
-      if @epidemic_sheet.update!(epidemic_sheet_params)
+      if @epidemic_sheet.update(epidemic_sheet_params)
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }

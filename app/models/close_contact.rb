@@ -5,7 +5,7 @@ class CloseContact < ApplicationRecord
   belongs_to :contact, class_name: 'Patient', optional: true
   has_one :contact_epidemic_sheet, class_name: 'EpidemicSheet', foreign_key: 'locked_close_contact'
 
-  validates_presence_of :full_name, :contact_type_id, :patient, 
+  validates_presence_of :full_name, :contact_type_id, :patient,
     :epidemic_sheet, :epidemic_sheet
 
   before_validation :assign_patient

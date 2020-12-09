@@ -218,7 +218,7 @@
                       </td>
                       <td><%= contact.phone %></td>
                       <td><%= contact.address %></td>
-                      <td><%= contact.last_contact_date.strftime("%d/%m/%Y") %></td>
+                      <td><%= contact.last_contact_date.present? ? contact.last_contact_date.strftime("%d/%m/%Y") : '---' %></td>
                       <td>
                         <% if contact.contact_epidemic_sheet.present? %>
                           <span class="badge badge-<%= contact.epidemic_sheet.case_definition_case_status_badge %>">
