@@ -52,23 +52,23 @@ $(document).on('turbolinks:load', function(e){
           $("#patient-form-fields").collapse('show');
           // setteamos los datos que vienen de andes
           const location = ui.item.data.direccion[0];
-          if(location.ubicacion.pais){
+          if(location && location.ubicacion.pais){
             $("#patient-address-country").val(location.ubicacion.pais.nombre);
           }
-          if(location.ubicacion.provincia){
+          if(location && location.ubicacion.provincia){
             $("#patient-address-state").val(location.ubicacion.provincia.nombre);
           }
-          if(location.ubicacion.localidad){
+          if(location && location.ubicacion.localidad){
             $("#patient-address-city").val(location.ubicacion.localidad.nombre);
           }
-          if(location.valor){
+          if(location && location.valor){
             $("#patient-address-line").val(location.valor);
           }
-          if(location.geoReferencia && location.geoReferencia.length == 2){
+          if(location && location.geoReferencia && location.geoReferencia.length == 2){
             $("#patient-address-latitude").val(location.geoReferencia[0]);
             $("#patient-address-longitude").val(location.geoReferencia[1]);
           }
-          if(location.codigoPostal){
+          if(location && location.codigoPostal){
             $("#patient-address-postal-code").val(location.codigoPostal);
           }
 
