@@ -33,6 +33,19 @@
               }
             %>
           </div>
+          <div class="col-md-2 col-sm-2">
+            <label>Establecimiento</label>
+            <%= f.select :by_establishment, 
+              options_for_select(Establishment.all.collect {|cs| [cs.name, cs.id]}),{include_blank: false, include_hidden: false},
+              {
+                class: "form-control selectpicker-md show-tick custom-select-pick",
+                "title"=>"Seleccionar",
+                multiple: true,
+                "data-actions-box"=>true,
+                "data-live-search"=>true
+              }
+            %>
+          </div>
           <%= link_to reset_filterrific_url, class: "btn btn-sm pull-right" do %>
             <%= fa_icon "redo" %>
           <% end %>

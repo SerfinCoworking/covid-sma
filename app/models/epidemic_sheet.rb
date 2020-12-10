@@ -32,7 +32,8 @@ class EpidemicSheet < ApplicationRecord
   validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
   
   # Delegations
-  delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, to: :patient, prefix: true
+  delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, 
+    :assigned_establishment, to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   
   # Callbacks
@@ -45,7 +46,8 @@ class EpidemicSheet < ApplicationRecord
       :sorted_by,
       :search_dni,
       :search_fullname,
-      :by_case_statuses
+      :by_case_statuses,
+      :by_establishment
     ]
   )
 
@@ -73,6 +75,8 @@ class EpidemicSheet < ApplicationRecord
     :ignoring => :accents # Ignorar tildes.
 
   scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
+ 
+  scope :by_establishment, ->(ids_ary) { joins(:patient).where(patients: {assigned_establishment_id: ids_ary}) }
 
   def update_or_create_address(params)
     # Debemos mapear los valores "string" que vienen de andes
@@ -109,7 +113,7 @@ class EpidemicSheet < ApplicationRecord
 
   def self.current_day
     where("epidemic_sheets.created_at >= :today_beginning AND epidemic_sheets.created_at <= :today_end", 
-      { today_beginning: DateTime.now.beginning_of_day, 
+      { today_beginning: DateTime.now.beginning_of_day,
         today_end: DateTime.now.end_of_day
       }
     )

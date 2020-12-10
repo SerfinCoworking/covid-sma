@@ -14,10 +14,7 @@
       <%= epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
     </td>
     <td>
-      <%= epidemic_sheet.clinic_location.humanize %>
-    </td>
-    <td>
-      <%= epidemic_sheet.created_by.full_name %>
+      <%= epidemic_sheet.patient_assigned_establishment.name %>
     </td>
     <td class="text-left actions-col">
       <% if policy(epidemic_sheet).show? %>
