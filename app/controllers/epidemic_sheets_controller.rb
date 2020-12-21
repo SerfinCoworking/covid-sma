@@ -111,7 +111,7 @@ class EpidemicSheetsController < ApplicationController
   # SET_IN_SISA_MODAL /epidemic_sheets/1
   # SET_IN_SISA_MODAL /epidemic_sheets/1.json
   def set_in_sisa_modal
-    # authorize @epidemic_sheet
+    authorize @epidemic_sheet
     respond_to do |format|
       format.js { @epidemic_sheet }
     end
@@ -120,7 +120,7 @@ class EpidemicSheetsController < ApplicationController
   # SET_IN_SISA /epidemic_sheets/1
   # SET_IN_SISA /epidemic_sheets/1.json
   def set_in_sisa
-    # authorize @epidemic_sheet
+    authorize @epidemic_sheet
     @epidemic_sheet.is_in_sisa = true
     @epidemic_sheet.save!
     respond_to do |format|
