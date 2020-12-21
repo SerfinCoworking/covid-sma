@@ -143,7 +143,12 @@ class EpidemicSheetsController < ApplicationController
           :diagnostic_method_id
         ],
         patient_attributes: [
-          :assigned_establishment_id
+          :assigned_establishment_id,
+          current_address_attributes: [
+            :neighborhood,
+            :street,
+            :street_number
+          ],
         ],
         close_contacts_attributes: [ 
           :id,

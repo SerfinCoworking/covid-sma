@@ -120,6 +120,44 @@
               } %>
             </div>
           </div>
+
+             <%# Direccion Actual %>
+          <h5 class="border-bottom">Domicilio actual</h5>
+          <%= f.simple_fields_for :patient, html: { role: 'check-modified' } do |patient_form| %>
+            <%= patient_form.simple_fields_for :current_address do |patient_current_address| %>
+            
+              <div class="row">
+                <div class="col-5">
+                  <%= patient_current_address.input :neighborhood, 
+                    as: :string, 
+                    class: 'form-control',
+                    label: 'Barrio',
+                    placeholder: 'Barrio',
+                    required: false
+                  %>
+                </div>
+                <div class="col-5">
+                  <%= patient_current_address.input :street, 
+                    as: :string, 
+                    class: 'form-control',
+                    label: 'Calle',
+                    placeholder: 'Calle',
+                    required: false
+                  %>
+                </div>
+
+                <div class="col-2">
+                  <%= patient_current_address.input :street_number, 
+                    as: :string, 
+                    class: 'form-control',
+                    label: 'N°',
+                    placeholder: 'N°',
+                    required: false
+                  %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
         </div>
         <div class="col-4">
           <%= render "shared/patient_show", :patient => @epidemic_sheet.patient %>

@@ -17,7 +17,17 @@
       <div class="col-8 border-right">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="epidemic-sheet-tab" data-toggle="tab" href="#epidemic-sheet" role="tab" aria-controls="epidemic-sheet" aria-selected="true">Ficha</a>
+            <a class="nav-link active" id="epidemic-sheet-tab" data-toggle="tab" href="#epidemic-sheet" role="tab" aria-controls="epidemic-sheet" aria-selected="true">
+              <%= fa_icon "file-medical-alt" %>
+              Ficha
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="movements" aria-selected="true">
+              <div class="d-flex align-items-center">
+                <span><%= fa_icon 'map-marker'%> Domicilio</span>
+              </div>
+            </a>
           </li>
           <li class="nav-item" role="presentation">
             <a class="nav-link" id="case-evolutions-tab" data-toggle="tab" href="#case-evolutions" role="tab" aria-controls="case-evolutions  " aria-selected="true">
@@ -263,6 +273,38 @@
                 <% end %>
               </tbody>
             </table>
+          </div>
+          <%# Address %>
+          <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+            <div class="row">
+              <% if @epidemic_sheet.patient.address.present? %>
+                <div class="col-12"><h5 class="border-bottom">DATOS DEL DOMICILIO</h5></div>
+                <div class="col-3">
+                  <p><h5><strong>País</strong></h5><%= @epidemic_sheet.patient.address_country_name %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Provincia</strong></h5><%= @epidemic_sheet.patient.address_state_name %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Ciudad</strong></h5><%= @epidemic_sheet.patient.address_city_name %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Dirección</strong></h5><%= @epidemic_sheet.patient.address_line %></p>
+                </div>
+              <% end %>
+              <% if @epidemic_sheet.patient.current_address.present? %>
+                <div class="col-12"><h5 class="border-bottom">DATOS DOMICILIO ACTUAL</h5></div>
+                <div class="col-3">
+                  <p><h5><strong>Barrio</strong></h5><%= @epidemic_sheet.patient.current_address.neighborhood %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Calle</strong></h5><%= @epidemic_sheet.patient.current_address.street %></p>
+                </div>
+                <div class="col-3">
+                  <p><h5><strong>Altura</strong></h5><%= @epidemic_sheet.patient.current_address.street_number %></p>
+                </div>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

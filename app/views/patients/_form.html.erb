@@ -107,9 +107,76 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <h5>Datos del domicilio</h5><hr>
-          <div class="col-4">
-          </div>
+        <h5 class="border-bottom">Datos del domicilio</h5>
+        </div>
+        <div class="col-3">
+          <p><h5><strong>País</strong></h5><%= @patient.address_country_name %></p>
+        </div>
+        <div class="col-3">
+          <p><h5><strong>Provincia</strong></h5><%= @patient.address_state_name %></p>
+        </div>
+        <div class="col-3">
+          <p><h5><strong>Ciudad</strong></h5><%= @patient.address_city_name %></p>
+        </div>
+        <div class="col-3">
+          <p><h5><strong>Dirección</strong></h5><%= @patient.address_line %></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <h5 class="border-bottom">Domicilio actual</h5>
+          <%= f.simple_fields_for :current_address do |patient_current_address| %>
+          
+            <div class="row">
+              <div class="col-5">
+                <%= patient_current_address.input :neighborhood, 
+                  as: :string, 
+                  class: 'form-control',
+                  label: 'Barrio',
+                  placeholder: 'Barrio',
+                  required: false
+                %>
+              </div>
+              <div class="col-5">
+                <%= patient_current_address.input :street, 
+                  as: :string, 
+                  class: 'form-control',
+                  label: 'Calle',
+                  placeholder: 'Calle',
+                  required: false
+                %>
+              </div>
+
+              <div class="col-2">
+                <%= patient_current_address.input :street_number, 
+                  as: :string, 
+                  class: 'form-control',
+                  label: 'N°',
+                  placeholder: 'N°',
+                  required: false
+                %>
+              </div>
+            </div>
+          <%end%>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-6">
+          <%= f.input :assigned_establishment_id, label: 'Establecimiento designado',
+            collection: Establishment.all.map {|establishment|  [establishment.name, establishment.id ]},
+            selected: current_user.establishment.id,
+            :input_html => {
+              required: true,
+              include_blank: false,
+              class: 'selectpicker custom-select-pick',
+              "data-width"=>"100%",
+              "data-size"=>"10",
+              "title"=>"Seleccionar establecimiento",
+              "data-live-search"=> true,            
+            }
+          %>
         </div>
       </div>
     <% end %>
