@@ -47,6 +47,11 @@
   <% end %>
   
   <% if patient.assigned_establishment.present? %>
-    <p class="mb-0 mt-3"><strong>Establecimiento </strong></p>
+    <p class="mb-0 mt-3"><strong>Establecimiento asignado</strong></p>
     <p><%= patient.assigned_establishment.name %></p>
+  <% end %>
+
+  <%= link_to edit_patient_path(patient), class: 'link text-warning' do %>
+    <%= fa_icon "pen" %>
+    Editar paciente
   <% end %>

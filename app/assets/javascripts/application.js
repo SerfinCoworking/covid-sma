@@ -61,7 +61,7 @@ $('#filterrific_filter').on(
 );
 
 $(document).on('turbolinks:load', function() {
-  $('form').on('keypress', e => {
+  $('.prevent-enter-form').on('keypress', e => {
       if (e.keyCode == 13) {
           return false;
       }

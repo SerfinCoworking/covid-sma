@@ -11,7 +11,7 @@
       </span>
     </td>
     <td>
-      <%= epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
+      <%= epidemic_sheet.init_symptom_date.present? ? epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---' %>
     </td>
     <td class="text-truncate" style="max-width: 120px;">
       <%= epidemic_sheet.patient_assigned_establishment.name %>

@@ -87,12 +87,12 @@
             <h5 class="border-bottom pt-3">Información clínica</h5>
             <div class="d-flex justify-content-between">
               <div class="flex-fill">
-                <h5>Fecha inicio</h5>
-                <%= @epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") %>
+                <h5>Fecha inicio (FIS)</h5>
+                <%= @epidemic_sheet.init_symptom_date.present? ? @epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---' %>
               </div>
               <div class="flex-fill">
                 <h5>Semana epidemiológica</h5>
-                <span class="badge badge-pill badge-secondary"><%= @epidemic_sheet.epidemic_week %></span>
+                <span class="badge badge-pill badge-secondary"><%= @epidemic_sheet.init_symptom_date.present? ? @epidemic_sheet.epidemic_week : '---' %></span>
               </div>
               <div class="flex-fill">
                 <h5>Situación</h5>
@@ -276,7 +276,7 @@
     <%= link_to 'Volver', epidemic_sheets_path, class: 'btn mr-2 btn-light' %>
     <%= link_to edit_epidemic_sheet_path(@epidemic_sheet), class: 'btn btn-warning' do %>
       <%= fa_icon 'pen' %>
-      Editar
+      Editar ficha
     <% end %>
   </div>
 </div>

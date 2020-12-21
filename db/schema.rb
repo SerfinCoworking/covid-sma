@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_155316) do
+ActiveRecord::Schema.define(version: 2020_12_21_143238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_12_04_155316) do
     t.boolean "needs_diagnostic", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "needs_fis", default: false
     t.index ["case_status_id"], name: "index_case_statuses_on_case_status_id"
   end
 

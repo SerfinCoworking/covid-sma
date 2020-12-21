@@ -9,6 +9,7 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :establishment
   belongs_to :parent_contact, class_name: 'EpidemicSheet', optional: true
   belongs_to :locked_close_contact, class_name: 'CloseContact', optional: true
+  has_one :case_status, through: :case_definition
   has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"
@@ -25,8 +26,9 @@ class EpidemicSheet < ApplicationRecord
   accepts_nested_attributes_for :close_contacts
 
   # Validations
-  validates_presence_of  :case_definition, :init_symptom_date, :epidemic_week
-  validates :epidemic_week, numericality: { only_integer: true, greater_than: 0 }
+  validates_presence_of  :case_definition, :epidemic_week
+  validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.case_status.needs_fis? }
+  validates :epidemic_week, numericality: { only_integer: true, greater_than: 0 }, if: Proc.new { |sheet| sheet.case_definition.case_status.needs_fis? }
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
   validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
@@ -35,10 +37,11 @@ class EpidemicSheet < ApplicationRecord
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, 
     :assigned_establishment, to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
+  delegate :case_status, to: :case_definition
   
   # Callbacks
   before_create :assign_establishment
-  before_validation :assign_epidemic_week
+  after_validation :assign_epidemic_week, if: Proc.new { |sheet| sheet.init_symptom_date.present? }
   
   filterrific(
     default_filter_params: { sorted_by: 'created_at_desc' },
@@ -132,6 +135,10 @@ class EpidemicSheet < ApplicationRecord
   end
 
   private
+  def needs_fis?
+    self.close_contact.case_satus.needs_fis?
+  end
+  
   # def reject_close_contacts(attributes)
   #   attributes['full_name'].blank?
   # end
