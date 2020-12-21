@@ -19,6 +19,17 @@
     <td class="text-truncate" style="max-width: 120px;">
       <%= epidemic_sheet.patient_assigned_establishment.name %>
     </td>
+    <td class="text-truncate" style="max-width: 120px;">
+      
+      <% if policy(epidemic_sheet).set_in_sisa_modal? %>
+        <%= link_to set_in_sisa_modal_epidemic_sheet_path(epidemic_sheet), remote: true do %>
+          <%= fa_icon 'times' %>
+        <% end %>
+      <% else %>
+        <%= fa_icon epidemic_sheet.is_in_sisa ? 'check' : 'times' %>
+      <% end %>
+
+    </td>
     <td class="text-left actions-col">
       <% if policy(epidemic_sheet).show? %>
         <%= link_to epidemic_sheet_path(epidemic_sheet), class: 'btn btn-secondary btn-sm',

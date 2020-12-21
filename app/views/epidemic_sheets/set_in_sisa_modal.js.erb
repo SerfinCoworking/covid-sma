@@ -1,0 +1,22 @@
+// Style modal
+$('.modal-header').addClass('bg-warning');
+
+// Add the dialog title
+$('.modal-title').html("<i class='fa fa-check'></i>  Cargado en SISA?");
+
+// Render the edit form
+$('.modal-body').html('Esta seguro de que se ha cargado en SISA?');
+
+// Add form button
+$('.modal-footer').html(
+  "<button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Volver</button>" +
+  "<a data-method='patch' href='<%= set_in_sisa_epidemic_sheet_path(@epidemic_sheet) %>' data-dismiss='modal' class='btn btn-success' rel='nofollow'>Confirmar</a>"
+);
+
+// Show the dynamic dialog
+$('#dialog').modal("show");
+
+// Remove style
+$('#dialog').on('hidden.bs.modal', function () {
+  $('.modal-header').removeClass('bg-warning');
+});
