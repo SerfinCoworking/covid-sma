@@ -1,7 +1,7 @@
-<div id="patient-form-fields" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
-  <%# <h5 class="border-bottom">Paciente</h5> %>
+
+<div id="patient-form-fields" class="collapse <%= form_builder.object.patient.dni.present? ? 'show' : ''%>" aria-labelledby="headingOne" data-parent="#accordion1">
   <%= form_builder.simple_fields_for :patient, html: { role: 'check-modified' } do |patient_form| %>
-    <div class="row andes-fields d-none">
+    <div class="row andes-fields <%= form_builder.object.patient.dni.present? ? '' : 'd-none'%>">
       <div class="col-4">
         <%# Apellido %>
         <%= patient_form.input :last_name, 
@@ -38,13 +38,14 @@
           placeholder: 'DNI',
           required: true,
           :input_html => {
+            readOnly: true,
             id: "patient-form-dni"
           }
         %>
       </div>
     </div>
 
-    <div class="row andes-fields d-none">
+    <div class="row andes-fields <%= form_builder.object.patient.dni.present? ? '' : 'd-none'%>">
       <div class="col-6 sex-indicator">
         <%# Sexo %>
         <%= patient_form.label "Sexo", class: "w-100" %>
@@ -79,7 +80,6 @@
           class: 'form-control',
           label: 'Fecha nacimiento',
           placeholder: 'Fecha nacimiento',
-          required: true,
           :input_html => {
             id: "patient-form-birthdate",
             autocomplete: "off",
