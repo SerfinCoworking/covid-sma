@@ -1,5 +1,5 @@
 class EpidemicSheetsController < ApplicationController
-  before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete]
+  before_action :set_epidemic_sheet, only: [:show, :edit, :update, :destroy, :delete, :set_in_sisa_modal, :set_in_sisa]
   before_action :set_epidemic_sheet_symptoms, only: [:new, :new_contact, :create, :edit, :update]
 
   def dashboard
@@ -96,7 +96,7 @@ class EpidemicSheetsController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /epidemic_sheets/1
   # DELETE /epidemic_sheets/1.json
   def destroy
@@ -105,6 +105,27 @@ class EpidemicSheetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to epidemic_sheets_url, notice: 'La ficha epidemiológica se ha eliminado correctamente.' }
       format.json { head :no_content }
+    end
+  end
+  
+  # SET_IN_SISA_MODAL /epidemic_sheets/1
+  # SET_IN_SISA_MODAL /epidemic_sheets/1.json
+  def set_in_sisa_modal
+    # authorize @epidemic_sheet
+    respond_to do |format|
+      format.js { @epidemic_sheet }
+    end
+  end
+  
+  # SET_IN_SISA /epidemic_sheets/1
+  # SET_IN_SISA /epidemic_sheets/1.json
+  def set_in_sisa
+    # authorize @epidemic_sheet
+    @epidemic_sheet.is_in_sisa = true
+    @epidemic_sheet.save!
+    respond_to do |format|
+      format.html { redirect_to @epidemic_sheet, notice: 'Se ha marcado como cargado en SISA correctamente.' }
+      format.json { render :show, status: :ok, location: @epidemic_sheet }
     end
   end
 

@@ -38,4 +38,12 @@ class EpidemicSheetPolicy < ApplicationPolicy
   def delete?
     destroy?
   end
+  
+  def set_in_sisa?
+    user.has_any_role?(:admin, :sisa) && !record.is_in_sisa
+  end
+  
+  def set_in_sisa_modal?
+    set_in_sisa?
+  end
 end
