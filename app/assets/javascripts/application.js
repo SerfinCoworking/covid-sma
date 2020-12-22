@@ -129,13 +129,6 @@ $(document).on('turbolinks:load', function() {
 
   $('.selectpicker-md').selectpicker({style: 'btn-default'});
 
-  // var today = new moment();
-  // $('#requested-date').datetimepicker({
-  //   format: 'DD/MM/YYYY',
-  //   date: today,
-  //   locale: 'es'
-  // });
-
   $('#since-datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
     locale: 'es'

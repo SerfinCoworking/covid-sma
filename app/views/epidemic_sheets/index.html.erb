@@ -36,7 +36,11 @@
           <div class="col-md-2 col-sm-2">
             <label>Establecimiento</label>
             <%= f.select :by_establishment, 
-              options_for_select(Establishment.all.collect {|cs| [cs.name, cs.id]}),{include_blank: false, include_hidden: false},
+              options_for_select(
+                Establishment.all.collect {|cs| [cs.name, cs.id]},
+                selected: params[:filterrific].present? ? params[:filterrific][:by_establishment] : "",
+              ),
+              {include_blank: false, include_hidden: false},
               {
                 class: "form-control selectpicker-md show-tick custom-select-pick",
                 "title"=>"Seleccionar",
@@ -45,11 +49,10 @@
               }
             %>
           </div>
-          <%= link_to reset_filterrific_url, class: "btn btn-sm pull-right" do %>
-            <%= fa_icon "redo" %>
-          <% end %>
           <!-- Spinner para la carga -->
-          <%= render_filterrific_spinner %>
+          <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-light' do %>
+            <%= fa_icon 'redo' %>
+          <% end %>
         </div>
       <% end %>
     </div>

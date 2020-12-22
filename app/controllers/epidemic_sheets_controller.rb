@@ -17,11 +17,15 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets.json
   def index
     authorize EpidemicSheet
+    if params[:reset] == "true"
+      params[:filterrific] = nil
+    end
+
     @filterrific = initialize_filterrific(
-      EpidemicSheet.all,
+      EpidemicSheet.all.order(created_at: :desc),
       params[:filterrific],
-      persistence_id: true,
-      default_filter_params: {sorted_by: 'created_at_desc'},
+      persistence_id: false,
+      default_filter_params: { sorted_by: 'created_at_desc' },
     ) or return
     @epidemic_sheets = @filterrific.find.page(params[:page]).per_page(15)
   end
