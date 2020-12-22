@@ -11,7 +11,7 @@
     <% end %>
   </div>
   <div class="card-body">
-    <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
+    <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified', class: 'prevent-enter-form' } do |f| %>
       <div class="row border-bottom mb-1">
         <div class="col-8 border-right">
           <%= f.error_notification %>
