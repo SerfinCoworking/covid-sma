@@ -25,22 +25,22 @@
           <h5 class="border-bottom">Paciente</h5>
           <div class="d-flex flex-row">
             <div class="custom-input-group w-40 pr-1">
-              <%= f.input :patient_fake, as: :fake, class: 'form-control',
-                label: 'DNI',
-                placeholder: 'DNI',
-                required: true,
-                readonly: f.object.new_record? ? "" : true,
-                :input_html => {
-                  id: 'patient-dni',
-                  data: { autocomplete_source: get_by_dni_patients_path },
-                  value: "#{if f.object.patient.present?; f.object.patient.dni; end }",
-                }
-              %>
+
+              <div class="form-group fake required epidemic_sheet_patient_fake">
+                <label class="form-control-label fake required" for="patient-dni">DNI <abbr title="required">*</abbr></label>
+                <input type="text" name="patient_fake" id="patient-dni" value="" class="form-control fake required <%= "#{f.object.patient.errors[:dni].any? ? 'is-invalid' : ''}"%>" data-autocomplete-source="<%= get_by_dni_patients_path %>" required="" aria-required="true" placeholder="DNI">
+
+                <% if f.object.patient.errors[:dni].any? %>
+                  <div class="invalid-feedback d-block">
+                      Seleccione un paciente.
+                  </div>
+                <% end %>
+              </div>
+              
               <div class="with-loading">
                 <%= fa_icon 'spinner', class: "fa-spin"%>
               </div>
             </div>
-
           </div>
 
           <div class="accordion" id="accordion1">
