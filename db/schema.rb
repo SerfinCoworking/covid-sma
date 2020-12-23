@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_21_143238) do
+ActiveRecord::Schema.define(version: 2020_12_23_175631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -293,10 +293,12 @@ ActiveRecord::Schema.define(version: 2020_12_21_143238) do
     t.bigint "occupation_id"
     t.bigint "current_address_id"
     t.integer "assigned_establishment_id", default: 0
+    t.bigint "parent_contact_id"
     t.index ["address_id"], name: "index_patients_on_address_id"
     t.index ["andes_id"], name: "index_patients_on_andes_id"
     t.index ["current_address_id"], name: "index_patients_on_current_address_id"
     t.index ["occupation_id"], name: "index_patients_on_occupation_id"
+    t.index ["parent_contact_id"], name: "index_patients_on_parent_contact_id"
     t.index ["patient_type_id"], name: "index_patients_on_patient_type_id"
   end
 

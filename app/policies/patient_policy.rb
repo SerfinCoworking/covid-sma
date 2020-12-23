@@ -23,6 +23,10 @@ class PatientPolicy < ApplicationPolicy
     update?
   end
 
+  def set_parent_contact?
+    update?
+  end
+
   def destroy?
     user.has_any_role?(:admin)
   end

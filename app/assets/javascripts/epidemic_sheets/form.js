@@ -21,7 +21,7 @@ $(document).on('turbolinks:load', function(e){
         $(e.target).closest('.case-type-container').siblings('.diagnostic-method').removeClass("show");
         $(e.target).closest('.case-type-container').siblings('.special-device').removeClass("show");
       }
-    });    
+    });
 
     // Función para autocompletar DNI de paciente
     $('#patient-dni').autocomplete({

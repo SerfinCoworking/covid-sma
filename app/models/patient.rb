@@ -30,8 +30,6 @@ class Patient < ApplicationRecord
   delegate :country_name, :state_name, :city_name, :line, to: :address, prefix: :address
   delegate :name, to: :patient_type, prefix: :patient_type
 
-  # Callbacks
-
   filterrific(
     default_filter_params: { sorted_by: 'created_at_desc' },
     available_filters: [
@@ -51,7 +49,17 @@ class Patient < ApplicationRecord
     against: [ :first_name, :last_name ],
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
     :ignoring => :accents # Ignorar tildes.
-    
+
+  pg_search_scope :search_lastname,
+    against: [ :last_name ],
+    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
+    :ignoring => :accents # Ignorar tildes.
+
+  pg_search_scope :search_firstname,
+    against: [ :first_name ],
+    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
+    :ignoring => :accents # Ignorar tildes.
+
   scope :search_dni, lambda { |query|
     string = query.to_s
     where('dni::text LIKE ?', "%#{string}%")

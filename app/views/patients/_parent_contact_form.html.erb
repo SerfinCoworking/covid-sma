@@ -1,0 +1,32 @@
+<%= simple_form_for @patient, html: { role: 'check-modified', id: 'set-parent-contact' } do |f| %>
+<%= f.error_notification %>
+  <div class="row">
+    <div class="col-12">
+      <h5>Buscar ficha del paciente</h5><hr>
+    </div>
+    <div class="col-4">
+      <%= f.input :dni, as: :fake, label: 'Número de DNI ARGENTINO', 
+        input_html: { 
+          min: '10000', 
+          max:'999999999',
+          id: 'search-patient-dni',
+          "data-autocomplete-source" => "#{get_by_dni_locally_patients_path}"
+        } %>
+    </div>
+    <div class="col-4">
+      <%= f.input :last_name, as: :fake, label: 'Apellido', 
+        input_html: { 
+          "data-autocomplete-source" => "#{get_by_lastname_patients_path}",
+          id: 'search-patient-lastname'
+        } %>
+    </div>
+    <div class="col-4">
+      <%= f.input :first_name, as: :fake, label: 'Nombre',
+        input_html: { 
+          id: 'search-patient-firstname',
+          "data-autocomplete-source" => "#{get_by_firstname_patients_path}" 
+        } %>
+    </div>
+    <%= f.input :parent_contact_id, as: :hidden %>
+  </div>
+<% end %>

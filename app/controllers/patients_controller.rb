@@ -1,5 +1,5 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show, :edit, :update, :destroy, :delete]
+  before_action :set_patient, only: [:show, :edit, :update, :set_parent_contact, :destroy, :delete]
   require 'json'
   require 'rest-client'
   # GET /patients
@@ -43,6 +43,10 @@ class PatientsController < ApplicationController
   # GET /patients/1/edit
   def edit
     @patient_types = PatientType.all
+  end
+
+  def set_parent_contact
+    authorize @patient
   end
 
   # POST /patients
@@ -129,7 +133,30 @@ class PatientsController < ApplicationController
 
   def get_by_fullname
     @patients = Patient.search_fullname(params[:term]).limit(10).order(:last_name)
-    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, dni: pat.dni, fullname: pat.fullname  }  }
+    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
+      dni: pat.dni, fullname: pat.fullname  
+    }}
+  end
+
+  def get_by_dni_locally
+    @patients = Patient.search_dni(params[:term]).limit(10).order(:last_name)
+    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
+      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
+    }}
+  end
+
+  def get_by_lastname
+    @patients = Patient.search_lastname(params[:term]).limit(10).order(:last_name)
+    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
+      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name
+    }}
+  end
+
+  def get_by_firstname
+    @patients = Patient.search_firstname(params[:term]).limit(10).order(:first_name)
+    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
+      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
+    }}
   end
 
   private
@@ -143,9 +170,9 @@ class PatientsController < ApplicationController
       params.require(:patient).permit(:first_name, :last_name, :dni,
         :email, :birthdate, :sex, :marital_status, :assigned_establishment_id,
         patient_phones_attributes: [
-          :id, 
-          :phone_type, 
-          :number, 
+          :id,
+          :phone_type,
+          :number,
           :_destroy
         ],
         current_address_attributes: [

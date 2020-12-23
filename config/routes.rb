@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     member do
       get :delete
       get :set_in_sisa_modal
-      patch :set_in_sisa 
+      patch :set_in_sisa
     end
     collection do
       get :new_contact, path: :nueva_ficha_de_contacto
@@ -91,12 +91,17 @@ Rails.application.routes.draw do
     member do
       get "delete"
       get "restore"; get "restore_confirm"
+      get :set_parent_contact
+      patch :update_parent_contact
     end
     collection do
       get "search"
       get "get_by_dni_and_fullname"
       get "get_by_dni"
       get "get_by_fullname"
+      get "get_by_dni_locally"
+      get "get_by_lastname"
+      get "get_by_firstname"
     end
   end
 

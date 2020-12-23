@@ -206,6 +206,10 @@
               </div>
             <% else %>
               El contacto origen por el cuál surgió este caso, aún no se ha determinado.
+              <%= link_to set_parent_contact_patient_path(@epidemic_sheet.patient), class: 'btn btn-primary' do %>
+                <%= fa_icon 'search' %>
+                Seleccionar
+              <% end %>
             <% end %>
 
             <h5 class="mt-4 border-bottom"><strong>Contactos estrechos</strong></h5>
