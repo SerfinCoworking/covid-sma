@@ -4,8 +4,10 @@ Rails.application.routes.draw do
       get :delete
       get :set_in_sisa_modal
       patch :set_in_sisa 
+      patch :associate_epidemic_sheet
     end
     collection do
+      get :epidemic_sheet_exists_modal
       get :new_contact, path: :nueva_ficha_de_contacto
     end
   end

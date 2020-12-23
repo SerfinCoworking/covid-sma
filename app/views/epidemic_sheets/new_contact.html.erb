@@ -13,8 +13,12 @@
   <div class="card-body">
     <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
       <div class="row border-bottom mb-1">
-        <%= f.input :parent_contact_id, as: :hidden, input_html: { value: "#{@origin_contact_patient.id}" } %>
-        <%= f.input :locked_close_contact_id, as: :hidden, input_html: { value: "#{@close_contact.id}" } %>
+        <%= f.input :locked_close_contact_id, 
+          as: :hidden, 
+          input_html: { 
+            value: "#{@close_contact.id}",
+            "data-url": "#{epidemic_sheet_exists_modal_epidemic_sheets_path}"
+          } %>
         
         <div class="col-8 border-right">
           <%= f.error_notification %>
@@ -230,4 +234,4 @@
   </div>
 </div>
 
-<%= render 'shared/modal_existent_sheet' %>
+<div class="modal fade" tabindex="-1" id="patient-found-modal"> </div>

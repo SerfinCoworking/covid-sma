@@ -219,6 +219,7 @@
                     <th class="border-top-0">Fecha último contacto</th>
                     <th class="border-top-0">Tipo</th>
                     <th class="border-top-0">Estado</th>
+                    <th class="border-top-0"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -233,16 +234,27 @@
                       <td><%= contact.last_contact_date.present? ? contact.last_contact_date.strftime("%d/%m/%Y") : '---' %></td>
                       <td><%= contact.contact_type.present? ? contact.contact_type_name : '---' %></td>
                       <td>
-                        <% if contact.contact_epidemic_sheet.present? %>
-                          <span class="badge badge-<%= contact.epidemic_sheet.case_definition_case_status_badge %>">
-                            <%= contact.epidemic_sheet.case_definition_case_status_name %>
+                        <% if contact.contact.present? %>
+                          <span class="badge badge-<%= contact.contact.epidemic_sheet.case_definition_case_status_badge %>">
+                            <%= contact.contact.epidemic_sheet.case_definition_case_status_name %>
                           </span>
                         <% else %>
                           <%= link_to new_contact_epidemic_sheets_path(parent_contact_id: @epidemic_sheet.patient_id, close_contact_id: contact.id), class: "btn btn-sm btn-primary" do %>
                             <%= fa_icon "plus" %>
                             Agregar ficha
                           <% end %>
-                        <% end %>                    
+                        <% end %>                                          
+                      </td>
+                      <td>
+                        <% if contact.contact.present? %>
+                          <%= link_to patient_path(contact.contact), class: "btn btn-sm btn-secondary", title: "Ver paciente", data: { toggle: 'tooltip', placement: 'top' } do %>
+                            <%= fa_icon "user-injured" %>
+                          <% end %>
+                          
+                          <%= link_to epidemic_sheet_path(contact.contact.epidemic_sheet), class: "btn btn-sm btn-success", title: "Ver ficha", data: { toggle: 'tooltip', placement: 'top' } do %>
+                            <%= fa_icon "file-medical-alt" %>
+                          <% end %>
+                        <% end %>
                       </td>
                     </tr>
                   <% end %>
