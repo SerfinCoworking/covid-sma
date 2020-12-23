@@ -14,8 +14,10 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12">
+        <div class="d-none" data-url="<%=epidemic_sheet_exists_modal_epidemic_sheets_path%>" id="epidemic-sheet-exists-modal">
         <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
           <%= f.error_notification %>
+
 
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
