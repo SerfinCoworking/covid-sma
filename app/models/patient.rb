@@ -28,7 +28,7 @@ class Patient < ApplicationRecord
   # Validaciones
   validates_presence_of :first_name, :last_name, :dni
   validates_uniqueness_of :dni
-  validate :not_be_the_same_parent_contact
+  validate :not_be_the_same_parent_contact, if: Proc.new { |sheet| sheet.parent_contact_id.present? }
 
   # Delegaciones
   delegate :country_name, :state_name, :city_name, :line, to: :address, prefix: :address
