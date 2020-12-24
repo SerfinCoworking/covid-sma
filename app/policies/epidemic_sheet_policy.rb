@@ -46,4 +46,8 @@ class EpidemicSheetPolicy < ApplicationPolicy
   def set_in_sisa_modal?
     set_in_sisa?
   end
+
+  def get_by_patient_id?
+    user.has_any_role?(:admin, :medico, :estadistica)
+  end
 end

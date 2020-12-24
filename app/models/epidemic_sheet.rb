@@ -38,6 +38,7 @@ class EpidemicSheet < ApplicationRecord
     :assigned_establishment, to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   delegate :case_status, to: :case_definition
+  delegate :parent_contact, to: :patient, prefix: false
   
   # Callbacks
   before_create :assign_establishment

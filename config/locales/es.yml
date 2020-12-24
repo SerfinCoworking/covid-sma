@@ -81,6 +81,7 @@ es:
         dni: "Dni"
         first_name: "Nombre"
         last_name: "Apellido"
+        parent_contact_id: "Contacto padre"
       patient_phone:
         number: "Número"
       epidemic_sheet:

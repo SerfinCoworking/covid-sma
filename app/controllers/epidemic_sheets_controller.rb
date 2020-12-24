@@ -34,6 +34,10 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets/1.json
   def show
     authorize @epidemic_sheet
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @epidemic_sheet }
+    end
   end
 
   # GET /epidemic_sheets/new

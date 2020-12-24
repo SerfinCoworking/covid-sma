@@ -18,6 +18,9 @@ class Patient < ApplicationRecord
   has_many :case_evolutions
   has_many :close_contacts, dependent: :destroy
 
+  belongs_to :parent_contact, class_name: 'Patient', optional: true
+  has_many :child_contacts, class_name: 'Patient', foreign_key: :parent_contact__id, dependent: :destroy
+
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :current_address
@@ -25,6 +28,7 @@ class Patient < ApplicationRecord
   # Validaciones
   validates_presence_of :first_name, :last_name, :dni
   validates_uniqueness_of :dni
+  validate :not_be_the_same_parent_contact
 
   # Delegaciones
   delegate :country_name, :state_name, :city_name, :line, to: :address, prefix: :address
@@ -119,6 +123,12 @@ class Patient < ApplicationRecord
       age.to_s+" años"
     else
       "----"
+    end
+  end
+
+  def not_be_the_same_parent_contact
+    if self.parent_contact_id == self.id
+      errors.add(:parent_contact_id, 'No puede ser contacto padre de sí mismo')
     end
   end
 end

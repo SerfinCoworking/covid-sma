@@ -1,4 +1,4 @@
-<%= simple_form_for @patient, html: { role: 'check-modified', id: 'set-parent-contact' } do |f| %>
+<%= simple_form_for @patient, url: update_parent_contact_patient_path(@patient), method: :patch, html: { role: 'check-modified', id: 'set-parent-contact' } do |f| %>
 <%= f.error_notification %>
   <div class="row">
     <div class="col-12">
@@ -6,7 +6,8 @@
     </div>
     <div class="col-4">
       <%= f.input :dni, as: :fake, label: 'Número de DNI ARGENTINO', 
-        input_html: { 
+        input_html: {
+          type: 'number',
           min: '10000', 
           max:'999999999',
           id: 'search-patient-dni',
@@ -28,5 +29,8 @@
         } %>
     </div>
     <%= f.input :parent_contact_id, as: :hidden %>
+  </div>
+  <div class="row" id="epidemic-sheet-info hidden">
+    <h4></h4>
   </div>
 <% end %>

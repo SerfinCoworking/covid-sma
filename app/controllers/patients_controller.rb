@@ -1,5 +1,5 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show, :edit, :update, :set_parent_contact, :destroy, :delete]
+  before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, :set_parent_contact, :destroy, :delete]
   require 'json'
   require 'rest-client'
   # GET /patients
@@ -81,6 +81,18 @@ class PatientsController < ApplicationController
     end
   end
 
+  def update_parent_contact
+    respond_to do |format|
+      if @patient.update(parent_contact_params)
+        flash[:success] = "A "+@patient.full_info+" se le ha registrado un contacto padre correctamente."
+        format.html { redirect_to @patient.epidemic_sheet }
+      else
+        flash[:error] = @patient.full_info+" no se ha podido modificar."
+        format.html { render :set_parent_contact }
+      end
+    end
+  end
+
   # DELETE /patients/1
   # DELETE /patients/1.json
   def destroy
@@ -133,30 +145,46 @@ class PatientsController < ApplicationController
 
   def get_by_fullname
     @patients = Patient.search_fullname(params[:term]).limit(10).order(:last_name)
-    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
-      dni: pat.dni, fullname: pat.fullname  
-    }}
+    if @patients.count > 0
+      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
+        dni: pat.dni, fullname: pat.fullname  
+      }}
+    else
+      render json: [0].map{ |pat| { dni: params[:term], label: "Agregar paciente" }}
+    end   
   end
 
   def get_by_dni_locally
     @patients = Patient.search_dni(params[:term]).limit(10).order(:last_name)
-    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
-      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
-    }}
+    if @patients.count > 0
+      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, epidemic_sheet_id: pat.epidemic_sheet.id,
+        dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
+      }}
+    else
+      render json: [0].map{ |pat| { label: "No se encontró ningun paciente con DNI: "+params[:term] }}
+    end 
   end
 
   def get_by_lastname
     @patients = Patient.search_lastname(params[:term]).limit(10).order(:last_name)
-    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
-      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name
-    }}
+    if @patients.count > 0
+      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, epidemic_sheet_id: pat.epidemic_sheet.id,
+        dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name
+      }}
+    else
+      render json: [0].map{ |pat| { label: "No se encontró ningun paciente con apellido: "+params[:term] }}
+    end 
   end
 
   def get_by_firstname
     @patients = Patient.search_firstname(params[:term]).limit(10).order(:first_name)
-    render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
-      dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
-    }}
+    if @patients.count > 0
+      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, epidemic_sheet_id: pat.epidemic_sheet.id,
+        dni: pat.dni, fullname: pat.fullname, lastname: pat.last_name, firstname: pat.first_name  
+      }}
+    else
+      render json: [0].map{ |pat| { label: "No se encontró ningun paciente con nombre: "+params[:term] }}
+    end 
   end
 
   private
@@ -181,5 +209,9 @@ class PatientsController < ApplicationController
           :street_number
         ]
       )
+    end
+
+    def parent_contact_params
+      params.require(:patient).permit(:parent_contact_id)
     end
 end
