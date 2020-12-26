@@ -72,10 +72,15 @@ class EpidemicSheetsController < ApplicationController
     respond_to do |format|
       if @epidemic_sheet.save
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "creó", sector: current_user.sector)
-        # actualizamos el "contact close" con el id del paciente que se acaba de crear
-        @close_contact = CloseContact.find(params[:epidemic_sheet][:locked_close_contact_id])
-        @close_contact.update(contact: @epidemic_sheet.patient)
-        format.html { redirect_to @close_contact.patient.epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
+        # actualizamos el "contact close" con el id del paciente que se acaba de crear, solo si se esta actualizando
+        # los contactos de una ficha cargada.-
+        if params[:epidemic_sheet][:locked_close_contact_id].present?
+          @close_contact = CloseContact.find(params[:epidemic_sheet][:locked_close_contact_id])
+          @close_contact.update(contact: @epidemic_sheet.patient)
+          format.html { redirect_to @close_contact.patient.epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
+        end
+        
+        format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else
         format.html { render :new }
@@ -101,7 +106,11 @@ class EpidemicSheetsController < ApplicationController
   end
 
   def epidemic_sheet_exists_modal
-    @close_contact = CloseContact.find(params[:close_contact_id])
+    # close_contact_id solo viene si se esta cargando una ficha para asociar a los contactos de otra ficha.
+    if params[:close_contact_id].present?
+      @close_contact = CloseContact.find(params[:close_contact_id])
+    end
+    
     @patient = Patient.search_dni(params[:contact_patient_dni]).first
     respond_to do |format|
       format.js

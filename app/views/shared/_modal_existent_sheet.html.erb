@@ -29,7 +29,9 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Buscar otro paciente</button>
       <%= link_to "Ir a ficha", epidemic_sheet_path(@patient.epidemic_sheet.id), class: "btn btn-primary" %>
-      <%= link_to "Relacionar ficha", associate_epidemic_sheet_epidemic_sheet_path(@patient.epidemic_sheet.id, close_contact_patient: @close_contact.id), class: "btn btn-success", method: :patch %>
+      <% if @close_contact.present? %>
+        <%= link_to "Relacionar ficha", associate_epidemic_sheet_epidemic_sheet_path(@patient.epidemic_sheet.id, close_contact_patient: @close_contact.id), class: "btn btn-success", method: :patch %>
+      <% end %>
     </div>
   </div>
 </div>
