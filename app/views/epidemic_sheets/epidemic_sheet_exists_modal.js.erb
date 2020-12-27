@@ -1,0 +1,6 @@
+// Render the edit form
+
+$('#patient-found-modal').html('<%= j render(partial: 'shared/modal_existent_sheet', locals: { epidemic_sheet: @epidemic_sheet }) %>');
+
+// Show the dynamic dialog
+$('#patient-found-modal').modal("show");

@@ -140,18 +140,17 @@ $(document).on('turbolinks:load', function(e){
           $("#patient-status-code").val("Temporal");
           $("#patient-form-fields").collapse('show');
         }else{
-          $("#patient-form-fields").collapse('hide');
-          $('#patient-found-modal').modal('show');
-          
-          // cargamos 
-          // nombre / apellido / establecimiento donde fue cargado
-          const body = $('#patient-found-modal').find("#patient-data");
-          body.find("#patient-fullname").text(ui.item.fullname);
-          body.find("#patient-dni").text(ui.item.dni);
-          body.find("#establishment").text(ui.item.establishment);
-          $('#patient-found-modal').find("a#redirect-sheet").attr('href', ui.item.url);
-
-
+          // Se muestra el modal de ficha existente
+          $("#patient-form-fields").collapse('hide');          
+          const form = $(event.target).closest("form");
+          const lockedCloseContactId = $("#epidemic-sheet-exists-modal").first();
+          const close_contact_id = $(lockedCloseContactId).val();
+          $.ajax({
+            url: $(lockedCloseContactId).attr('data-url'),
+            method: "GET",
+            dataType: "script",
+            data: {close_contact_id: close_contact_id, contact_patient_dni: ui.item.dni}
+          });
         }
       }
     });
