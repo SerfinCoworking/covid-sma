@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_one :profile, :dependent => :destroy
   has_one :professional, :dependent => :destroy
   has_many :permission_requests, :dependent => :destroy
+  has_many :epidemic_sheets, foreign_key: :created_by
 
   accepts_nested_attributes_for :profile, :professional
 

@@ -16,7 +16,7 @@
     <div class="card-body">
       
       <div class="row">
-        <div class="col-6 text-center">
+        <div class="col-4 text-center">
           <% if @user.profile.present? %>
             <%= image_tag user_avatar(@user, 200), class:"img-thumbnail mb-2" %>
             <h5>
@@ -32,8 +32,67 @@
           
           <strong>Roles activados:</strong> <%= @user.roles.map(&:name).join(", ").humanize %>.
         </div>
-        <div class="col-6">
-          <%= render 'shared/sectors_table', sectors: @user.sectors, title: "Sectores activos" %>
+        <div class="col-8">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="establishment-tab" data-toggle="tab" href="#establishment" role="tab" aria-controls="establishment" aria-selected="true">
+                <%= fa_icon "hospital" %> Establecimientos
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="epidemic-sheet-tab" data-toggle="tab" href="#epidemic-sheet" role="tab" aria-controls="epidemic-sheet" aria-selected="true">
+                <div class="d-flex align-items-center">
+                  <span><%= fa_icon 'file-medical-alt'%> Fichas cargadas</span>
+                  <span class="badge badge-secondary ml-2"><%= @user.epidemic_sheets.count %></span>
+                </div>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="establishment" role="tabpanel" aria-labelledby="establishment-tab">
+              <%= render 'shared/sectors_table', sectors: @user.sectors, title: "Sectores activos" %>
+            </div>
+            <div class="tab-pane fade" id="epidemic-sheet" role="tabpanel" aria-labelledby="epidemic-sheet-tab">
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-striped">
+                    <thead class="thead-inverse">
+                      <tr>
+                        <th>Paciente</th>
+                        <th>Edad</th>
+                        <th>Caso</th>
+                        <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <% @user.epidemic_sheets.each do |sheet| %>
+                          <tr>
+                            <td>
+                              <%= sheet.patient_dni %>, 
+                              <strong><%= sheet.patient_last_name %></strong> <%= sheet.patient_first_name %>
+                            </td>
+                            <td><%= sheet.patient_age_string %></td>
+                            <td>
+                              <span class="badge badge-<%= sheet.case_definition_case_status_badge %>">
+                                <%= sheet.case_definition_case_status_name.humanize %>
+                              </span>
+                            </td>
+                            <td>
+                              <% if policy(sheet).show? %>
+                                <%= link_to epidemic_sheet_path(sheet), class: 'btn btn-secondary btn-sm',
+                                      title: 'Ver detalles', data: { toggle: 'tooltip', placement: 'top' } do %>
+                                  <%= fa_icon "eye" %>
+                                <% end %>
+                              <% end %>
+                            </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                  </table>
+              </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
               
