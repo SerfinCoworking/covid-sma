@@ -195,6 +195,7 @@ class EpidemicSheetsController < ApplicationController
         :present_previous_symptoms, 
         :prev_symptoms_observations,
         :clinic_location,
+        :notification_date,
         symptom_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
@@ -236,6 +237,7 @@ class EpidemicSheetsController < ApplicationController
         :present_previous_symptoms,
         :prev_symptoms_observations,
         :clinic_location,
+        :notification_date,
         symptom_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
