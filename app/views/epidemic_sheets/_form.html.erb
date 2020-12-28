@@ -49,30 +49,49 @@
             <%= render "form_patient", :form_builder => f, :patient => @patient %>
           </div>
 
-          <h5 class="border-bottom">Información clínica</h5>
-          <div class="d-flex justify-content-left">
-            <div class="p-1 w-40">
-              <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio Síntomas (FIS)", html5: true,
-                :input_html => {
-                  class: "form-control prescribed-date",
-                  autocomplete: "off",
-                  value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}"
-                }
-              %>
+          <div class="row">
+            <div class="col-5">
+              <h5 class="border-bottom">Información clínica</h5>
+              <div class="d-flex justify-content-left">
+                <div class="p-1 w-50">
+                  <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio Síntomas (FIS)", html5: true,
+                    :input_html => {
+                      class: "form-control prescribed-date",
+                      autocomplete: "off",
+                      value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}"
+                    }
+                  %>
+                </div>
+                <div class="p-1 w-50">
+                  <%= f.input :clinic_location, label: 'Situación', include_blank: false,
+                    collection: EpidemicSheet.clinic_locations.keys.map { |ct| [ct.humanize, ct] },
+                    :value_method => :second,
+                    :input_html => {
+                      required: true,
+                      include_blank: false,
+                      class: 'selectpicker custom-select-pick',
+                      "data-width"=>"100%",
+                      "data-size"=>"10",
+                      value: "#{ f.object.clinic_location }"
+                    }
+                  %>
+                </div>
+              </div>
             </div>
-            <div class="p-1 w-40">
-              <%= f.input :clinic_location, label: 'Situación', include_blank: false,
-                collection: EpidemicSheet.clinic_locations.keys.map { |ct| [ct.humanize, ct] },
-                :value_method => :second,
-                :input_html => {
-                  required: true,
-                  include_blank: false,
-                  class: 'selectpicker custom-select-pick',
-                  "data-width"=>"100%",
-                  "data-size"=>"10",
-                  value: "#{ f.object.clinic_location }"
-                }
-              %>
+
+            <div class="col-7">
+              <h5 class="border-bottom">Fecha de notificación</h5>
+              <div class="d-flex">
+                <div class="p-1 w-40">
+                <%= f.input :notification_date, as: :string, label: "Fecha", html5: true,
+                  :input_html => {
+                    class: "form-control prescribed-date",
+                    autocomplete: "off",
+                    value: "#{f.object.new_record? ? DateTime.now.strftime("%d/%m/%Y") : f.object.init_symptom_date.strftime("%d/%m/%Y")}"
+                  }
+                %>
+                </div>
+              </div>
             </div>
           </div>
           
