@@ -111,6 +111,13 @@
                 <%= @epidemic_sheet.clinic_location.humanize %>
               </div>
             </div>
+            <h5 class="border-bottom pt-3">Fecha de notificación</h5>
+            <div class="d-flex justify-content-between">
+              <div class="flex-fill">
+                <h5>Fecha</h5>
+                <%= @epidemic_sheet.notification_date.present? ? @epidemic_sheet.notification_date.strftime("%d/%m/%Y") : '---' %>
+              </div>
+            </div>            
 
             <h5 class="border-bottom pt-3">Signos y síntomas</h5>
             <div class="row">
