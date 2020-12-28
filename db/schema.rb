@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_23_175631) do
+ActiveRecord::Schema.define(version: 2020_12_28_124727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 2020_12_23_175631) do
     t.bigint "parent_contact_id"
     t.bigint "locked_close_contact_id"
     t.boolean "is_in_sisa", default: false
+    t.date "notification_date"
     t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
     t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
     t.index ["establishment_id"], name: "index_epidemic_sheets_on_establishment_id"
