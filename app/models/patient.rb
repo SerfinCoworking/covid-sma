@@ -19,7 +19,7 @@ class Patient < ApplicationRecord
   has_many :close_contacts, dependent: :destroy
 
   belongs_to :parent_contact, class_name: 'Patient', optional: true
-  has_many :child_contacts, class_name: 'Patient', foreign_key: :parent_contact__id, dependent: :destroy
+  has_many :child_contacts, class_name: 'Patient', foreign_key: :parent_contact_id, dependent: :destroy
 
   accepts_nested_attributes_for :patient_phones, :allow_destroy => true, reject_if: proc { |attributes| attributes['number'].blank? }
   accepts_nested_attributes_for :address
