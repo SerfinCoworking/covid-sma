@@ -197,7 +197,7 @@
                 </div>
                 <div class="p-1">
                   <h5>FIS</h5>
-                  <%= @epidemic_sheet.parent_contact.epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y")%>
+                  <%= @epidemic_sheet.parent_contact.epidemic_sheet.init_symptom_date.present? ? @epidemic_sheet.parent_contact.epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---' %>
                 </div>
                 <div class="p-1">
                   <h5 class="border-top-0">Estado</h5>
