@@ -2,7 +2,7 @@
 <% if @epidemic_sheets.count > 0 %>
   <%= line_chart @epidemic_sheets
     .group_by_day(:init_symptom_date, 
-    range: 1.weeks.ago.midnight..Time.now, 
+    range: 1.weeks.ago.midnight..Time.now,
     format: "%a %d/%m").count, 
     discrete: true, 
     label: 'Cantidad', 

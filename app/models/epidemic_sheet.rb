@@ -52,7 +52,9 @@ class EpidemicSheet < ApplicationRecord
       :search_dni,
       :search_fullname,
       :by_case_statuses,
-      :by_establishment
+      :by_establishment,
+      :since_date,
+      :to_date
     ]
   )
 
@@ -83,6 +85,14 @@ class EpidemicSheet < ApplicationRecord
  
   scope :by_establishment, ->(ids_ary) { joins(:patient).where(patients: {assigned_establishment_id: ids_ary}) }
 
+  scope :since_date, lambda { |a_date|
+    where('epidemic_sheets.notification_date >= ?', a_date)
+  }
+
+  scope :to_date, lambda { |a_date|
+    where('epidemic_sheets.notification_date <= ?', a_date)
+  }
+  
   def update_or_create_address(params)
     # Debemos mapear los valores "string" que vienen de andes
     @country = Country.where(name: params[:patient_attributes][:address_attributes][:country]).first_or_create(name: params[:patient_attributes][:address_attributes][:country])

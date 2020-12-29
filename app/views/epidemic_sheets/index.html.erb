@@ -4,7 +4,14 @@
   <div class="card fixed-custom-card">
     <div class="card-header">
       <%= form_for_filterrific @filterrific do |f| %>
-        <div class="row d-felx justify-content-between">
+        <div class="row d-felx justify-content-left">
+          <div class="col-md-1">
+            <!-- Spinner para la carga -->
+            <label>Reiniciar</label><br>
+            <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary position-absolute' do %>
+              <%= fa_icon 'redo' %>
+            <% end %>
+          </div>
           <div class="col-md-3 col-sm-3">
             <label>DNI</label>
             <%= f.text_field(
@@ -33,7 +40,7 @@
               }
             %>
           </div>
-          <div class="col-md-2 col-sm-2">
+          <div class="col-md-3 col-sm-2 ">
             <label>Establecimiento</label>
             <%= f.select :by_establishment, 
               options_for_select(
@@ -49,10 +56,18 @@
               }
             %>
           </div>
-          <!-- Spinner para la carga -->
-          <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-light' do %>
-            <%= fa_icon 'redo' %>
-          <% end %>
+          <div class="col-md-2">
+            <label>Desde</label>
+            <%= f.text_field(:since_date, autocomplete: 'off',
+              class: 'datetimepicker form-control since-date',
+              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          </div>
+          <div class="col-md-2">
+            <label>Hasta</label>
+            <%= f.text_field(:to_date, autocomplete: 'off',
+              class: 'datetimepicker form-control to-date',
+              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          </div>
         </div>
       <% end %>
     </div>
