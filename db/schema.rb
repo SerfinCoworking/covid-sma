@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_124727) do
+ActiveRecord::Schema.define(version: 2020_12_30_154113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -265,7 +265,6 @@ ActiveRecord::Schema.define(version: 2020_12_28_124727) do
     t.bigint "patient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["number", "patient_id"], name: "index_patient_phones_on_number_and_patient_id", unique: true
     t.index ["patient_id"], name: "index_patient_phones_on_patient_id"
   end
 
