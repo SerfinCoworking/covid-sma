@@ -4,6 +4,6 @@ class DashboardPolicy < Struct.new(:user, :dashboard)
   end
 
   def index?
-    user.has_any_role?(:admin, :medico, :estadistica)
+    user.has_any_role?(:admin, :medico, :estadistica, :invitado)
   end
 end

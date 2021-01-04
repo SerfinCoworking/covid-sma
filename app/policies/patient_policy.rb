@@ -1,6 +1,6 @@
 class PatientPolicy < ApplicationPolicy
   def index?
-    user.has_any_role?(:admin, :medico, :estadistica)
+    user.has_any_role?(:admin, :medico, :estadistica, :invitado)
   end
 
   def show?
