@@ -1,10 +1,6 @@
 class ChartsController < ApplicationController
   def by_month_epidemic_sheets
-    render json: EpidemicSheet.group_by_month_of_year(:created_at).count.map{ |k, v| [I18n.t("date.month_names")[k], v]}
-  end
-
-  def by_month_covid_profiles
-    render json: ExternalOrder.applicant(current_user.sector).group_by_month_of_year(:requested_date).count.map{ |k, v| [I18n.t("date.month_names")[k], v]}
+    render json: EpidemicSheet.since_date(Date.today.beginning_of_year).group_by_month_of_year(:created_at).count.map{ |k, v| [I18n.t("date.month_names")[k], v]}
   end
 
   def by_month_provider_external_orders
