@@ -8,6 +8,8 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
   has_one :case_status, through: :case_definition
+  has_one :address, through: :patient
+  has_one :current_address, through: :patient
   has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"

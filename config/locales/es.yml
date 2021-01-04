@@ -66,13 +66,27 @@ es:
       symptom: "Síntoma"
       user: "Usuario"
       user_sector: "Usuario en sector"
-
     attributes:
       sector:
         name: "Nombre"
         establishment_id: "Establecimiento"
       establishment:
-        name: "Nombre"      
+        code: "Código"
+        name: "Nombre"
+        short_name: "Nombre abreviado"
+        sectors_count: "Cantidad de sectores"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        domicile: "Domicilio"
+        phone: "Teléfono"
+      address:
+        longitude: "Longitud"
+        latitude: "Latitud"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        line: "Línea"
+        postal_code: "Código postal"
+
       professional:
         first_name: "Nombre"
         last_name: "Apellido"
@@ -82,6 +96,12 @@ es:
         first_name: "Nombre"
         last_name: "Apellido"
         parent_contact_id: "Contacto padre"
+        marital_status: "Estado civil"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        sex: "Sexo"
+        birthdate: "Fecha de nacimiento"
+        status: "Estado"
       patient_phone:
         number: "Número"
       epidemic_sheet:
@@ -89,12 +109,37 @@ es:
         init_symptom_date: "Fecha de inicio"
         epidemic_week: "Semana epidemiológica"
         notification_date: "Fecha de notificación"
+        symptoms_observations: "Observaciones de síntomas"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        is_in_sisa: "Está en sisa?"
+        present_previous_symptoms: "Presenta síntomas previos"
+        prev_symptoms_observations: "Observaciones de síntomas previos"
+        parent_contact_id: "Contacto padre"
+        presents_symptoms: "Presenta síntomas"
+        clinic_location: "Situación clínica"
+        locked_close_contact_id: "Contacto bloqueado"
+        case_definition: "Definición del caso"
+        created_by: "Cargado por"
+        establishment: "Establecimiento cargado"
+        address: "Domicilio"
+        current_address: "Domicilio actual"
+        sub_contacts: "Sub-contactos"
+        close_contacts: "Contactos estrechos"
+        case_status: "Estado del caso"
       case_definition:
-        case_status_id: "Case"
+        case_status_id: "Caso"
         diagnostic_method_id: "Método de diagnóstico"
+        created_at: "Creado"
+        updated_at: "Actualizado"
       close_contact:
         full_name: "Nombre completo"
         contact_type_id: "Tipo de contacto"
+        address: "Domicilio"
+        last_contact_date: "Fecha de último contacto"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        phone: "Teléfono"
       case_status:
         name: "Nombre"
         created_at: "Creado"
@@ -103,7 +148,24 @@ es:
         needs_diagnostic: "Necesita diagnóstico"
         case_definition: "Definición del caso"
         case_evolution: "Evolución del caso"
-      
+        case_status_id: "Estado del caso"
+        needs_fis: "Necesita FIS?"
+      user:
+        current_sign_in_at: "Inició sesión"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+        username: "Nombre de usuario"
+        last_sign_in_at: "Último inicio de sesión"
+        remember_created_at: "Recordar inicio de sesión"
+        current_sign_in_ip: "Dirección IP actual"
+        sign_in_count: "Cantidad de inicios"
+        last_sign_in_ip: "Última dirección de ip"
+      current_address: 
+        neighborhood: "Barrio"
+        street: "Calle"
+        street_number: "Altura"
+        created_at: "Creado"
+        updated_at: "Actualizado"
 
   date:
     abbr_day_names:
