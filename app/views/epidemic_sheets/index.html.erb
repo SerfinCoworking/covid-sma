@@ -56,14 +56,26 @@
               }
             %>
           </div>
-          <div class="col-md-2">
-            <label>Desde</label>
+          <div class="col-md-2 mt-2">
+            <label><%= fa_icon 'calendar' %> Desde (FIS)</label>
+            <%= f.text_field(:since_date_fis, autocomplete: 'off',
+              class: 'datetimepicker form-control since-date',
+              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          </div>
+          <div class="col-md-2 mt-2">
+            <label><%= fa_icon 'calendar' %> Hasta (FIS)</label>
+            <%= f.text_field(:to_date_fis, autocomplete: 'off',
+              class: 'datetimepicker form-control to-date',
+              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          </div>
+          <div class="col-md-2 mt-2">
+            <label><%= fa_icon 'calendar' %> Desde (Notificación)</label>
             <%= f.text_field(:since_date, autocomplete: 'off',
               class: 'datetimepicker form-control since-date',
               placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
           </div>
-          <div class="col-md-2">
-            <label>Hasta</label>
+          <div class="col-md-2 mt-2">
+            <label><%= fa_icon 'calendar' %> Hasta (Notificación)</label>
             <%= f.text_field(:to_date, autocomplete: 'off',
               class: 'datetimepicker form-control to-date',
               placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>

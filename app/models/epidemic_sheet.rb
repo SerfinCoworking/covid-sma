@@ -53,6 +53,8 @@ class EpidemicSheet < ApplicationRecord
       :search_fullname,
       :by_case_statuses,
       :by_establishment,
+      :since_date_fis,
+      :to_date_fis,
       :since_date,
       :to_date
     ]
@@ -84,6 +86,14 @@ class EpidemicSheet < ApplicationRecord
   scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
  
   scope :by_establishment, ->(ids_ary) { joins(:patient).where(patients: {assigned_establishment_id: ids_ary}) }
+
+  scope :since_date_fis, lambda { |a_date|
+    where('epidemic_sheets.init_symptom_date >= ?', a_date)
+  }
+
+  scope :to_date_fis, lambda { |a_date|
+    where('epidemic_sheets.init_symptom_date <= ?', a_date)
+  }
 
   scope :since_date, lambda { |a_date|
     where('epidemic_sheets.notification_date >= ?', a_date)
