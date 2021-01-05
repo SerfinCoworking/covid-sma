@@ -3,7 +3,10 @@ namespace :batch do
   task save_case_count_per_days: :environment do
     CaseStatus.find_each do |status|
 
-      today_epidemic_sheets = status.epidemic_sheets.current_day
+      today_epidemic_sheets = EpidemicSheet.joins(:case_definition)
+        .where(case_definitions: { case_status_id: status.id })
+        .since_date(Date.today.beginning_of_day)
+        .to_date(Date.today.end_of_day)
 
       CaseCountPerDay.create(
         case_status_id: status.id,

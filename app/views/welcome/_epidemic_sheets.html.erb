@@ -2,7 +2,7 @@
 <% if @epidemic_sheets.count > 0 %>
   <%= line_chart @case_count_per_day
     .where(case_status: CaseStatus.find_by_name("Positivo"))
-    .group_by_day(:created_at, 
+    .group_by_day(:created_at,
     range: 2.weeks.ago.midnight..Date.today,
     format: "%a %d/%m").sum(:count), 
     discrete: true, 

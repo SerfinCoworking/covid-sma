@@ -3,9 +3,12 @@ class CountCasePerDaySinceMondayTwentyOne < ActiveRecord::Migration[5.2]
     CaseCountPerDay.destroy_all
     i = 0
     notification_date = Date.new(2020, 12, 21)
-    while i < 14      
+    while i < 15      
       CaseStatus.find_each do |status|
-        today_epidemic_sheets = status.epidemic_sheets.since_date(notification_date.beginning_of_day).to_date(notification_date.end_of_day)
+        today_epidemic_sheets = EpidemicSheet.joins(:case_definition)
+          .where(case_definitions: { case_status_id: status.id })
+          .since_date(notification_date.beginning_of_day)
+          .to_date(notification_date.end_of_day)
         
         CaseCountPerDay.create(
           case_status_id: status.id,
