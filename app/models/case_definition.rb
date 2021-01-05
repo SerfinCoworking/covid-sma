@@ -22,4 +22,11 @@ class CaseDefinition < ApplicationRecord
     )
   end
 
+  def needs_fis?
+    if self.special_device.name != "Corte transversal"
+      self.case_status.needs_fis?
+    else
+      return false
+    end
+  end
 end
