@@ -5,7 +5,6 @@ namespace :batch do
 
       today_epidemic_sheets = EpidemicSheet.joins(:case_definition)
         .where(case_definitions: { case_status_id: status.id })
-        .since_date(Date.today.beginning_of_day)
         .to_date(Date.today.end_of_day)
 
       CaseCountPerDay.create(
