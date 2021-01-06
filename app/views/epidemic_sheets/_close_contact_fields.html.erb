@@ -1,15 +1,47 @@
 <tr class="nested-fields close-contact-form">
   <td>
-    <%= f.input :full_name, required: true, label: false, input_html: { class: 'full-name'} %>
+    <div class="form-group fake required epidemic_sheet_patient_fake">
+      <input type="text" 
+      name="patient_fullname_fake"
+      class="close-patient-fullname-fake form-control fake required <%= "#{f.object.errors[:full_name].any? ? 'is-invalid' : ''}"%>" 
+      data-autocomplete-source="<%= get_close_contact_by_fullname_patients_path %>" 
+      required 
+      aria-required="true"
+      value="<%= f.object.full_name.present? ? f.object.full_name : '' %>">
+    </div>
+    <%#= seteamos el valor de patient fullname si encontramos al paciente %>
+    <%= f.input :full_name, 
+    as: :hidden, 
+    input_html: { 
+      class: "close-patient-fullname", 
+      value: f.object.full_name.present? ? f.object.full_name : '' 
+    }  %>
+
+    <%#= seteamos el valor de patient _id si encontramos al paciente %>
+    <%= f.input :contact_id, as: :hidden, input_html: { class: "close-contact-id"}  %>
   </td>
   <td>
-    <%= f.input :dni, label: false %>
+    <input type="text" 
+      name="close_patient_dni_fake"
+      class="close-patient-dni-fake form-control fake" 
+      data-autocomplete-source="<%= get_close_contact_by_dni_patients_path %>" 
+      required 
+      aria-required="true"
+      value="<%= f.object.dni.present? ? f.object.dni : '' %>">
+    
+    <%= f.input :dni, 
+    as: :hidden, 
+    input_html: { 
+      class: "close-patient-dni", 
+      value: f.object.dni.present? ? f.object.dni : '' 
+    }  %>
+
   </td>
   <td>
-    <%= f.input :phone, label: false %>
+    <%= f.input :phone, label: false, input_html: { class: "close-patient-phone" } %>
   </td>
   <td>
-    <%= f.input :address, label: false %>
+    <%= f.input :address, label: false, input_html: { class: "close-patient-address"} %>
   </td>
   <td>
     <%= f.input :last_contact_date, as: :string, html5: true, required: true,

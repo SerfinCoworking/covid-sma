@@ -143,16 +143,41 @@ class PatientsController < ApplicationController
     end    
   end
 
-  def get_by_fullname
-    @patients = Patient.search_fullname(params[:term]).limit(10).order(:last_name)
+  def get_close_contact_by_fullname
+    @patients = Patient.get_by_dni_and_fullname(params[:term]).limit(10).order(:last_name)
     if @patients.count > 0
-      render json: @patients.map{ |pat| { id: pat.id, label: pat.dni.to_s+" "+pat.fullname, 
-        dni: pat.dni, fullname: pat.fullname  
+      render json: @patients.map{ |pat| { 
+        search: true,
+        contact_id: pat.id,
+        label: pat.fullname, 
+        dni: pat.dni, 
+        fullname: pat.fullname,
+        current_address: pat.current_address.get_full_address_name,
+        phone: pat.patient_phones.first ? pat.patient_phones.first.number : ''
       }}
     else
-      render json: [0].map{ |pat| { dni: params[:term], label: "Agregar paciente" }}
+      render json: [0].map{ |pat| { label: params[:term], fullname: params[:term], search: false  }}
     end   
   end
+
+  def get_close_contact_by_dni
+    @patients = Patient.get_by_dni_and_fullname(params[:term]).limit(10).order(:last_name)
+    if @patients.count > 0
+      render json: @patients.map{ |pat| { 
+        search: true,
+        contact_id: pat.id,
+        label: pat.dni, 
+        dni: pat.dni, 
+        fullname: pat.fullname,
+        current_address: pat.current_address.get_full_address_name,
+        phone: pat.patient_phones.first ? pat.patient_phones.first.number : ''
+      }}
+    else
+      render json: [0].map{ |pat| { label: params[:term], dni: params[:term], search: false  }}
+    end   
+  end
+
+  
 
   def get_by_dni_locally
     @patients = Patient.search_dni(params[:term]).limit(10).order(:last_name)
@@ -206,7 +231,8 @@ class PatientsController < ApplicationController
         current_address_attributes: [
           :neighborhood,
           :street,
-          :street_number
+          :street_number,
+          :contact_id
         ]
       )
     end

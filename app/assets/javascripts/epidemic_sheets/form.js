@@ -1,5 +1,8 @@
 $(document).on('turbolinks:load', function(e){
   if( !(_PAGE.controller === 'epidemic_sheets' && ['new', 'create', 'edit', 'update', 'new_contact'].includes(_PAGE.action))) return false;
+  
+  initCloseContactAutocomplete();
+
     $("#present-prev-symp, #present-symptoms").on('change', function(e){
       if($(e.target).is(":checked")){
         $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
@@ -154,6 +157,7 @@ $(document).on('turbolinks:load', function(e){
         }
       }
     });
+    
 
     function resetPatientForm(){
       $("#patient-address-country").val('');
@@ -208,5 +212,94 @@ $(document).on('turbolinks:load', function(e){
         showMonthAfterYear: false,
         yearSuffix: ''
       });
+
+      
+      initCloseContactAutocomplete();
+
     });
+
+  function initCloseContactAutocomplete(){
+    $('input.close-patient-fullname-fake').autocomplete({
+      source: $('input.close-patient-fullname-fake').data('autocomplete-source'),
+      autoFocus: true,
+      minLength: 3,
+      messages: {
+        noResults: function() {
+          $(".ui-menu-item-wrapper").html("No se encontró el paciente");
+        }
+      },
+      search: function( event, ui ) {
+        $(event.target).parent().siblings('.with-loading').first().addClass('visible');
+      },
+      response: function (event, ui) {
+        $(event.target).parent().siblings('.with-loading').first().removeClass('visible');
+      },
+      select:
+      function (event, ui) {
+        setClosePatientData(event, ui);
+      },
+      change:
+      function (event, ui) {
+        setClosePatientData(event, ui);
+      }
+
+    });
+    
+    $('input.close-patient-dni-fake').autocomplete({
+      source: $('input.close-patient-dni-fake').data('autocomplete-source'),
+      autoFocus: true,
+      minLength: 3,
+      messages: {
+        noResults: function() {
+          $(".ui-menu-item-wrapper").html("No se encontró el paciente");
+        }
+      },
+      search: function( event, ui ) {
+        $(event.target).parent().siblings('.with-loading').first().addClass('visible');
+      },
+      response: function (event, ui) {
+        $(event.target).parent().siblings('.with-loading').first().removeClass('visible');
+      },
+      select:
+      function (event, ui) {
+        setClosePatientData(event, ui);
+      },
+      change:
+      function (event, ui) {
+        setClosePatientData(event, ui);
+      }
+    });
+  }
+
+  function setClosePatientData(event, ui){
+    const closestTr = $(event.target).closest('tr');
+    if($(event.target).hasClass('close-patient-dni-fake')){
+      /* dni del paciente */
+      const dni = (typeof ui.item !== 'undefined' && ui.item) ? ui.item.dni : event.target.value;
+      $(closestTr).find('input[type="hidden"].close-patient-dni').first().val(dni);
+    }
+    if($(event.target).hasClass('close-patient-fullname-fake')){
+      /* nombre completo del paciente */
+      const fullname = (typeof ui.item !== 'undefined' && ui.item) ? ui.item.fullname : event.target.value;
+      $(closestTr).find('input[type="hidden"].close-patient-fullname').first().val(fullname);
+    }
+
+    if(ui.item && ui.item.search){
+      
+      /* id de la ficha del paciente */
+      $(closestTr).find('input[type="hidden"].close-contact-id').first().val(ui.item.contact_id);
+      /* dni del paciente */
+      $(closestTr).find('input.close-patient-fullname-fake').first().val(ui.item.fullname);
+      $(closestTr).find('input.close-patient-dni-fake').first().val(ui.item.dni);
+      $(closestTr).find('input[type="hidden"].close-patient-dni').first().val(ui.item.dni);
+      /* cargamos el telofono del paciente (si viene) */
+      if(ui.item.phone){
+        $(closestTr).find('input.close-patient-phone').first().val(ui.item.phone);
+      }
+      /* Cargamos la direccion del paciente (si viene) */
+      if(ui.item.current_address){
+        $(closestTr).find('input.close-patient-address').first().val(ui.item.current_address);
+      }
+    }
+  }
 });

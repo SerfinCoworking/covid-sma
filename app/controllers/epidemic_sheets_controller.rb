@@ -222,6 +222,7 @@ class EpidemicSheetsController < ApplicationController
           :last_contact_date,
           :contact_type_id,
           :_destroy,
+          :contact_id
         ], 
       )
     end
@@ -277,6 +278,7 @@ class EpidemicSheetsController < ApplicationController
           :last_contact_date,
           :contact_type_id,
           :_destroy,
+          :contact_id
         ],
       )
     end

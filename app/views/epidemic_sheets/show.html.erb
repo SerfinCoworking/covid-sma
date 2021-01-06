@@ -250,12 +250,7 @@
                           <span class="badge badge-<%= contact.contact.epidemic_sheet.case_definition_case_status_badge %>">
                             <%= contact.contact.epidemic_sheet.case_definition_case_status_name %>
                           </span>
-                        <% else %>
-                          <%= link_to new_contact_epidemic_sheets_path(parent_contact_id: @epidemic_sheet.patient_id, close_contact_id: contact.id), class: "btn btn-sm btn-primary" do %>
-                            <%= fa_icon "plus" %>
-                            Agregar ficha
-                          <% end %>
-                        <% end %>                                          
+                        <% end %>                                       
                       </td>
                       <td>
                         <% if contact.contact.present? %>
@@ -266,7 +261,11 @@
                           <%= link_to epidemic_sheet_path(contact.contact.epidemic_sheet), class: "btn btn-sm btn-success", title: "Ver ficha", data: { toggle: 'tooltip', placement: 'top' } do %>
                             <%= fa_icon "file-medical-alt" %>
                           <% end %>
-                        <% end %>
+                        <% else %>
+                          <%= link_to new_contact_epidemic_sheets_path(parent_contact_id: @epidemic_sheet.patient_id, close_contact_id: contact.id), class: "btn btn-sm btn-primary", title: "Agregar ficha", data: { toggle: 'tooltip', placement: 'top' } do %>
+                            <%= fa_icon "plus" %>
+                          <% end %>
+                        <% end %>   
                       </td>
                     </tr>
                   <% end %>
