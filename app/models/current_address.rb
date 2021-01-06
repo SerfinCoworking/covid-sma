@@ -1,20 +1,21 @@
 class CurrentAddress < ApplicationRecord
 
-  belongs_to :country, optional: true
-  belongs_to :state, optional: true
-  belongs_to :city, optional: true
   has_one :patient
 
-  def country_name
-    self.country.present? ? self.country.name.humanize : "----"
+  def neighborhood_name
+    self.neighborhood.present? ? self.neighborhood.humanize : ""
   end
 
-  def state_name
-    self.state.present? ? self.state.name.humanize : "----"
+  def street_name
+    self.street.present? ? self.street.humanize : ""
   end
 
-  def city_name
-    self.city.present? ? self.city.name.humanize : "----"
+  def street_number_name
+    self.street_number.present? ? self.street_number.humanize : ""
   end  
+
+  def get_full_address_name
+    self.neighborhood_name + " " + self.street_name + " " + self.street_number_name
+  end
 
 end
