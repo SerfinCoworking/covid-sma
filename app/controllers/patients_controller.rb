@@ -1,5 +1,6 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, :set_parent_contact, :destroy, :delete]
+  before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, 
+    :set_parent_contact, :destroy, :delete, :validate]
   require 'json'
   require 'rest-client'
   # GET /patients
@@ -185,6 +186,19 @@ class PatientsController < ApplicationController
     else
       render json: [0].map{ |pat| { label: "No se encontró ningun paciente con nombre: "+params[:term] }}
     end 
+  end
+
+  def validate
+    authorize @patient
+    
+    token = ENV['ANDES_TOKEN']
+    url = ENV['ANDES_MPI_URL']
+    andes_patients = RestClient::Request.execute(method: :get, url: "#{url}/",
+      timeout: 30, headers: {
+        "Authorization" => "JWT #{token}",
+        params: {'documento': @patient.dni}
+      }
+    )
   end
 
   private

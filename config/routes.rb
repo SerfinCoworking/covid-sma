@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       get "restore"; get "restore_confirm"
       get :set_parent_contact
       patch :update_parent_contact
+      patch :validate
     end
     collection do
       get "search"
