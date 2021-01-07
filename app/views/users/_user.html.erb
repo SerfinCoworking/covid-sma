@@ -8,13 +8,13 @@
   <% if user.profile.present? %>
     <td><%= user.profile.last_name.present? ? user.profile.last_name : '----' %></td>
     <td><%= user.profile.first_name.present? ? user.profile.first_name : '----'%></td>
-    <td><%= user.profile.email.present? ? user.profile.email : '----' %></td>
   <% else %>
     <td>Sin perfil</td>
     <td>s/p</td>
     <td>s/p</td>
   <% end %>
   <td><%= user.sectors.count %></td>
+  <td><%= user.epidemic_sheets.count %></td>
   <td><%= user.updated_at.strftime("%d/%m/%Y")%> </td>
   <td class="text-left actions-col">
     <% if policy(user).show? %>

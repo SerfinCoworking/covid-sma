@@ -4,8 +4,8 @@
   <div class="card fixed-custom-card">
     <div class="card-header position-relative">
       <%= form_for_filterrific @filterrific do |f| %>
-        <div class="justify-content-between">
-          <div class="row">
+
+          <div class="row d-flex justify-content-between">
             <div class="col-4">
               <label>Dni</label>
               <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
@@ -26,15 +26,14 @@
                 autocomplete: 'off',
               ) %>
             </div>
+            <div class="col text-right mr-4">
+              <%= link_to users_admin_index_path(reset: true), class: 'btn btn-secondary position-absolute',
+                title: 'Reiniciar filtro', data: { toggle: 'tooltip', placement: 'top' } do %>
+                <%= fa_icon 'redo' %>
+              <% end %>
+            </div>
           </div>
-          
           <%= render_filterrific_spinner %>
-        </div>
-      <% end %>
-
-      <%= link_to reset_filterrific_url, class: "btn btn-sm reset-filterrific",
-        :title => 'Reiniciar', :'data-placement'=>'top', :'data-toggle'=>'tooltip'  do %>
-        <%= fa_icon "redo" %>
       <% end %>
     </div>
     <div class="card-body fixed-panel-index">
