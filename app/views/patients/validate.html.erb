@@ -1,0 +1,103 @@
+<%= render 'header' %>
+
+<div class="card fixed-custom-card">
+
+  <div class="card-header d-flex align-items-center justify-content-between bg-success text-white">
+    <div class="d-flex align-items-center">
+      <%= fa_icon "check-circle" %>
+      <h5 class="card-title mb-0 ml-2">
+        Validando paciente DNI <%= @patient.dni %>
+      </h5>
+    </div>
+    <%= link_to patients_path, class: 'btn text-white' do %>
+      <%= fa_icon 'times' %>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div class="h4 border-bottom">Paciente temporal</div>
+    <div class="row d-flex justify-content-between">
+      <div class="col"><strong>DNI </strong><br><%= @patient.dni %></div>
+      <div class="col"><strong>Apellido </strong><br><%= @patient.last_name %></div>
+      <div class="col"><strong>Nombre </strong><br><%= @patient.first_name %></div>
+    </div>
+
+    <% @andes_patients.each do |andes_patient| %>
+      <%= simple_form_for @patient, html: { role: 'check-modified' } do |f| %>
+        <%= f.hidden_field :last_name, id: "patient-address-city" %>
+        <%= f.hidden_field :first_name, id: "patient-address-city" %>
+        <%= f.hidden_field :dni, id: "patient-address-city" %>
+        <%= f.hidden_field :birthdate, id: "patient-address-city", value: Date.strptime(andes_patient['fechaNacimiento'], "%Y-%m-%d") %>
+        <div class="h4 border-bottom mt-4">Paciente validado</div>
+        <%# Apellido %>
+        <div class="row d-flex justify-content-between">
+          <div class="col"><strong>DNI </strong><br><%= andes_patient['documento'] %></div>
+          <div class="col"><strong>Apellido </strong><br><%= andes_patient['apellido'] %></div>
+          <div class="col"><strong>Nombre </strong><br><%= andes_patient['nombre'] %></div>
+        </div>
+
+        <div class="row d-flex justify-content-between mt-2">
+          <div class="col"><strong>Sexo </strong><br><%= andes_patient['sexo'].humanize %></div>
+          <div class="col"><strong>Fecha de nacimiento </strong><br><%= Date.strptime(andes_patient['fechaNacimiento'], "%Y-%m-%d") %></div>
+        </div>
+
+        <div class="row andes-fields <%= f.object.dni.present? ? '' : 'd-none'%>">
+          <div class="col-6">
+            <%# Fecha nacimiento %>
+            <%= f.input :birthdate, 
+              as: :string, 
+              class: 'form-control',
+              label: 'Fecha nacimiento',
+              placeholder: 'Fecha nacimiento',
+              :input_html => {
+                id: "patient-form-birthdate",
+                autocomplete: "off",
+              }
+            %>
+          </div>
+
+        </div>
+
+        <%# Telefonos del paciente %>
+        <%= f.label :patient_phone do %>
+          Teléfonos
+        <% end %>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Número</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="patient_phones" id="patient-form-phones">
+            <%= f.simple_fields_for :patient_phones do | form_phones | %>
+              <%= render "patient_phone_fields", :f => form_phones %>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%# Direccion Andes %>
+        <%= f.simple_fields_for :address do |patient_address| %>
+          <%= patient_address.hidden_field :country, id: "patient-address-country" %>
+          <%= patient_address.hidden_field :state, id: "patient-address-state" %>
+          <%= patient_address.hidden_field :city, id: "patient-address-city" %>
+
+          <%= patient_address.hidden_field :line, id: "patient-address-line" %>
+          <%= patient_address.hidden_field :latitude, as: :integer, id: "patient-address-latitude" %>
+          <%= patient_address.hidden_field :longitude, as: :integer, id: "patient-address-longitude" %>
+          <%= patient_address.hidden_field :postal_code, id: "patient-address-postal-code" %>
+          <%= f.hidden_field :status, id: "patient-status-code" %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <div class="card-footer d-flex justify-content-end">
+    <%= link_to 'Volver', patients_path, class: "btn btn-light mr-2" %>
+    <button type='submit' name='commit' class='btn btn-success' form="<%= @patient.new_record? ? 'new_patient' : 'edit_patient_' + @patient.id.to_s %>">
+      <%= fa_icon 'save' %> Guardar validación
+    </button>
+  </div>
+</div>

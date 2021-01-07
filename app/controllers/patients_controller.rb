@@ -199,6 +199,8 @@ class PatientsController < ApplicationController
         params: {'documento': @patient.dni}
       }
     )
+
+    @andes_patients = JSON.parse(andes_patients)
   end
 
   private

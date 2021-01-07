@@ -1,7 +1,7 @@
 class UserPolicy < ApplicationPolicy
 
   def index?
-    user.has_any_role?(:admin, :gestor_usuarios)
+    user.has_any_role?(:admin, :gestor_usuarios, :estadistica, :medico)
   end
 
   def update?

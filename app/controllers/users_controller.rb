@@ -3,6 +3,10 @@ class UsersController < ApplicationController
 
   def index
     authorize User
+
+    if params[:reset] == "true"
+      params[:filterrific] = nil
+    end
     @filterrific = initialize_filterrific(
       User,
       params[:filterrific],

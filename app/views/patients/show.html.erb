@@ -117,7 +117,7 @@
       <% end %>
     <% end %>
     <% if policy(@patient).validate? %>
-      <%= link_to validate_patient_path(@patient), method: :patch, class: "btn btn-success",
+      <%= link_to validate_patient_path(@patient), class: "btn btn-success",
       'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Validando".html_safe do %>
         <%= fa_icon "check" %>
         Validar
