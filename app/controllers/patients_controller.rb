@@ -71,6 +71,8 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   # PATCH/PUT /patients/1.json
   def update
+    @patient.address_id = Address.update_or_create_address(patient_address_params, @patient).id
+    
     respond_to do |format|
       if @patient.update(patient_params)
         flash[:success] = @patient.full_info+" se ha modificado correctamente."
@@ -211,7 +213,7 @@ class PatientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def patient_params
-      params.require(:patient).permit(:first_name, :last_name, :dni,
+      params.require(:patient).permit(:first_name, :last_name, :dni, :status,
         :email, :birthdate, :sex, :marital_status, :assigned_establishment_id,
         patient_phones_attributes: [
           :id,
@@ -229,5 +231,19 @@ class PatientsController < ApplicationController
 
     def parent_contact_params
       params.require(:patient).permit(:parent_contact_id)
+    end
+
+    def patient_address_params
+      params.require(:patient).permit(
+        address_attributes: [
+          :country,
+          :state,
+          :city,
+          :line,
+          :latitude,
+          :longitude,
+          :postal_code
+        ]
+      )
     end
 end

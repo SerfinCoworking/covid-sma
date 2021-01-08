@@ -75,7 +75,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.created_by = current_user
     @epidemic_sheet.establishment = current_user.establishment
     authorize @epidemic_sheet
-    @epidemic_sheet.update_or_create_address(patient_address_params)
+    @epidemic_sheet.patient.address_id = Address.update_or_create_address(patient_address_params[:patient_attributes], @epidemic_sheet.patient).id
 
     respond_to do |format|
       if @epidemic_sheet.save
