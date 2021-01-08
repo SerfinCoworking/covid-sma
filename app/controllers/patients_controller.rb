@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
   before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, 
-    :set_parent_contact, :destroy, :delete, :validate]
+    :set_parent_contact, :destroy, :delete, :validate, :update_validation]
   require 'json'
   require 'rest-client'
   # GET /patients
@@ -70,7 +70,19 @@ class PatientsController < ApplicationController
 
   # PATCH/PUT /patients/1
   # PATCH/PUT /patients/1.json
-  def update
+  def update    
+    respond_to do |format|
+      if @patient.update(patient_params)
+        flash[:success] = @patient.full_info+" se ha modificado correctamente."
+        format.html { redirect_to @patient }
+      else
+        flash.now[:error] = @patient.full_info+" no se ha podido modificar."
+        format.html { render :edit }
+      end
+    end
+  end
+
+  def update_validation
     @patient.address_id = Address.update_or_create_address(patient_address_params, @patient).id
     
     respond_to do |format|
@@ -83,6 +95,7 @@ class PatientsController < ApplicationController
       end
     end
   end
+
 
   def update_parent_contact
     respond_to do |format|

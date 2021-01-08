@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       get :set_parent_contact
       patch :update_parent_contact
       get :validate, path: :validar
+      patch :update_validation
     end
     collection do
       get "search"

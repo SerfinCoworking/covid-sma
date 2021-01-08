@@ -23,7 +23,7 @@
     </div>
 
     <% @andes_patients.each do |andes_patient| %>
-      <%= simple_form_for @patient, html: { role: 'check-modified' } do |f| %>
+      <%= simple_form_for @patient,  url: update_validation_patient_path(@patient), method: :patch, html: { role: 'check-modified' } do |f| %>
 
         <%= f.input :dni, as: :hidden, input_html: { value: andes_patient['documento'] } %>
         <%= f.input :last_name, as: :hidden, input_html: { value: andes_patient['apellido'] } %>
