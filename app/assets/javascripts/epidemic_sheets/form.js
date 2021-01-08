@@ -74,10 +74,8 @@ $(document).on('turbolinks:load', function(e){
           if(location && location.codigoPostal){
             $("#patient-address-postal-code").val(location.codigoPostal);
           }
-
           
           $("#patient-status-code").val("Validado");
-
 
           $("#patient-form-lastname").val(ui.item.data.apellido).attr('readonly', true);
           $("#patient-form-firstname").val(ui.item.data.nombre).attr('readonly', true);

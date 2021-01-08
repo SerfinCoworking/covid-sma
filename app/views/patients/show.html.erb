@@ -111,9 +111,16 @@
   <div class="card-footer d-flex justify-content-end">
     <%= link_to 'Volver', patients_path, class: "btn mr-2" %>
     <% if policy(@patient).edit? %>
-      <%= link_to edit_patient_path(@patient), :"data-turbolinks" => false, class: "btn btn-warning" do %>
+      <%= link_to edit_patient_path(@patient), :"data-turbolinks" => false, class: "btn btn-warning mr-2" do %>
         <%= fa_icon "pen" %>
         Editar
+      <% end %>
+    <% end %>
+    <% if policy(@patient).validate? %>
+      <%= link_to validate_patient_path(@patient), class: "btn btn-success",
+      'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Validando".html_safe do %>
+        <%= fa_icon "check" %>
+        Validar
       <% end %>
     <% end %>
   </div>

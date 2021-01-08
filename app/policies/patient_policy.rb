@@ -30,4 +30,10 @@ class PatientPolicy < ApplicationPolicy
   def destroy?
     user.has_any_role?(:admin)
   end
+
+  def validate?
+    if record.Temporal?
+      update?
+    end
+  end
 end

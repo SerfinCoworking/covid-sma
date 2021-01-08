@@ -1,0 +1,117 @@
+<%= render 'header' %>
+
+<% if @andes_patients.present? %>
+<div class="card fixed-custom-card">
+  <div class="card-header d-flex align-items-center justify-content-between bg-success text-white">
+    <div class="d-flex align-items-center">
+      <%= fa_icon "check-circle" %>
+      <h5 class="card-title mb-0 ml-2">
+        Validando paciente DNI <%= @patient.dni %>
+      </h5>
+    </div>
+    <%= link_to patients_path, class: 'btn text-white' do %>
+      <%= fa_icon 'times' %>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div class="h4 border-bottom"><span class="text-warning"><%= fa_icon "clock" %></span> Paciente temporal</div>
+    <div class="row d-flex justify-content-between">
+      <div class="col"><strong>DNI </strong><br><%= @patient.dni %></div>
+      <div class="col"><strong>Apellido </strong><br><%= @patient.last_name %></div>
+      <div class="col"><strong>Nombre </strong><br><%= @patient.first_name %></div>
+    </div>
+
+    <% @andes_patients.each do |andes_patient| %>
+      <%= simple_form_for @patient, html: { role: 'check-modified' } do |f| %>
+
+        <%= f.input :dni, as: :hidden, input_html: { value: andes_patient['documento'] } %>
+        <%= f.input :last_name, as: :hidden, input_html: { value: andes_patient['apellido'] } %>
+        <%= f.input :first_name, as: :hidden, input_html: { value: andes_patient['nombre'] } %>
+        <%= f.input :birthdate, as: :hidden, input_html: { value: Date.strptime(andes_patient['fechaNacimiento'], "%Y-%m-%d") } %>
+        <%= f.input :sex, as: :hidden, input_html: { value: andes_patient['sexo'].humanize } %>
+        <%= f.input :first_name, as: :hidden, input_html: { value: andes_patient['nombre'] } %>
+        <%= f.input :marital_status, as: :hidden, input_html: { value: andes_patient['estadoCivil'].humanize } %>
+        
+        <%= f.input :status, as: :hidden, input_html: { value: "Validado" } %>
+
+        <%= f.simple_fields_for :address do |f_address| %>
+          <%= f_address.input :country, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['pais']['nombre'] } %>
+          <%= f_address.input :state, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] } %>
+          <%= f_address.input :city, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] } %>
+
+          <%= f_address.input :line, as: :hidden, input_html: { value: andes_patient['direccion'].first['valor'] } %>
+          <%= f_address.input :latitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].first } %>
+          <%= f_address.input :longitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].second } %>
+          <%= f_address.input :postal_code, as: :hidden, input_html: { value: andes_patient['direccion'].first['codigoPostal'] } %>
+        <% end %>
+
+        <div class="h4 border-bottom mt-4"><span class="text-success"><%= fa_icon "check-circle" %></span> Paciente validado</div>
+        <%# Apellido %>
+        <div class="row d-flex justify-content-between">
+          <div class="col"><strong>DNI </strong><br><%= andes_patient['documento'] %></div>
+          <div class="col"><strong>Apellido </strong><br><%= andes_patient['apellido'] %></div>
+          <div class="col"><strong>Nombre </strong><br><%= andes_patient['nombre'] %></div>
+        </div>
+
+        <div class="row d-flex justify-content-between mt-2">
+          <div class="col"><strong>Sexo </strong><br><%= andes_patient['sexo'].humanize %></div>
+          <div class="col"><strong>Fecha de nacimiento </strong><br><%= Date.strptime(andes_patient['fechaNacimiento'], "%Y-%m-%d").strftime("%d/%m/%Y") %></div>
+        </div>
+
+        <div class="row d-flex justify-content-between mt-2">
+          <div class="col-12 h5"><strong>Domicilio</strong></div>
+          <div class="col"><strong>País </strong><br><%= andes_patient['direccion'].first['ubicacion']['pais']['nombre'] %></div>
+          <div class="col"><strong>Provincia </strong><br><%= andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] %></div>
+          <div class="col"><strong>Ciudad </strong><br><%= andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] %></div>
+          <div class="col"><strong>Dirección </strong><br><%= andes_patient['direccion'].first['valor'] %></div>
+        </div>
+
+        <div class="row d-flex justify-content-between mt-2">
+          <div class="col">
+            <%# Telefonos del paciente %>
+            <strong>Teléfonos / Contactos</strong><br>
+            <% andes_patient['contacto'].each do |contact| %> 
+                <li><%= contact['tipo'].humanize %> <%= contact['valor'] %></li>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <div class="card-footer d-flex justify-content-end">
+    <%= link_to 'Volver', patients_path, class: "btn btn-light mr-2" %>
+    <button type='submit' name='commit' class='btn btn-success' form="<%= @patient.new_record? ? 'new_patient' : 'edit_patient_' + @patient.id.to_s %>">
+      <%= fa_icon 'save' %> Guardar validación
+    </button>
+  </div>
+</div>
+<% else %>
+  <div class="col-6 mx-auto">
+    <div class="card mx-auto">
+      <div class="card-header d-flex align-items-center justify-content-between bg-warning text-white">
+        <div class="d-flex align-items-center">
+          <%= fa_icon "exclamation-triangle" %>
+          <h5 class="card-title mb-0 ml-2">
+            Paciente no encontrado
+          </h5>
+        </div>
+        <%= link_to :back, class: 'btn text-white' do %>
+          <%= fa_icon 'times' %>
+        <% end %>
+      </div>
+
+      <div class="card-body">
+        <p>El paciente no se ha encontrado en Andes.</p> 
+        <p>Intente validar el paciente en Andes con Renaper para luego validarlo en Covid.</p>
+        <p>Gracias por la paciencia.</p>
+      </div>
+
+      <div class="card-footer d-flex justify-content-end">
+        <%= link_to 'Volver', :back, class: "btn btn-light mr-2" %>
+      </div>
+    </div>
+  </div>
+<% end %>

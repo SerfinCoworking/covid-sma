@@ -1,5 +1,6 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, :set_parent_contact, :destroy, :delete]
+  before_action :set_patient, only: [:show, :edit, :update, :update_parent_contact, 
+    :set_parent_contact, :destroy, :delete, :validate]
   require 'json'
   require 'rest-client'
   # GET /patients
@@ -70,6 +71,8 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   # PATCH/PUT /patients/1.json
   def update
+    @patient.address_id = Address.update_or_create_address(patient_address_params, @patient).id
+    
     respond_to do |format|
       if @patient.update(patient_params)
         flash[:success] = @patient.full_info+" se ha modificado correctamente."
@@ -212,6 +215,21 @@ class PatientsController < ApplicationController
     end 
   end
 
+  def validate
+    authorize @patient
+    
+    token = ENV['ANDES_TOKEN']
+    url = ENV['ANDES_MPI_URL']
+    andes_patients = RestClient::Request.execute(method: :get, url: "#{url}/",
+      timeout: 30, headers: {
+        "Authorization" => "JWT #{token}",
+        params: {'documento': @patient.dni}
+      }
+    )
+
+    @andes_patients = JSON.parse(andes_patients)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_patient
@@ -220,7 +238,7 @@ class PatientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def patient_params
-      params.require(:patient).permit(:first_name, :last_name, :dni,
+      params.require(:patient).permit(:first_name, :last_name, :dni, :status,
         :email, :birthdate, :sex, :marital_status, :assigned_establishment_id,
         patient_phones_attributes: [
           :id,
@@ -239,5 +257,19 @@ class PatientsController < ApplicationController
 
     def parent_contact_params
       params.require(:patient).permit(:parent_contact_id)
+    end
+
+    def patient_address_params
+      params.require(:patient).permit(
+        address_attributes: [
+          :country,
+          :state,
+          :city,
+          :line,
+          :latitude,
+          :longitude,
+          :postal_code
+        ]
+      )
     end
 end
