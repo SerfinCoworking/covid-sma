@@ -47,6 +47,13 @@
                 </div>
               </a>
             </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="statistics-tab" data-toggle="tab" href="#statistics" role="tab" aria-controls="epidemic-sheet" aria-selected="true">
+                <div class="d-flex align-items-center">
+                  <span><%= fa_icon 'chart-line'%> Estadísticas</span>
+                </div>
+              </a>
+            </li>
           </ul>
           <div class="tab-content mt-3" id="myTabContent">
             <div class="tab-pane fade show active" id="establishment" role="tabpanel" aria-labelledby="establishment-tab">
@@ -91,6 +98,16 @@
                   </table>
                 </div>
               </div>
+            </div>
+            <div class="tab-pane fade" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+              <%= line_chart @user.epidemic_sheets
+                .group_by_day(:created_at,
+                range: 2.weeks.ago.midnight..Date.today,
+                format: "%a %d/%m").count, 
+                discrete: true, 
+                label: 'Cantidad',
+                adapter: "highcharts",
+                title: 'Fichas cargadas en los últimos 14 días' %>
             </div>
           </div>
         </div>
