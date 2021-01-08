@@ -55,3 +55,8 @@
     <%= fa_icon "pen" %>
     Editar paciente
   <% end %>
+  
+  <%= link_to patient_path(patient), class: 'link text-secondary' do %>
+    <%= fa_icon "eye" %>
+    Ver paciente
+  <% end %>
