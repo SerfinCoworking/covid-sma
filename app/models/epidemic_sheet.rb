@@ -45,7 +45,7 @@ class EpidemicSheet < ApplicationRecord
   after_validation :assign_epidemic_week, if: Proc.new { |sheet| sheet.init_symptom_date.present? }
   
   filterrific(
-    default_filter_params: { sorted_by: 'created_at_desc' },
+    default_filter_params: { sorted_by: 'notificacion_desc' },
     available_filters: [
       :sorted_by,
       :search_dni,
@@ -64,9 +64,24 @@ class EpidemicSheet < ApplicationRecord
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     case sort_option.to_s
-    when /^created_at_/
+    when /^paciente_/
+      # Ordenamiento por apellido de pacientes
+      order("patients.last_name #{ direction }").joins(:patient)
+    when /^edad_/
+      # Ordenamiento por fecha de nacimiento
+      order("patients.birthdate #{ direction }").joins(:patient)
+    when /^caso_/
+      # Ordenamiento por estado
+      order("case_statuses.name #{ direction }").joins(:case_status)
+    when /^fis/
       # Ordenamiento por fecha de recepción
-      order("epidemic_sheets.created_at #{ direction }")
+      order("epidemic_sheets.init_symptom_date #{ direction }")
+    when /^notificacion_/
+      # Ordenamiento por fecha de recepción
+      order("epidemic_sheets.notification_date #{ direction }")
+    when /^establecimiento_asignado_/
+      # Ordenamiento por fecha de recepción
+      order("establishments.name #{ direction }").joins(:establishment)
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

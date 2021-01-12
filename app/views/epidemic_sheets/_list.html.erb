@@ -4,12 +4,12 @@
       <table class="table table-hover table-striped table-sm">
         <thead>
           <tr>
-            <th>Paciente</th>
-            <th>Edad</th>
-            <th>Caso</th>
-            <th>FIS</th>
-            <th>Notificación</th>
-            <th>Establecimiento asignado</th>
+            <th><%= filterrific_sorting_link(@filterrific, :paciente) %></th>
+            <th><%= filterrific_sorting_link(@filterrific, :edad) %></th>
+            <th><%= filterrific_sorting_link(@filterrific, :caso) %></th>
+            <th><%= filterrific_sorting_link(@filterrific, :fis) %></th>
+            <th><%= filterrific_sorting_link(@filterrific, :notificacion) %></th>
+            <th><%= filterrific_sorting_link(@filterrific, :establecimiento_asignado) %></th>
             <th>Sisa</th>
             <th class="text-center">Acciones</th>
           </tr>

@@ -22,10 +22,10 @@ class EpidemicSheetsController < ApplicationController
     end
 
     @filterrific = initialize_filterrific(
-      EpidemicSheet.all.order(created_at: :desc),
+      EpidemicSheet.all,
       params[:filterrific],
       persistence_id: false,
-      default_filter_params: { sorted_by: 'created_at_desc' },
+      default_filter_params: { sorted_by: 'notificacion_desc' },
     ) or return
     @epidemic_sheets = @filterrific.find.page(params[:page]).per_page(15)
   end
