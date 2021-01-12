@@ -102,7 +102,7 @@
             <div class="tab-pane fade" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
               <%= line_chart @user.epidemic_sheets
                 .group_by_day(:created_at,
-                range: 2.weeks.ago.midnight..Date.today,
+                range: 2.weeks.ago.midnight..Date.today.end_of_day,
                 format: "%a %d/%m").count, 
                 discrete: true, 
                 label: 'Cantidad',

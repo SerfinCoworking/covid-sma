@@ -27,3 +27,7 @@ set :output, "log/cron.log"
 every 1.day, at: '11:30 pm' do
   rake "batch:save_case_count_per_days"
 end
+
+every 1.day, at: '11:30 pm' do
+  rake "batch:update_restored_positive_cases"
+end
