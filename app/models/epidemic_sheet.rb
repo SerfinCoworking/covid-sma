@@ -55,7 +55,8 @@ class EpidemicSheet < ApplicationRecord
       :since_date_fis,
       :to_date_fis,
       :since_date,
-      :to_date
+      :to_date,
+      :by_close_contact
     ]
   )
 
@@ -79,6 +80,11 @@ class EpidemicSheet < ApplicationRecord
 
   pg_search_scope :search_fullname,
     :associated_against => { patient: [ :first_name, :last_name ]},
+    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
+    :ignoring => :accents # Ignorar tildes.
+
+  pg_search_scope :by_close_contact,
+    :associated_against => { close_contacts: [ :dni, :full_name ]},
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
     :ignoring => :accents # Ignorar tildes.
 

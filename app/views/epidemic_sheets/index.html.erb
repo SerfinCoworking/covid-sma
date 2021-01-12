@@ -5,26 +5,37 @@
     <div class="card-header">
       <%= form_for_filterrific @filterrific do |f| %>
         <div class="row d-felx justify-content-left">
-          <div class="col-md-1">
+          <div class="col-md-2">
             <!-- Spinner para la carga -->
-            <label>Reiniciar</label><br>
-            <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary position-absolute' do %>
+            <br>
+            <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary position-absolute',
+              title: 'Reiniciar', data: { toggle: 'tooltip', placement: 'top' } do %>
               <%= fa_icon 'redo' %>
             <% end %>
           </div>
-          <div class="col-md-3 col-sm-3">
+          <div class="col-md-2 col-sm-3">
             <label>DNI</label>
             <%= f.text_field(
               :search_dni,
               class: 'filterrific-periodically-observed form-control input-sm'
                 ) %>
           </div>
-          <div class="col-md-3 col-sm-3">
-            <label>Nombre o Apellido</label>
+          <div class="col-md-2 col-sm-2">
+            <label>Paciente</label>
             <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
             <%= f.text_field(
               :search_fullname,
               class: 'filterrific-periodically-observed form-control input-sm',
+              placeholder: 'Nombre o apellido',
+              autocomplete: 'off'
+            ) %>
+          </div>
+          <div class="col-md-2">
+            <label> Contacto estrecho</label>
+            <%= f.text_field(
+              :by_close_contact,
+              class: 'filterrific-periodically-observed form-control flex-fill',
+              placeholder: 'DNI, Nombre o apellido',
               autocomplete: 'off'
             ) %>
           </div>
@@ -40,7 +51,7 @@
               }
             %>
           </div>
-          <div class="col-md-3 col-sm-2 ">
+          <div class="col-md-2 col-sm-2">
             <label>Establecimiento</label>
             <%= f.select :by_establishment, 
               options_for_select(
