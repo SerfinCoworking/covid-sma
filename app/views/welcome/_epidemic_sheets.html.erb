@@ -3,15 +3,15 @@
   <div class="d-flex justify-content-around">
     <div class="text-center border border-danger p-2 rounded">
       <h5><strong>CASOS ACTIVOS</strong></h5>
-      <span class="h4"><%= CaseStatus.total_positive %></span>
+      <span class="h4 counter"><%= CaseStatus.total_positive %></span>
     </div>
     <div class="text-center border border-success p-2 rounded">
       <h5><strong>TOTAL RECUPERADOS</strong></h5>
-      <span class="h4"><%= CaseStatus.total_recovered %></span>
+      <span class="h4 counter"><%= CaseStatus.total_recovered %></span>
     </div>
     <div class="text-center border border-danger p-2 rounded">
       <h5><strong>NUEVOS POSITIVOS</strong></h5>
-      <span class="h4"><%= EpidemicSheet.total_new_positives %></span>
+      <span class="h4 counter"><%= EpidemicSheet.total_new_positives %></span>
     </div>
   </div>
   
