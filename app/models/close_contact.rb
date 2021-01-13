@@ -1,6 +1,6 @@
 class CloseContact < ApplicationRecord
   belongs_to :patient
-  belongs_to :epidemic_sheet
+  belongs_to :epidemic_sheet, counter_cache: true
   belongs_to :contact_type, optional: true
   belongs_to :contact, class_name: 'Patient', optional: true
 

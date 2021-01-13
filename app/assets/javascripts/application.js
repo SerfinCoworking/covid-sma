@@ -61,6 +61,19 @@ $('#filterrific_filter').on(
 );
 
 $(document).on('turbolinks:load', function() {
+
+  $('.counter').each(function () {
+    $(this).prop('Counter',0).animate({
+      Counter: $(this).text()
+    }, {
+    duration: 4000,
+    easing: 'swing',
+    step: function (now) {
+      $(this).text(Math.ceil(now));
+      }
+    });
+  });
+
   $('.prevent-enter-form').on('keypress', e => {
       if (e.keyCode == 13) {
           return false;
