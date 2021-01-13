@@ -40,13 +40,13 @@ class CaseDefinition < ApplicationRecord
 
   def self.total_new_recovered
     recovered_status = CaseStatus.find_by_name('Recuperado')
-    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.today.end_of_day)
+    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.yesterday.end_of_day)
     return cases.where(case_status_id: recovered_status.id).count
   end
 
   def self.total_new_negatives
     negative_status = CaseStatus.find_by_name('Negativo')
-    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.today.end_of_day)
+    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.yesterday.end_of_day)
     return cases.where(case_status_id: negative_status.id).count
   end
 end
