@@ -37,7 +37,7 @@
 
         <%= f.input :status, as: :hidden, input_html: { value: "Validado" } %>
 
-        <% if andes_patient['direccion'].present? %>
+        <% if andes_patient['direccion'].first.present? && andes_patient['direccion'].first['ubicacion'].present? %>
           <%= f.simple_fields_for :address do |f_address| %>
             <%= f_address.input :country, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['pais']['nombre'] } %>
             <%= f_address.input :state, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] } %>
