@@ -31,19 +31,23 @@
         <%= f.input :birthdate, as: :hidden, input_html: { value: Date.strptime(andes_patient['fechaNacimiento'], "%Y-%m-%d") } %>
         <%= f.input :sex, as: :hidden, input_html: { value: andes_patient['sexo'].humanize } %>
         <%= f.input :first_name, as: :hidden, input_html: { value: andes_patient['nombre'] } %>
-        <%= f.input :marital_status, as: :hidden, input_html: { value: andes_patient['estadoCivil'].humanize } %>
-        
+        <% if andes_patient['estadoCivil'].present? %>
+          <%= f.input :marital_status, as: :hidden, input_html: { value: andes_patient['estadoCivil'].humanize } %>
+        <% end %>
+
         <%= f.input :status, as: :hidden, input_html: { value: "Validado" } %>
 
-        <%= f.simple_fields_for :address do |f_address| %>
-          <%= f_address.input :country, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['pais']['nombre'] } %>
-          <%= f_address.input :state, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] } %>
-          <%= f_address.input :city, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] } %>
+        <% if andes_patient['direccion'].present? %>
+          <%= f.simple_fields_for :address do |f_address| %>
+            <%= f_address.input :country, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['pais']['nombre'] } %>
+            <%= f_address.input :state, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] } %>
+            <%= f_address.input :city, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] } %>
 
-          <%= f_address.input :line, as: :hidden, input_html: { value: andes_patient['direccion'].first['valor'] } %>
-          <%= f_address.input :latitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].first } %>
-          <%= f_address.input :longitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].second } %>
-          <%= f_address.input :postal_code, as: :hidden, input_html: { value: andes_patient['direccion'].first['codigoPostal'] } %>
+            <%= f_address.input :line, as: :hidden, input_html: { value: andes_patient['direccion'].first['valor'] } %>
+            <%= f_address.input :latitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].first } %>
+            <%= f_address.input :longitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].second } %>
+            <%= f_address.input :postal_code, as: :hidden, input_html: { value: andes_patient['direccion'].first['codigoPostal'] } %>
+          <% end %>
         <% end %>
 
         <div class="h4 border-bottom mt-4"><span class="text-success"><%= fa_icon "check-circle" %></span> Paciente validado</div>
