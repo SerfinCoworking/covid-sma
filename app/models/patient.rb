@@ -31,8 +31,9 @@ class Patient < ApplicationRecord
   validate :not_be_the_same_parent_contact, if: Proc.new { |sheet| sheet.parent_contact_id.present? }
 
   # Delegaciones
-  delegate :country_name, :state_name, :city_name, :line, to: :address, prefix: :address
+  delegate :country_name, :string, :state_name, :city_name, :line, to: :address, prefix: :address
   delegate :name, to: :patient_type, prefix: :patient_type
+  delegate :get_full_address_name, to: :current_address, prefix: :current_address
 
   filterrific(
     default_filter_params: { sorted_by: 'created_at_desc' },

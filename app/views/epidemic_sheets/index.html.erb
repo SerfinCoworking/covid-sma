@@ -8,9 +8,14 @@
           <div class="col-md-2">
             <!-- Spinner para la carga -->
             <br>
-            <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary position-absolute',
+            <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary',
               title: 'Reiniciar', data: { toggle: 'tooltip', placement: 'top' } do %>
               <%= fa_icon 'redo' %>
+            <% end %>
+            <%= link_to epidemic_sheets_path(format: 'xls'), 
+              class: "btn btn-success", target: :_blank,
+              title: 'Descargar en excel', data: { toggle: 'tooltip', placement: 'top' } do %>
+              <%= fa_icon "file-excel" %>
             <% end %>
           </div>
           <div class="col-md-2 col-sm-3">

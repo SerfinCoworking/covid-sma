@@ -47,4 +47,8 @@ class Address < ApplicationRecord
     end
     return @address
   end
+
+  def string
+    self.line+", "+self.city_name+", "+self.state_name+", "+self.country_name
+  end
 end
