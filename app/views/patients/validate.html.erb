@@ -38,15 +38,16 @@
         <%= f.input :status, as: :hidden, input_html: { value: "Validado" } %>
 
         <% if andes_patient['direccion'].first.present? && andes_patient['direccion'].first['ubicacion'].present? %>
+          <% andes_address =  andes_patient['direccion'].first %> 
           <%= f.simple_fields_for :address do |f_address| %>
-            <%= f_address.input :country, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['pais']['nombre'] } %>
-            <%= f_address.input :state, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] } %>
-            <%= f_address.input :city, as: :hidden, input_html: { value: andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] } %>
+            <%= f_address.input :country, as: :hidden, input_html: { value: andes_address['ubicacion']['pais'].present? ? andes_address['ubicacion']['pais']['nombre'] : '' } %>
+            <%= f_address.input :state, as: :hidden, input_html: { value: andes_address['ubicacion']['provincia'].present? ? andes_address['ubicacion']['provincia']['nombre'] : '' } %>
+            <%= f_address.input :city, as: :hidden, input_html: { value: andes_address['ubicacion']['localidad'].present? ? andes_address['ubicacion']['localidad']['nombre'] : '' } %>
 
-            <%= f_address.input :line, as: :hidden, input_html: { value: andes_patient['direccion'].first['valor'] } %>
-            <%= f_address.input :latitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].first } %>
-            <%= f_address.input :longitude, as: :hidden, input_html: { value: andes_patient['direccion'].first['geoReferencia'].second } %>
-            <%= f_address.input :postal_code, as: :hidden, input_html: { value: andes_patient['direccion'].first['codigoPostal'] } %>
+            <%= f_address.input :line, as: :hidden, input_html: { value: andes_address['valor'] } %>
+            <%= f_address.input :latitude, as: :hidden, input_html: { value: andes_address['geoReferencia'].first } %>
+            <%= f_address.input :longitude, as: :hidden, input_html: { value: andes_address['geoReferencia'].second } %>
+            <%= f_address.input :postal_code, as: :hidden, input_html: { value: andes_address['codigoPostal'] } %>
           <% end %>
         <% end %>
 
