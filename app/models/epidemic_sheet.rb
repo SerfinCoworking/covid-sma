@@ -144,15 +144,14 @@ class EpidemicSheet < ApplicationRecord
   end
 
   def self.total_new_positives
-    positive_status = CaseStatus.find_by_name('Positivo')
-    sheets = EpidemicSheet.since_date(Date.yesterday.beginning_of_day).to_date(Date.yesterday.end_of_day)
-    return sheets.joins(:case_definition).where(case_definitions: { case_status_id: positive_status.id }).count
+    return EpidemicSheet
+      .since_date(Date.yesterday)
+      .to_date(Date.yesterday)
+      .by_case_statuses(CaseStatus.find_by_name('Positivo')).count
   end
 
   def self.total_close_contacts
-    positive_status = CaseStatus.find_by_name('Positivo')
-    sheets = EpidemicSheet.joins(:case_definition).where(case_definitions: { case_status_id: positive_status.id })
-    return sheets.sum(:close_contacts_count)
+    return EpidemicSheet.by_case_statuses(CaseStatus.find_by_name('Positivo')).sum(:close_contacts_count)
   end
 
   private

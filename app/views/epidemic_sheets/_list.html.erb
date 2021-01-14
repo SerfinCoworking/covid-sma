@@ -19,11 +19,11 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex align-items-center justify-content-center" style="height: 50px">
-      <%= will_paginate @epidemic_sheets, list_classes: %w(pagination mb-0), renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-      <div class="mr-auto">
-        Total resultado: <%= @epidemic_sheets.count %>
+    <div class="d-flex align-items-center justify-content-between" style="height: 50px">
+      <div>
+        Total resultado: <span class="badge badge-secondary"><%= @epidemic_sheets.count %></span>
       </div>
+      <%= will_paginate @epidemic_sheets, list_classes: %w(pagination mb-0), renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
     </div>
   <% else %>
     <%= render(
