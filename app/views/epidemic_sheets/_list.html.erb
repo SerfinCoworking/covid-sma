@@ -21,6 +21,9 @@
     </div>
     <div class="d-flex align-items-center justify-content-center" style="height: 50px">
       <%= will_paginate @epidemic_sheets, list_classes: %w(pagination mb-0), renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+      <div class="position-absolute">
+        Total resultado: <%= @epidemic_sheets.count %>
+      </div>
     </div>
   <% else %>
     <%= render(
