@@ -24,7 +24,7 @@
       <Column ss:AutoFitWidth="0" ss:Width="30"/>
       <Column ss:AutoFitWidth="0" ss:Width="60"/>
       <Column ss:AutoFitWidth="0" ss:Width="180"/>   
-      <Column ss:AutoFitWidth="0" ss:Width="30"/>
+      <Column ss:AutoFitWidth="0" ss:Width="40"/>
       <Column ss:AutoFitWidth="0" ss:Width="60"/>   
       <Column ss:AutoFitWidth="0" ss:Width="100"/>
       <Column ss:AutoFitWidth="0" ss:Width="60"/>   
@@ -54,7 +54,7 @@
           <Cell><Data ss:Type="Number"><%= index + 1 %></Data></Cell>
           <Cell><Data ss:Type="String"><%= sheet.patient_dni %></Data></Cell>
           <Cell><Data ss:Type="String"><%= sheet.patient_last_name %>, <%= sheet.patient_first_name %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sheet.patient_age_string %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= sheet.patient.birthdate.present? ? sheet.patient_age_string : '----' %></Data></Cell>
           <Cell><Data ss:Type="String"><%= sheet.case_definition_case_status_name.humanize %></Data></Cell>
           <Cell><Data ss:Type="Number"><%= sheet.close_contacts_count %></Data></Cell>
           <Cell><Data ss:Type="String"><%= sheet.init_symptom_date.present? ? sheet.init_symptom_date.strftime("%d/%m/%Y") : '---' %></Data></Cell>
@@ -69,8 +69,7 @@
     </Table>
   </Worksheet>
   <Worksheet ss:Name="Parámetros del filtro">
-    <Table ss:ExpandedColumnCount="2" ss:ExpandedRowCount="2" x:FullColumns="1"
-      x:FullRows="1" ss:DefaultColumnWidth="50.4" ss:DefaultRowHeight="14.4">
+    <Table>
       <Column ss:AutoFitWidth="0" ss:Width="60"/>
       <Column ss:AutoFitWidth="0" ss:Width="60"/>
       <Column ss:AutoFitWidth="0" ss:Width="80"/>
