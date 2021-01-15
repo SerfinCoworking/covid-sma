@@ -33,6 +33,7 @@ class EpidemicSheetsController < ApplicationController
     end
     respond_to do |format|
       format.html
+      format.js
       format.xls { headers["Content-Disposition"] = "attachment; filename=\"FichasEpidemio_#{DateTime.now.strftime('%d/%m/%Y')}.xls\"" }
     end
   end
