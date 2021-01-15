@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "COVID SMA" %></title>
+    <title><%= (yield(:title) + " - " unless yield(:title).blank?).to_s + "COVID SMA" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "COVID SMA" %>">
     <%= favicon_link_tag 'covid-sma-favicon.png' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>

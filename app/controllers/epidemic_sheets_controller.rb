@@ -31,6 +31,10 @@ class EpidemicSheetsController < ApplicationController
     if request.format.xls?
       @epidemic_sheets = @filterrific.find
     end
+    respond_to do |format|
+      format.html
+      format.xls { headers["Content-Disposition"] = "attachment; filename=\"FichasEpidemio_#{DateTime.now.strftime('%d/%m/%Y')}.xls\"" }
+    end
   end
 
   # GET /epidemic_sheets/1

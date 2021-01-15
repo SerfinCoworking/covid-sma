@@ -5,15 +5,15 @@ class Address < ApplicationRecord
   has_one :patient
 
   def country_name
-    self.country.present? ? self.country.name.humanize : "----"
+    self.country.present? ? self.country.name.humanize : ""
   end
 
   def state_name
-    self.state.present? ? self.state.name.humanize : "----"
+    self.state.present? ? self.state.name.humanize : ""
   end
 
   def city_name
-    self.city.present? ? self.city.name.humanize : "----"
+    self.city.present? ? self.city.name.humanize : ""
   end
 
   def self.update_or_create_address(params, patient)
@@ -49,6 +49,6 @@ class Address < ApplicationRecord
   end
 
   def string
-    self.line+", "+self.city_name+", "+self.state_name+", "+self.country_name
+    self.line+" "+self.city_name+" "+self.state_name+" "+self.country_name
   end
 end
