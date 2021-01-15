@@ -96,6 +96,21 @@
               class: 'datetimepicker form-control to-date',
               placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
           </div>
+          <div class="col-md-2 mt-2">
+            <label>Situación clínica</label>
+            <%= f.select :by_clinic_location, 
+              options_for_select(
+                EpidemicSheet.clinic_locations,
+                selected: params[:filterrific].present? ? params[:filterrific][:by_clinic_location] : "",
+              ),
+              {include_blank: false, include_hidden: false},
+              {
+                class: "form-control selectpicker-md show-tick custom-select-pick",
+                "title"=>"Seleccionar",
+                multiple: true,
+              }
+            %>
+          </div>
         </div>
       <% end %>
     </div>

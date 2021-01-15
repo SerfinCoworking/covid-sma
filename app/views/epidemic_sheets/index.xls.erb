@@ -88,6 +88,7 @@
         <Cell ss:StyleID="s68"><Data ss:Type="String">Fecha hasta (FIS)</Data></Cell>
         <Cell ss:StyleID="s68"><Data ss:Type="String">Fecha desde (Notificación)</Data></Cell>
         <Cell ss:StyleID="s68"><Data ss:Type="String">Fecha hasta (Notificación)</Data></Cell>
+        <Cell ss:StyleID="s68"><Data ss:Type="String">Situación clínica</Data></Cell>
       </Row>
       <Row>
         <Cell><Data ss:Type="String"><%= params[:filterrific].present? ? params[:filterrific][:search_dni] : '' %></Data></Cell>
@@ -99,6 +100,7 @@
         <Cell><Data ss:Type="String"><%= params[:filterrific].present? ? params[:filterrific][:to_date_fis] : '' %> </Data></Cell>
         <Cell><Data ss:Type="String"><%= params[:filterrific].present? ? params[:filterrific][:since_date] : '' %> </Data></Cell>
         <Cell><Data ss:Type="String"><%= params[:filterrific].present? ? params[:filterrific][:to_date] : '' %> </Data></Cell>
+        <Cell><Data ss:Type="String"><%= params[:filterrific].present? && params[:filterrific][:by_clinic_location].present? ? params[:filterrific][:by_clinic_location].map{|id| EpidemicSheet.clinic_locations.key(id.to_i).humanize}.join(', ') : '' %> </Data></Cell>
       </Row>
     </Table>
   </Worksheet>
