@@ -10,7 +10,6 @@ class EpidemicSheet < ApplicationRecord
   has_one :case_status, through: :case_definition
   has_one :address, through: :patient
   has_one :current_address, through: :patient
-  has_one :assigned_establishment, through: :patient
   has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"
@@ -114,7 +113,12 @@ class EpidemicSheet < ApplicationRecord
 
   scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
  
-  scope :by_establishment, ->(ids_ary) { joins(:patient).where(patients: {assigned_establishment_id: ids_ary}) }
+  # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
+
+  scope :by_establishment, lambda {|ids_ary| 
+    joins('LEFT OUTER JOIN patients ON epidemic_sheets.patient_id = patients.id').where(patients: {assigned_establishment_id: ids_ary} ) 
+  }
+
 
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }
 
