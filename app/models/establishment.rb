@@ -5,6 +5,7 @@ class Establishment < ApplicationRecord
   has_many :sectors
   has_many :users, :through => :sectors
   has_many :patients, foreign_key: "assigned_establishment_id"
+  belongs_to :city, optional: true
 
   # Validations
   validates_presence_of :name
