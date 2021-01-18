@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_110900) do
+ActiveRecord::Schema.define(version: 2021_01_18_180543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(version: 2021_01_13_110900) do
   create_table "cities", force: :cascade do |t|
     t.bigint "state_id"
     t.string "name"
+    t.bigint "department_id"
+    t.index ["department_id"], name: "index_cities_on_department_id"
     t.index ["state_id"], name: "index_cities_on_state_id"
   end
 
@@ -143,6 +145,14 @@ ActiveRecord::Schema.define(version: 2021_01_13_110900) do
     t.string "street_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.bigint "state_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["state_id"], name: "index_departments_on_state_id"
   end
 
   create_table "diagnostic_methods", force: :cascade do |t|
@@ -201,6 +211,8 @@ ActiveRecord::Schema.define(version: 2021_01_13_110900) do
     t.integer "sectors_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "city_id"
+    t.index ["city_id"], name: "index_establishments_on_city_id"
   end
 
   create_table "internal_orders", force: :cascade do |t|
