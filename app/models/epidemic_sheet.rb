@@ -10,6 +10,7 @@ class EpidemicSheet < ApplicationRecord
   has_one :case_status, through: :case_definition
   has_one :address, through: :patient
   has_one :current_address, through: :patient
+  has_one :assigned_establishment, through: :patient
   has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
   has_many :movements, class_name: "EpidemicSheetMovement"
@@ -32,7 +33,14 @@ class EpidemicSheet < ApplicationRecord
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
   validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
-  
+  validate :fis_date_cannot_be_in_the_future
+
+  def fis_date_cannot_be_in_the_future
+    if init_symptom_date.present? && init_symptom_date > Date.today
+      errors.add(:init_symptom_date, "El FIS no puede estar en días futuros")
+    end
+  end
+
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, 
     :assigned_establishment, :address_string, :current_address_get_full_address_name, to: :patient, prefix: true
