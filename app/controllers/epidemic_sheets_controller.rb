@@ -22,7 +22,7 @@ class EpidemicSheetsController < ApplicationController
     end
 
     @filterrific = initialize_filterrific(
-      EpidemicSheet.all,
+      EpidemicSheet,
       params[:filterrific],
       persistence_id: false,
       default_filter_params: { sorted_by: 'notificacion_desc' },
