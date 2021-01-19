@@ -10,7 +10,7 @@ class Sector < ApplicationRecord
   # Validaciones
   validates_presence_of :name, :establishment_id
 
-  delegate :name, :short_name, to: :establishment, prefix: :establishment
+  delegate :name, :short_name, :city, to: :establishment, prefix: :establishment
 
   # SCOPES #--------------------------------------------------------------------
   pg_search_scope :search_name,
@@ -38,10 +38,10 @@ class Sector < ApplicationRecord
     case sort_option.to_s
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
-      order("sectors.created_at #{ direction }")
+      reorder("sectors.created_at #{ direction }")
     when /^name_/s
       # Ordenamiento por fecha de creación en la BD
-      order("sectors.name #{ direction }")
+      reorder("sectors.name #{ direction }")
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

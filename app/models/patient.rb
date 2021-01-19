@@ -76,19 +76,19 @@ class Patient < ApplicationRecord
     case sort_option.to_s
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
-      order("patients.created_at #{ direction }")
+      reorder("patients.created_at #{ direction }")
     when /^nacimiento_/
       # Ordenamiento por fecha de creación en la BD
-      order("patients.birthdate #{ direction }")
+      reorder("patients.birthdate #{ direction }")
     when /^dni_/
       # Ordenamiento por fecha de creación en la BD
-      order("patients.dni #{ direction }")
+      reorder("patients.dni #{ direction }")
     when /^nombre_/
       # Ordenamiento por nombre de paciente
-      order("LOWER(patients.first_name) #{ direction }")
+      reorder("LOWER(patients.first_name) #{ direction }")
     when /^apellido_/
       # Ordenamiento por apellido de paciente
-      order("LOWER(patients.last_name) #{ direction }")
+      reorder("LOWER(patients.last_name) #{ direction }")
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

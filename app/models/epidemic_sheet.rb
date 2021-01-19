@@ -74,22 +74,22 @@ class EpidemicSheet < ApplicationRecord
     case sort_option.to_s
     when /^paciente_/
       # Ordenamiento por apellido de pacientes
-      order("patients.last_name #{ direction }").joins(:patient)
+      reorder("patients.last_name #{ direction }").joins(:patient)
     when /^edad_/
       # Ordenamiento por fecha de nacimiento
-      order("patients.birthdate #{ direction }").joins(:patient)
+      reorder("patients.birthdate #{ direction }").joins(:patient)
     when /^caso_/
       # Ordenamiento por estado
-      order("case_statuses.name #{ direction }").joins(:case_status)
+      reorder("case_statuses.name #{ direction }").joins(:case_status)
     when /^fis/
       # Ordenamiento por fecha de recepción
-      order("epidemic_sheets.init_symptom_date #{ direction }")
+      reorder("epidemic_sheets.init_symptom_date #{ direction }")
     when /^notificacion_/
       # Ordenamiento por fecha de recepción
-      order("epidemic_sheets.notification_date #{ direction }")
+      reorder("epidemic_sheets.notification_date #{ direction }")
     when /^establecimiento_asignado_/
       # Ordenamiento por fecha de recepción
-      order("establishments.name #{ direction }").joins(:establishment)
+      reorder("establishments.name #{ direction }").joins(:establishment)
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

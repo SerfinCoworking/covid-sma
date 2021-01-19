@@ -36,10 +36,10 @@ class Establishment < ApplicationRecord
     case sort_option.to_s
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
-      order("establishments.created_at #{ direction }")
+      reorder("establishments.created_at #{ direction }")
     when /^name_/s
       # Ordenamiento por fecha de creación en la BD
-      order("establishments.name #{ direction }")
+      reorder("establishments.name #{ direction }")
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

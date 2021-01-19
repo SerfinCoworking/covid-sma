@@ -2,6 +2,8 @@
   <div class="js-fade fade-in is-paused">
     <td><%= sector.name %></td>
     <td><%= sector.establishment.name %></td>
+    <td><%= sector.establishment_city.present? ? sector.establishment_city.name : '---' %></td>
+    <td><%= sector.establishment_city.present? ? sector.establishment_city.department.name : '---' %></td>
 
     <td class="text-left actions-col">
       <% if policy(sector).show? %>

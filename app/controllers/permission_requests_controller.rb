@@ -15,7 +15,7 @@ class PermissionRequestsController < ApplicationController
       default_filter_params: {sorted_by: 'created_at_desc'},
       available_filters: [
         :sorted_by,
-        :search_name,
+        :search_dni,
       ],
     ) or return
     @permission_requests = @filterrific.find.page(params[:page]).per_page(15)

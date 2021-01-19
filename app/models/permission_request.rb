@@ -10,13 +10,13 @@ class PermissionRequest < ApplicationRecord
   filterrific(
     default_filter_params: { sorted_by: 'created_at_desc' },
     available_filters: [
-      :search_name,
+      :search_dni,
       :sorted_by
     ]
   )
 
-  pg_search_scope :search_name,
-    :associated_against => { :user => :first_name },
+  pg_search_scope :search_dni,
+    :associated_against => { :user => :username },
     :using => {:tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
     :ignoring => :accents # Ignorar tildes.
 
@@ -26,13 +26,13 @@ class PermissionRequest < ApplicationRecord
     case sort_option.to_s
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
-      order("permission_requests.created_at #{ direction }")
+      reorder("permission_requests.created_at #{ direction }")
     when /^nombre_/
       # Ordenamiento por nombre de insumo
-      order("LOWER(users.name) #{ direction }").joins(:user)
+      reorder("LOWER(users.name) #{ direction }").joins(:user)
     when /^unidad_/
       # Ordenamiento por la unidad
-      order("LOWER(unities.name) #{ direction }").joins(:unity)
+      reorder("LOWER(unities.name) #{ direction }").joins(:unity)
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
