@@ -189,7 +189,7 @@ class EpidemicSheetsController < ApplicationController
       @occupations = Occupation.all.sort_by &:name
       @case_definitions = CaseDefinition.all
       @diagnostic_methods = DiagnosticMethod.all
-      @establishments = Establishment.all.sort_by &:name
+      @establishments = Establishment.by_city(current_user.establishment_city).sort_by &:name
       @special_devices = SpecialDevice.all.sort_by &:name
     end
 
