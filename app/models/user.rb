@@ -26,7 +26,7 @@ class User < ApplicationRecord
   delegate :full_name, :dni, :email, to: :profile
   delegate :name, :establishment_short_name, to: :sector, prefix: :sector
   delegate :establishment_name, to: :sector
-  delegate :establishment, to: :sector
+  delegate :establishment, :establishment_city, to: :sector
 
   def create_profile
     first_name = Devise::LDAP::Adapter.get_ldap_param(self.username, "givenname").first.encode("Windows-1252", invalid: :replace, undef: :replace) # Comment in production

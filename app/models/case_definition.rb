@@ -3,6 +3,7 @@ class CaseDefinition < ApplicationRecord
   belongs_to :diagnostic_method, optional: true
   belongs_to :special_device
   has_one :epidemic_sheet
+  has_one :establishment, through: :epidemic_sheet
 
   delegate :name, :badge, to: :case_status, prefix: :case_status
   delegate :needs_diagnostic?, to: :case_status
@@ -38,15 +39,25 @@ class CaseDefinition < ApplicationRecord
     where('case_definitions.updated_at <= ?', a_date)
   }
 
-  def self.total_new_recovered
-    recovered_status = CaseStatus.find_by_name('Recuperado')
-    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.yesterday.end_of_day)
-    return cases.where(case_status_id: recovered_status.id).count
+  scope :by_city, lambda {|ids_ary| 
+    includes([:establishment]).where(establishments: {city_id: ids_ary} )
+  }
+
+  def self.total_new_recovered_to_city(a_city)
+    return CaseDefinition
+      .updated_since_date(Date.yesterday.beginning_of_day)
+      .updated_to_date(Date.yesterday.end_of_day)
+      .by_city(a_city)
+      .where(case_status_id: CaseStatus.find_by_name('Recuperado').id)
+      .count
   end
 
-  def self.total_new_negatives
-    negative_status = CaseStatus.find_by_name('Negativo')
-    cases = CaseDefinition.updated_since_date(Date.yesterday.beginning_of_day).updated_to_date(Date.yesterday.end_of_day)
-    return cases.where(case_status_id: negative_status.id).count
+  def self.total_new_negatives_to_city(a_city)
+    return CaseDefinition
+      .updated_since_date(Date.yesterday.beginning_of_day)
+      .updated_to_date(Date.yesterday.end_of_day)
+      .by_city(a_city)
+      .where(case_status_id: CaseStatus.find_by_name('Negativo').id)
+      .count
   end
 end

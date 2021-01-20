@@ -7,6 +7,7 @@ class EpidemicSheet < ApplicationRecord
   belongs_to :case_definition, dependent: :destroy
   belongs_to :created_by, class_name: 'User'
   belongs_to :establishment
+  has_one :city, through: :establishment
   has_one :case_status, through: :case_definition
   has_one :address, through: :patient
   has_one :current_address, through: :patient
@@ -111,14 +112,18 @@ class EpidemicSheet < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
     :ignoring => :accents # Ignorar tildes.
 
+  # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
   scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
  
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
 
   scope :by_establishment, lambda {|ids_ary| 
-    joins('LEFT OUTER JOIN patients ON epidemic_sheets.patient_id = patients.id').where(patients: {assigned_establishment_id: ids_ary} ) 
+    left_joins(:patient).where(patients: {assigned_establishment_id: ids_ary} ) 
   }
 
+  scope :by_city, lambda {|ids_ary| 
+    left_joins(:establishment).where(establishments: {city_id: ids_ary} )
+  }
 
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }
 
@@ -147,26 +152,30 @@ class EpidemicSheet < ApplicationRecord
   end
 
   def self.last_week
-    where("created_at >= :last_week", { last_week: 1.weeks.ago.midnight })
+    where("epidemic_sheets.created_at >= :last_week", { last_week: 1.weeks.ago.midnight })
   end
 
   def self.current_year
-    where("created_at >= :year", { year: DateTime.now.beginning_of_year })
+    where("epidemic_sheets.created_at >= :year", { year: DateTime.now.beginning_of_year })
   end
 
   def self.current_month
-    where("created_at >= :month", { month: DateTime.now.beginning_of_month })
+    where("epidemic_sheets.created_at >= :month", { month: DateTime.now.beginning_of_month })
   end
 
-  def self.total_new_positives
+  def self.total_new_positives_to_city(a_city)
     return EpidemicSheet
+      .by_city(a_city)
       .since_date(Date.yesterday)
       .to_date(Date.yesterday)
       .by_case_statuses(CaseStatus.find_by_name('Positivo')).count
   end
 
-  def self.total_close_contacts
-    return EpidemicSheet.by_case_statuses(CaseStatus.find_by_name('Positivo')).sum(:close_contacts_count)
+  def self.total_close_contacts_to_city(a_city)
+    return EpidemicSheet
+      .by_city(a_city)
+      .by_case_statuses(CaseStatus.find_by_name('Positivo'))
+      .sum(:close_contacts_count)
   end
 
   private

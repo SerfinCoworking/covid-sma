@@ -19,7 +19,7 @@ class Establishment < ApplicationRecord
   :ignoring => :accents # Ignorar tildes.
 
   filterrific(
-    default_filter_params: { sorted_by: 'name_asc' },
+    default_filter_params: { sorted_by: 'usuarios_desc' },
     available_filters: [
       :sorted_by,
       :search_name,
@@ -37,9 +37,19 @@ class Establishment < ApplicationRecord
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
       reorder("establishments.created_at #{ direction }")
-    when /^name_/s
-      # Ordenamiento por fecha de creación en la BD
+    when /^nombre_/s
       reorder("establishments.name #{ direction }")
+    when /^sectores_/
+      left_joins(:sectors)
+      .group(:id)
+      .reorder("COUNT(sectors.id) #{ direction }")
+    when /^usuarios_/
+      left_joins(:users)
+      .group(:id)
+      .reorder("COUNT(users.id) #{ direction }")
+    when /^ciudad_/
+      joins(:city)
+      .reorder("cities.name #{ direction }")
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

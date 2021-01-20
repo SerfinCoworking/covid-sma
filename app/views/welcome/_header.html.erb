@@ -7,6 +7,9 @@
         Inicio
       <% end %>
     </li>
+    <li class="d-flex nav-item align-items-center pl-2 mx-auto">
+      <strong>INFORMACIÓN DE <%= current_user.establishment.city.name.upcase %></strong>
+    </li>
   <% else %>
     Bienvenido <%= current_user.full_name.titleize %>
   <% end %>

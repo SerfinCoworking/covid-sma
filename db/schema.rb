@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_18_180543) do
+ActiveRecord::Schema.define(version: 2021_01_20_143042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 2021_01_18_180543) do
     t.integer "count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "city_id"
     t.index ["case_status_id"], name: "index_case_count_per_days_on_case_status_id"
+    t.index ["city_id"], name: "index_case_count_per_days_on_city_id"
   end
 
   create_table "case_definitions", force: :cascade do |t|
