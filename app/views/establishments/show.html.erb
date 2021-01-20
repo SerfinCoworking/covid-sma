@@ -18,6 +18,8 @@
         <li class="list-group-item"><span class="font-weight-bold">Email:</span> <%= @establishment.email%> </li>
         <li class="list-group-item"><span class="font-weight-bold">Teléfono:</span> <%= @establishment.phone%></li>
         <li class="list-group-item"><span class="font-weight-bold">Domicilio:</span> <%= @establishment.domicile%> </li>
+        <li class="list-group-item"><span class="font-weight-bold">Ciudad:</span> <%= @establishment.city.present? ? @establishment.city.name : '---'%> </li>
+        <li class="list-group-item"><span class="font-weight-bold">Departamento:</span> <%= @establishment.city.present? ? @establishment.city.department.name : '---'%> </li>
         <li class="list-group-item"><span class="font-weight-bold">Cuit:</span> <%= @establishment.cuit%> </li>
         <li class="list-group-item"><span class="font-weight-bold">Código:</span> <%= @establishment.code%> </li>
       </ul>
