@@ -165,7 +165,7 @@
       <div class="row">
         <div class="col-6">
           <%= f.input :assigned_establishment_id, label: 'Establecimiento designado',
-            collection: Establishment.all.map {|establishment|  [establishment.name, establishment.id ]},
+            collection: Establishment.by_city(current_user.establishment_city).map {|establishment|  [establishment.name, establishment.id ]},
             selected: f.object.assigned_establishment_id.present? ? f.object.assigned_establishment_id : current_user.establishment.id,
             :input_html => {
               required: true,
