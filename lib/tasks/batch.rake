@@ -17,7 +17,7 @@ namespace :batch do
   desc 'Update in database the positive cases that the FIS is graeater than 14 days'
   task update_restored_positive_cases: :environment do
     positive_status = CaseStatus.find_by_name('Positivo')
-    positive_sheets = EpidemicSheet.joins(:case_definition).where(case_definitions: { case_status_id: positive_status.id })
+    positive_sheets = EpidemicSheet.ambulatorio.joins(:case_definition).where(case_definitions: { case_status_id: positive_status.id })
 
     positive_sheets.find_each do |sheet|
       if (Date.today - sheet.init_symptom_date).to_i > 14
