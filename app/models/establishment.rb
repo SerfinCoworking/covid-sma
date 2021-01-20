@@ -26,6 +26,10 @@ class Establishment < ApplicationRecord
     ]
   )
 
+  scope :by_city, lambda {|ids_ary| 
+    where(city_id: ids_ary) 
+  }
+
   scope :where_not_id, lambda { |an_id|
     where.not(id: [*an_id])
   }

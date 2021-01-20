@@ -60,7 +60,7 @@
             <label>Establecimiento</label>
             <%= f.select :by_establishment, 
               options_for_select(
-                Establishment.all.collect {|cs| [cs.name, cs.id]},
+                Establishment.by_city(current_user.establishment_city).collect {|cs| [cs.name, cs.id]},
                 selected: params[:filterrific].present? ? params[:filterrific][:by_establishment] : "",
               ),
               {include_blank: false, include_hidden: false},
