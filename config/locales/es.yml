@@ -66,6 +66,7 @@ es:
       symptom: "Síntoma"
       user: "Usuario"
       user_sector: "Usuario en sector"
+      sanitary_zone: "Zona sanitaria"
     attributes:
       sector:
         name: "Nombre"
@@ -164,6 +165,11 @@ es:
         neighborhood: "Barrio"
         street: "Calle"
         street_number: "Altura"
+        created_at: "Creado"
+        updated_at: "Actualizado"
+      sanitary_zone:
+        name: "Nombre"
+        state: "Provincia"
         created_at: "Creado"
         updated_at: "Actualizado"
 

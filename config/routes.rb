@@ -124,4 +124,10 @@ Rails.application.routes.draw do
   namespace :charts do
     get "by_month_epidemic_sheets"
   end
+
+  resources :sanitary_zones do
+    member do
+      get :delete
+    end
+  end
 end
