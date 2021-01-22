@@ -1,0 +1,96 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
+  sheet.add_row ["#", "DNI", "Nombre completo", "Edad", "Caso", "Contactos estrechos", "Fecha (FIS)", "Fecha notificación", 
+    "Domicilio", "Domicilio actual relevado", "Síntomas", "Síntomas previos", "Situación clínica" ]
+
+  sheet.add_style 'A1:M1', bg_color: '363062'
+  
+  @epidemic_sheets.each_with_index do |e_sheet, index|
+    sheet.add_row [index + 1, e_sheet.patient_dni, e_sheet.patient_last_name+", "+e_sheet.patient_first_name, 
+      e_sheet.patient.birthdate.present? ? e_sheet.patient_age_string : '----',
+      e_sheet.case_definition_case_status_name.humanize,
+      e_sheet.close_contacts_count,
+      e_sheet.init_symptom_date.present? ? e_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---',
+      e_sheet.notification_date.strftime("%d/%m/%Y"),
+      e_sheet.patient_address_string,
+      e_sheet.patient_current_address_get_full_address_name,
+      e_sheet.presents_symptoms? ? 'Si' : 'No',
+      e_sheet.present_previous_symptoms? ? 'Si' : 'No',
+      e_sheet.clinic_location.humanize
+    ]
+  end
+end
+
+wb.add_worksheet(name: "Contactos estrechos") do |sheet|
+  sheet.merge_cells "A1:H1"
+  sheet.merge_cells "I1:O1"
+  
+  sheet.add_row ["Contacto estrecho","","","","","","","", "Contacto origen"]
+  sheet.add_style 'A1:I1', { alignment: { horizontal: :center } }, bg_color: '363062'
+  sheet.add_style 'A1', bg_color: 'cfdac8', b: true
+  sheet.add_style 'I1', bg_color: 'e8eae6', b: true
+  
+  sheet.add_row ["Apellido y nombre", "DNI", "Teléfono", "Domicilio", "Fecha último contacto",  "Tipo de contacto",
+    "Estado", "Tiene ficha?", "Apellido y nombre", "DNI", "Teléfono", "Domicilio", "Domicilio actual relevado", "Fecha (FIS)", "Fecha notificación"]
+  sheet.add_style 'A2:O2', bg_color: '363062'
+
+  ce = sheet.styles.add_style bg_color: 'cfdac8'
+  cep = sheet.styles.add_style bg_color: 'e8eae6'
+  red_border = sheet.styles.add_style :border => { :style => :thin, :color => "FFFF0000", :edges => [:top, :bottom] }
+
+  @epidemic_sheets.each do |e_sheet, epi_index|
+    e_sheet.close_contacts.each_with_index do |contact, index|
+      patient_contact_address = 
+      patient_contact_date = contact.last_contact_date.present? ? contact.last_contact_date.strftime("%d/%m/%Y") : ''
+      patient_contact_type = contact.contact_type.present? ? contact.contact_type_name : '---'
+      ce_row = []
+      if contact.contact.present?
+        ce_row[0] = contact.contact_full_name
+        ce_row[1] = contact.contact_dni
+        ce_row[2] = contact.contact_patient_phones.present? ? contact.contact_patient_phones.last.number : ''
+        ce_row[3] = contact.contact_address.present? ? contact.contact_get_full_address_name : ''
+        ce_row[4] = patient_contact_date
+        ce_row[5] = patient_contact_type
+        ce_row[6] = contact.contact.epidemic_sheet.case_definition_case_status_name
+        ce_row[7] = 'Si'
+      else
+        ce_row[0] = contact.full_name
+        ce_row[1] = contact.dni
+        ce_row[2] = contact.phone
+        ce_row[3] = contact.address
+        ce_row[4] = patient_contact_date
+        ce_row[5] = patient_contact_type
+        ce_row[6] = ''
+        ce_row[7] = 'No'
+      end
+      ce_row[8] = contact.patient.fullname
+      ce_row[9] = contact.patient.dni
+      ce_row[10] = contact.patient.patient_phones.present? ? contact.patient.patient_phones.last.number : ''
+      ce_row[11] = contact.patient.address_string
+      ce_row[12] = contact.patient.current_address_get_full_address_name
+      ce_row[13] = contact.patient.epidemic_sheet.init_symptom_date.present? ? contact.patient.epidemic_sheet.init_symptom_date.strftime("%d/%m/%Y") : ''
+      ce_row[14] = contact.patient.epidemic_sheet.notification_date.strftime("%d/%m/%Y")
+      sheet.add_row ce_row, style: [ce,ce,ce,ce,ce,ce,ce,ce, cep,cep,cep,cep,cep,cep,cep]
+    end
+  end
+end
+
+wb.add_worksheet(name: "Parámetros del filtro") do |sheet|
+  sheet.add_row ["DNI", "Paciente", "Contacto estrecho", "Caso", "Establecimiento",  "Fecha desde (FIS)", 
+    "Fecha hasta (FIS)", "Fecha desde (Notificación)",  "Fecha hasta (Notificación)", "Situación clínica" ]
+
+  sheet.add_style 'A1:J1', bg_color: '363062'
+  
+  sheet.add_row [
+    params[:filterrific].present? ? params[:filterrific][:search_dni] : '',
+    params[:filterrific].present? ? params[:filterrific][:search_fullname] : '',
+    params[:filterrific].present? ? params[:filterrific][:by_close_contact] : '',
+    params[:filterrific].present? && params[:filterrific][:by_case_statuses].present? ? params[:filterrific][:by_case_statuses].map{|id| CaseStatus.find(id).name}.join(', ') : '',
+    params[:filterrific].present? && params[:filterrific][:by_establishment].present? ? params[:filterrific][:by_establishment].map{|id| Establishment.find(id).name}.join(', ') : '',
+    params[:filterrific].present? ? params[:filterrific][:since_date_fis] : '',
+    params[:filterrific].present? ? params[:filterrific][:to_date_fis] : '',
+    params[:filterrific].present? ? params[:filterrific][:since_date] : '',
+    params[:filterrific].present? ? params[:filterrific][:to_date] : '',
+    params[:filterrific].present? && params[:filterrific][:by_clinic_location].present? ? params[:filterrific][:by_clinic_location].map{|id| EpidemicSheet.clinic_locations.key(id.to_i).humanize}.join(', ') : ''
+  ]
+end
