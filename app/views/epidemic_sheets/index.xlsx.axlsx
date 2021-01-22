@@ -34,9 +34,8 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
     "Estado", "Tiene ficha?", "Apellido y nombre", "DNI", "Teléfono", "Domicilio", "Domicilio actual relevado", "Fecha (FIS)", "Fecha notificación"]
   sheet.add_style 'A2:O2', bg_color: '363062'
 
-  ce = sheet.styles.add_style bg_color: 'cfdac8'
-  cep = sheet.styles.add_style bg_color: 'e8eae6'
-  red_border = sheet.styles.add_style :border => { :style => :thin, :color => "FFFF0000", :edges => [:top, :bottom] }
+  ce = sheet.styles.add_style bg_color: 'cfdac8', :border => { :style => :thin, :color =>"FFCDCDCD" }
+  cep = sheet.styles.add_style bg_color: 'e8eae6', :border => { :style => :thin, :color =>"FFCDCDCD" }
 
   @epidemic_sheets.each do |e_sheet, epi_index|
     e_sheet.close_contacts.each_with_index do |contact, index|
