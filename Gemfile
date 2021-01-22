@@ -7,6 +7,10 @@ end
 
 ruby "2.6.5"
 
+# To generate xlsx reports
+gem 'axlsx_styler'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 # To call external apis
 gem 'rest-client'
 # To accept base 64

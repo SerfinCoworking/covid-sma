@@ -9,6 +9,8 @@ class CloseContact < ApplicationRecord
   before_validation :assign_patient
 
   delegate :name, to: :contact_type, prefix: true
+  delegate :fullname, :dni, :patient_phones, :address_string, :address, to: :contact, prefix: true
+
 
   private
   
