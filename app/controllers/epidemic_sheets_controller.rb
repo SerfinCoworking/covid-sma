@@ -28,7 +28,7 @@ class EpidemicSheetsController < ApplicationController
       default_filter_params: { sorted_by: 'notificacion_desc' },
     ) or return
     @epidemic_sheets = @filterrific.find.page(params[:page]).per_page(15)
-    if request.format.xls?
+    if request.format.xlsx?
       @epidemic_sheets = @filterrific.find
     end
     respond_to do |format|
