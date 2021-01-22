@@ -28,6 +28,24 @@
       <% end %>
     <% end %>
 
+    <% if policy(Patient).index? %>
+      <%= link_to main_app.patients_path, class: "list-group-item list-group-item-action list-custom #{active_class('patients')}" do %>
+        <span class="sb-icon">
+          <%= fa_icon "user-injured" %>
+        </span>
+        <span class="ml-2 sb-title">Pacientes</span>
+      <% end %>
+    <% end %>
+    
+    <% if policy(Professional).index? %>
+      <%= link_to main_app.professionals_path, class: "list-group-item list-group-item-action list-custom #{active_class('professionals')}" do %>
+        <span class="sb-icon">
+          <%= fa_icon "user-md" %>
+        </span>
+        <span class="ml-2 sb-title">Médicos</span>
+      <% end %>
+    <% end %>
+
     <% if policy(Sector).index? %>
       <%= link_to main_app.sectors_path, class: "list-group-item list-group-item-action list-custom #{active_class('sectors')} #{active_class('internal_orders')} #{active_class('internal_order_templates')}" do %>
         <span class="sb-icon">
@@ -52,24 +70,6 @@
           <%= fa_icon "map"%>
         </span>
         <span class="ml-2 sb-title">Zonas sanitarias</span>
-      <% end %>
-    <% end %>
-
-    <% if policy(Professional).index? %>
-      <%= link_to main_app.professionals_path, class: "list-group-item list-group-item-action list-custom #{active_class('professionals')}" do %>
-        <span class="sb-icon">
-          <%= fa_icon "user-md" %>
-        </span>
-        <span class="ml-2 sb-title">Médicos</span>
-      <% end %>
-    <% end %>
-
-    <% if policy(Patient).index? %>
-      <%= link_to main_app.patients_path, class: "list-group-item list-group-item-action list-custom #{active_class('patients')}" do %>
-        <span class="sb-icon">
-          <%= fa_icon "user-injured" %>
-        </span>
-        <span class="ml-2 sb-title">Pacientes</span>
       <% end %>
     <% end %>
 

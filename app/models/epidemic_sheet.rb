@@ -53,7 +53,7 @@ class EpidemicSheet < ApplicationRecord
   after_validation :assign_epidemic_week, if: Proc.new { |sheet| sheet.init_symptom_date.present? }
   
   filterrific(
-    default_filter_params: { sorted_by: 'notificacion_desc' },
+    default_filter_params: { sorted_by: 'notificacion_desc'},
     available_filters: [
       :sorted_by,
       :search_dni,
@@ -65,7 +65,8 @@ class EpidemicSheet < ApplicationRecord
       :to_date_fis,
       :since_date,
       :to_date,
-      :by_close_contact
+      :by_close_contact,
+      :is_in_sisa
     ]
   )
 
@@ -75,22 +76,22 @@ class EpidemicSheet < ApplicationRecord
     case sort_option.to_s
     when /^paciente_/
       # Ordenamiento por apellido de pacientes
-      reorder("patients.last_name #{ direction }").joins(:patient)
+      reorder("patients.last_name #{ direction }, epidemic_sheets.id").joins(:patient)
     when /^edad_/
       # Ordenamiento por fecha de nacimiento
-      reorder("patients.birthdate #{ direction }").joins(:patient)
+      reorder("patients.birthdate #{ direction }, epidemic_sheets.id").joins(:patient)
     when /^caso_/
       # Ordenamiento por estado
-      reorder("case_statuses.name #{ direction }").joins(:case_status)
+      reorder("case_statuses.name #{ direction }, epidemic_sheets.id").joins(:case_status)
     when /^fis/
       # Ordenamiento por fecha de recepción
-      reorder("epidemic_sheets.init_symptom_date #{ direction }")
+      reorder("epidemic_sheets.init_symptom_date #{ direction }, epidemic_sheets.id")
     when /^notificacion_/
       # Ordenamiento por fecha de recepción
-      reorder("epidemic_sheets.notification_date #{ direction }")
+      reorder("epidemic_sheets.notification_date #{ direction }, epidemic_sheets.id")
     when /^establecimiento_asignado_/
       # Ordenamiento por fecha de recepción
-      reorder("establishments.name #{ direction }").joins(:establishment)
+      reorder("establishments.name #{ direction }, epidemic_sheets.id").joins(:establishment)
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
       raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
@@ -142,6 +143,16 @@ class EpidemicSheet < ApplicationRecord
   scope :to_date, lambda { |a_date|
     where('epidemic_sheets.notification_date <= ?', a_date)
   }
+
+  scope :is_in_sisa, lambda { |a_boolean| where(is_in_sisa: a_boolean) }
+
+  def self.options_for_sisa
+    [
+      ["Ambos", ""],
+      ["Si", "true"],
+      ["No", "false"]
+    ]
+  end
   
   def self.current_day
     where("epidemic_sheets.created_at >= :today_beginning AND epidemic_sheets.created_at <= :today_end", 

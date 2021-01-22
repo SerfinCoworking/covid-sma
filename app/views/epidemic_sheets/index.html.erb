@@ -5,7 +5,7 @@
     <div class="card-header">
       <%= form_for_filterrific @filterrific do |f| %>
         <div class="row d-felx justify-content-left">
-          <div class="col-md-2">
+          <div class="col">
             <!-- Spinner para la carga -->
             <br>
             <%= link_to epidemic_sheets_path(reset: true), class: 'btn btn-secondary',
@@ -17,6 +17,16 @@
               title: 'Descargar a excel', data: { toggle: 'tooltip', placement: 'top' } do %>
               <%= fa_icon "file-excel" %>
             <% end %>
+          </div>
+          <div class="col">
+            <label>Sisa?</label>
+            <%= f.select :is_in_sisa, 
+              options_for_select(EpidemicSheet.options_for_sisa),{include_blank: false, include_hidden: false},
+              {
+                class: "form-control selectpicker-md show-tick custom-select-pick",
+                "title"=>"Sisa",
+              }
+            %>
           </div>
           <div class="col-md-2 col-sm-3">
             <label>DNI</label>
