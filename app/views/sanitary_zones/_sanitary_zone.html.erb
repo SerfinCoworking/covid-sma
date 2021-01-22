@@ -1,8 +1,10 @@
 <tr id="sanitary_zones_<%= sanitary_zone.id %>">
   <div class="js-fade fade-in is-paused">
     <td><%= sanitary_zone.name %></td>
-    <td><%= sanitary_zone.departments.count %></td>
+    <td><%= sanitary_zone.cities.count %></td>
     <td><%= sanitary_zone.establishments.count %></td>
+    <td><%= sanitary_zone.users.count %></td>
+    <td><%= sanitary_zone.epidemic_sheets.count %></td>
     <td class="text-left actions-col">
       <% if policy(sanitary_zone).show? %>
         <%= link_to sanitary_zone_path(sanitary_zone), class: 'btn btn-secondary btn-sm',

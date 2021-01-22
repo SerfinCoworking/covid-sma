@@ -3,6 +3,8 @@ class SanitaryZone < ApplicationRecord
   has_many :departments
   has_many :establishments, through: :departments
   has_many :epidemic_sheets, through: :establishments
+  has_many :users, through: :establishments
+  has_many :cities, through: :departments
 
   validates_presence_of :name
 
