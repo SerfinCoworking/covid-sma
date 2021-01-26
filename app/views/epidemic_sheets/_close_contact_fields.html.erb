@@ -70,11 +70,11 @@
     %>
   </td>
   <td>
-    <% unless f.object.full_name.present? %>
+    <%# unless f.object.full_name.present? %>
       <%= link_to_remove_association  f, class: 'remove-tag btn btn-warning',
         title: 'Quitar', data: { toggle: 'tooltip', placement: 'top' } do %>
         <%= fa_icon "minus" %>
       <% end %>
-    <% end %>
+    <%# end %>
   </td>
 </tr>

@@ -24,7 +24,8 @@ class EpidemicSheet < ApplicationRecord
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
   accepts_nested_attributes_for :sheet_previous_symptoms, allow_destroy: true
   accepts_nested_attributes_for :patient
-  accepts_nested_attributes_for :close_contacts
+  accepts_nested_attributes_for :close_contacts,
+    :allow_destroy => true
 
   # Validations
   validates_presence_of  :case_definition, :epidemic_week
