@@ -1,5 +1,8 @@
 # Creamos los establecimientos y sectores que necesitemos
 
+sma_city = City.find(1)
+jda_city = City.find(10)
+
 # Establecimientos
 establecimientoSanMartin = Establishment.create(
   code: '8370',
@@ -7,7 +10,8 @@ establecimientoSanMartin = Establishment.create(
   cuit: '30-67261806-8',
   domicile: 'San Martín y Cnel. Rohde',
   phone: '2972427211',
-  email: 'dr.ramon.carrillo@example.com'
+  email: 'dr.ramon.carrillo@example.com',
+  city_id: sma_city.id
 )
 
 estableciminetoJunin = Establishment.create(
@@ -17,7 +21,8 @@ estableciminetoJunin = Establishment.create(
   domicile: 'Cnel. Rohde',
   phone: '2972478911',
   email: 'hospital.junin@example.com',
-  sectors_count: '4'
+  sectors_count: '4',
+  city_id: jda_city.id
 )
 
 Establishment.create(
@@ -26,7 +31,8 @@ Establishment.create(
   cuit: '30-6541263-8',
   domicile: 'San Martín y Cnel. Rohde',
   phone: '297246532156',
-  email: 'deposito@example.com'
+  email: 'deposito@example.com',
+  city_id: sma_city.id
 )
 
 Establishment.create(
@@ -35,7 +41,8 @@ Establishment.create(
   cuit: '30-6541263-8',
   domicile: 'San Martín y Cnel. Rohde',
   phone: '297246532156',
-  email: 'deposito.central@example.com'
+  email: 'deposito.central@example.com',
+  city_id: sma_city.id
 )
 
 # Sectores
