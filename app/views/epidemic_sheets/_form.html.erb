@@ -56,11 +56,17 @@
                 <div class="p-1 w-50">
                   <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio Síntomas (FIS)", html5: true,
                     :input_html => {
-                      class: "form-control prescribed-date",
+                      class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? ? "is-invalid": ""}",
                       autocomplete: "off",
-                      value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}"
+                      value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}",
+
                     }
                   %>
+                  <% if f.object.errors[:init_symptom_date_future].any? %>
+                    <div class="invalid-feedback d-block">
+                      <%= f.object.errors[:init_symptom_date_future].first %>
+                    </div>
+                  <% end %>
                 </div>
                 <div class="p-1 w-50">
                   <%= f.input :clinic_location, label: 'Situación', include_blank: false,
@@ -112,7 +118,7 @@
                   multiple: true,
                   required: true,
                   include_blank: false,
-                  class: 'selectpicker-md custom-select-pick show-tick',
+                  class: "selectpicker-md custom-select-pick show-tick #{f.object.errors[:symptoms_presence].any? ? 'is-invalid' : ''}",
                   "data-width"=>"100%",
                   "data-size"=>"10",
                   "title"=> "Seleccionar síntomas",
@@ -120,7 +126,14 @@
                   "data-none-results-text" => "No se encontró el síntoma"
                 }
               %>
+                           
+              <% if f.object.errors[:symptoms_presence].any? %>
+                <div class="invalid-feedback d-block">
+                  <%= f.object.errors[:symptoms_presence].first %>
+                </div>
+              <% end %>
             </div>
+              
             <div class="col-4 fade symptoms-fields <%= f.object.presents_symptoms.present? ? 'show' : ''%>">
               <%= f.input :symptoms_observations, 
               label: 'Observaciones', 

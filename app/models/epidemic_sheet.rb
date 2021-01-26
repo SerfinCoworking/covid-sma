@@ -29,17 +29,13 @@ class EpidemicSheet < ApplicationRecord
   # Validations
   validates_presence_of  :case_definition, :epidemic_week
   validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.needs_fis? }
+  validate :symptoms_presence?
   validates_presence_of :notification_date
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
   validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
   validate :fis_date_cannot_be_in_the_future
 
-  def fis_date_cannot_be_in_the_future
-    if init_symptom_date.present? && init_symptom_date > Date.today
-      errors.add(:init_symptom_date, "El FIS no puede estar en días futuros")
-    end
-  end
 
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, 
@@ -202,5 +198,18 @@ class EpidemicSheet < ApplicationRecord
 
   def assign_epidemic_week
     self.epidemic_week = self.init_symptom_date.cweek
+  end
+
+  def fis_date_cannot_be_in_the_future
+    if init_symptom_date.present? && init_symptom_date > Date.today
+      errors.add(:init_symptom_date_future, "El FIS no puede estar en días futuros")
+    end
+    
+  end
+  
+  def symptoms_presence?
+    if self.init_symptom_date.present?
+      errors.add(:symptoms_presence, "Debe seleccionar almenos 1 síntoma")
+    end
   end
 end
