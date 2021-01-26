@@ -114,7 +114,7 @@ $(document).on('turbolinks:load', function() {
     yearSuffix: ''
   });
 
-  $('#patient-form-birthdate').datepicker({
+/*   $('#patient-form-birthdate').datepicker({
     closeText: 'Cerrar',
     prevText: '<Ant',
     nextText: 'Sig>',
@@ -132,7 +132,7 @@ $(document).on('turbolinks:load', function() {
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: ''
-  });
+  }); */
 
   $('.quantity_ord_supply_lots').on('cocoon:after-insert', function(e, insertedItem) {
     $('.selectpicker').selectpicker({style: 'btn-sm btn-default'}); // Se inicializa selectpicker luego de agregar form

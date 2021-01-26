@@ -3,7 +3,7 @@ $(document).on('turbolinks:load', function(e){
   
   initCloseContactAutocomplete();
 
-  $('.fis-date').datepicker({
+  $('.fis-date, .notification-date').datepicker({
     closeText: 'Cerrar',
     prevText: '<Ant',
     nextText: 'Sig>',
@@ -19,6 +19,7 @@ $(document).on('turbolinks:load', function(e){
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',
+    maxDate: 0,
     onSelect: function(dateText) {
       $('input[id="present-symptoms"]').prop("checked", true).trigger('change');
     }
@@ -153,6 +154,7 @@ $(document).on('turbolinks:load', function(e){
         if(ui.item.data.fechaNacimiento){
           // precargamos la fecha nacimiento del paciente
           const birthdate = moment(ui.item.data.fechaNacimiento);
+          $("#patient-form-birthdate").datepicker( "destroy" );
           $("#patient-form-birthdate").val(birthdate.format("DD/MM/YYYY")).attr('readonly', true);
         }        
 
@@ -161,6 +163,26 @@ $(document).on('turbolinks:load', function(e){
         $("#patient-form-dni").val(ui.item.dni).attr('readonly', true);
         $("#patient-status-code").val("Temporal");
         $("#patient-form-fields").collapse('show');
+        $('#patient-form-birthdate').datepicker({
+          closeText: 'Cerrar',
+          prevText: '<Ant',
+          nextText: 'Sig>',
+          currentText: 'Hoy',
+          monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+          dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+          dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+          weekHeader: 'Sm',
+          dateFormat: 'dd/mm/yy',
+          changeYear: true,
+          changeMonth: true,
+          firstDay: 1,
+          isRTL: false,
+          showMonthAfterYear: false,
+          yearSuffix: '',
+          maxDate: 0
+        });
       }else{
         // Se muestra el modal de ficha existente
         $("#patient-form-fields").collapse('hide');          
@@ -229,7 +251,8 @@ $(document).on('turbolinks:load', function(e){
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      maxDate: 0
     });
     initCloseContactAutocomplete();
   });      
