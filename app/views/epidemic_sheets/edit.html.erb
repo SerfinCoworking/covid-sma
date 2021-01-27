@@ -81,7 +81,7 @@
           <div class="row">
             <div class="col-4">
               <div class="custom-control custom-switch">
-                <%= f.check_box :presents_symptoms, class: "custom-control-input", id: "present-symptoms"   %>
+                <%= f.check_box :presents_symptoms, class: "custom-control-input", id: "present-symptoms"  "#{f.object.errors[:symptoms_presence].any? ? 'checked' : ''}" %>
                 <label class="custom-control-label" for="present-symptoms">Presenta síntomas </label>
               </div>
             </div>
