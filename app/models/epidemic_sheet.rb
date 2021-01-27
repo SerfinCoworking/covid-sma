@@ -36,6 +36,7 @@ class EpidemicSheet < ApplicationRecord
   validates_presence_of :patient
   validates_associated :close_contacts, message: 'Por favor revise los campos de contacto con otras personas'
   validate :fis_date_cannot_be_in_the_future
+  validate :notification_date_cannot_be_in_the_future
 
 
   # Delegations
@@ -205,7 +206,13 @@ class EpidemicSheet < ApplicationRecord
     if init_symptom_date.present? && init_symptom_date > Date.today
       errors.add(:init_symptom_date_future, "El FIS no puede estar en días futuros")
     end
-    
+  end
+  
+  
+  def notification_date_cannot_be_in_the_future
+    if notification_date.present? && notification_date > Date.today
+      errors.add(:notification_date_future, "La fecha de notificación no puede estar en días futuros")
+    end
   end
   
   def symptoms_presence?

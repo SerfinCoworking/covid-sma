@@ -130,14 +130,19 @@
               <h5 class="border-bottom">Fecha de notificación</h5>
               <div class="d-flex">
                 <div class="p-1 w-40">
-                <%= f.input :notification_date, as: :string, label: "Fecha", html5: true,
-                  required: true,
-                  :input_html => {
-                    class: "form-control notification-date",
-                    autocomplete: "off",
-                    value: "#{f.object.new_record? ? DateTime.now.strftime("%d/%m/%Y") : f.object.notification_date.strftime("%d/%m/%Y")}"
-                  }
-                %>
+                  <%= f.input :notification_date, as: :string, label: "Fecha", html5: true,
+                    required: true,
+                    :input_html => {
+                      class: "form-control notification-date #{f.object.errors[:notification_date_future].any? ? 'is-invalid' : ''}",
+                      autocomplete: "off",
+                      value: "#{f.object.new_record? ? DateTime.now.strftime("%d/%m/%Y") : f.object.notification_date.strftime("%d/%m/%Y")}"
+                    }
+                  %>
+                  <% if f.object.errors[:notification_date_future].any? %>
+                    <div class="invalid-feedback d-block">
+                      <%= f.object.errors[:notification_date_future].first %>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             </div>
