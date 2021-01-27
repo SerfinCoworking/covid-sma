@@ -213,7 +213,7 @@ class EpidemicSheet < ApplicationRecord
   end
   
   def symptoms_validate_presence?
-    if self.init_symptom_date.present? && self.symptom_ids.nil?
+    if self.init_symptom_date.present? && self.symptom_ids.empty?
       errors.add(:symptoms_presence, "Debe seleccionar almenos 1 síntoma")
     end
   end
