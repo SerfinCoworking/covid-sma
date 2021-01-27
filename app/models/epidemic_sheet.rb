@@ -188,10 +188,6 @@ class EpidemicSheet < ApplicationRecord
   end
 
   private
-  def needs_fis?
-    self.close_contact.case_satus.needs_fis?
-  end
-
   def assign_establishment
     if self.created_by.present?
       self.establishment = self.created_by.establishment
