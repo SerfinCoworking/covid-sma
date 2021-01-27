@@ -56,7 +56,7 @@
                 <div class="p-1 w-50">
                   <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio Síntomas (FIS)", html5: true,
                     :input_html => {
-                      class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? ? "is-invalid": ""}",
+                      class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? || f.object.errors[:fis_validate_presence].any? ? "is-invalid": ""}",
                       autocomplete: "off",
                       value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}",
 
@@ -67,6 +67,13 @@
                       <%= f.object.errors[:init_symptom_date_future].first %>
                     </div>
                   <% end %>
+                  
+                  <% if f.object.errors[:fis_validate_presence].any? %>
+                    <div class="invalid-feedback d-block">
+                      <%= f.object.errors[:fis_validate_presence].first %>
+                    </div>
+                  <% end %>
+                  
                 </div>
                 <div class="p-1 w-50">
                   <%= f.input :clinic_location, label: 'Situación', include_blank: false,

@@ -28,9 +28,10 @@ class EpidemicSheet < ApplicationRecord
     :allow_destroy => true
 
   # Validations
-  validates_presence_of  :case_definition, :epidemic_week
+  validates_presence_of :case_definition, :epidemic_week
   validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.needs_fis? }
-  validate :symptoms_presence?
+  validate :symptoms_validate_presence?
+  validate :fis_validate_presence?
   validates_presence_of :notification_date
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
   validates_presence_of :patient
@@ -211,9 +212,15 @@ class EpidemicSheet < ApplicationRecord
     end
   end
   
-  def symptoms_presence?
-    if self.init_symptom_date.present?
+  def symptoms_validate_presence?
+    if self.init_symptom_date.present? && self.symptom_ids.nil?
       errors.add(:symptoms_presence, "Debe seleccionar almenos 1 síntoma")
+    end
+  end
+  
+  def fis_validate_presence?
+    if self.presents_symptoms.present? && self.init_symptom_date.nil?
+      errors.add(:fis_validate_presence, "Debe seleccionar fecha de inicio de síntomas")
     end
   end
 end

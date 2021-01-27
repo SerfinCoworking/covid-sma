@@ -29,7 +29,7 @@
                   <%= f.input :init_symptom_date, as: :string, label: "Fecha Inicio", html5: true, required: true,
                     :input_html => {
                       required: true,
-                      class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? ? "is-invalid": ""}",
+                      class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? || f.object.errors[:fis_validate_presence].any? ? "is-invalid": ""}",
                       autocomplete: "off",
                       value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}"
                     }
@@ -38,6 +38,12 @@
                   <% if f.object.errors[:init_symptom_date_future].any? %>
                     <div class="invalid-feedback d-block">
                       <%= f.object.errors[:init_symptom_date_future].first %>
+                    </div>
+                  <% end %>
+
+                  <% if f.object.errors[:fis_validate_presence].any? %>
+                    <div class="invalid-feedback d-block">
+                      <%= f.object.errors[:fis_validate_presence].first %>
                     </div>
                   <% end %>
                 </div>
