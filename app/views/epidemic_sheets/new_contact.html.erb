@@ -161,7 +161,7 @@
                 <label class="custom-control-label" for="present-symptoms">Presenta síntomas </label>
               </div>
             </div>
-            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
+            <div class="col-4 fade <%= (f.object.presents_symptoms.present? && f.object.presents_symptoms) || f.object.errors[:symptoms_presence].any? ? "show" : "" %> symptoms-fields">
               <%# symptoms %>
               <%= f.input :symptom_ids, label: 'Síntomas',
                 collection: @symptoms,
@@ -184,7 +184,7 @@
                 </div>
               <% end %>
             </div>
-            <div class="col-4 fade <%= f.object.presents_symptoms.present? && f.object.presents_symptoms ? "show" : "" %> symptoms-fields">
+            <div class="col-4 fade <%= (f.object.presents_symptoms.present? && f.object.presents_symptoms) || f.object.errors[:symptoms_presence].any? ? "show" : "" %> symptoms-fields">
               <%= f.input :symptoms_observations, 
               label: 'Observaciones', 
               :input_html => {
