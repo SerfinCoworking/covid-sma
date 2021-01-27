@@ -6,11 +6,5 @@ class CreateSanitaryZones < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    SanitaryZone.create(name: 'Zona Metropolitana')
-    SanitaryZone.create(name: 'Zona Sanitaria I')
-    SanitaryZone.create(name: 'Zona Sanitaria II')
-    SanitaryZone.create(name: 'Zona Sanitaria III')
-    SanitaryZone.create(name: 'Zona Sanitaria IV')
-    SanitaryZone.create(name: 'Zona Sanitaria V')
   end
 end
