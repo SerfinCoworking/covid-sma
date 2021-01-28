@@ -184,7 +184,7 @@ class EpidemicSheet < ApplicationRecord
   def self.total_close_contacts_to_city(a_city)
     return EpidemicSheet
       .by_city(a_city)
-      .by_case_statuses(CaseStatus.find_by_name('Positivo'))
+      .by_case_statuses([CaseStatus.find_by_name('Positivo').id, CaseStatus.find_by_name('Sospechoso').id])
       .sum(:close_contacts_count)
   end
 
