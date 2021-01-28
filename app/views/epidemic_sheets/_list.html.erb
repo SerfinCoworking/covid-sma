@@ -22,6 +22,11 @@
     <div class="d-flex align-items-center justify-content-between" style="height: 50px">
       <div>
         Total resultado: <span class="badge badge-secondary"><%= @epidemic_sheets.count %></span>
+        <%= link_to epidemic_sheets_path(format: 'xlsx'), 
+          class: "btn btn-success", target: :_blank,
+          title: 'Descargar a excel', data: { toggle: 'tooltip', placement: 'top' } do %>
+          <%= fa_icon "file-excel" %>
+        <% end %>
       </div>
       <%= will_paginate @epidemic_sheets, list_classes: %w(pagination mb-0), renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
     </div>
