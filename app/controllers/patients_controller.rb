@@ -83,7 +83,9 @@ class PatientsController < ApplicationController
   end
 
   def update_validation
-    @patient.address_id = Address.update_or_create_address(patient_address_params, @patient).id
+    if patient_address_params[:address_attributes].present?
+      @patient.address_id = Address.update_or_create_address(patient_address_params, @patient).id
+    end
     
     respond_to do |format|
       if @patient.update(patient_params)
