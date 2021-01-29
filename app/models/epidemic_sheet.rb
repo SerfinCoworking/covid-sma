@@ -29,7 +29,7 @@ class EpidemicSheet < ApplicationRecord
 
   # Validations
   validates_presence_of :case_definition, :epidemic_week
-  validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.needs_fis? }
+  # validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.needs_fis? }
   validate :symptoms_validate_presence?
   validate :fis_validate_presence?
   validates_presence_of :notification_date
