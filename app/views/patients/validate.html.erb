@@ -82,8 +82,12 @@
           <div class="col">
             <%# Telefonos del paciente %>
             <strong>Teléfonos / Contactos</strong><br>
-            <% andes_patient['contacto'].each do |contact| %> 
+            <% if andes_patient['contacto'].present? %>
+              <% andes_patient['contacto'].each do |contact| %>
                 <li><%= contact['tipo'].humanize %> <%= contact['valor'] %></li>
+              <% end %>
+            <% else %>
+              No tiene
             <% end %>
           </div>
         </div>
