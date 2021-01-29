@@ -66,7 +66,7 @@
 
         <div class="row d-flex justify-content-between mt-2">
           <div class="col-12 h5"><strong>Domicilio</strong></div>
-          <% if andes_address['ubicacion'].present? %>
+          <% if andes_address.present? %>
             <% if andes_address['ubicacion']['pais'].present? %>
               <div class="col"><strong>País </strong><br><%= andes_patient['direccion'].first['ubicacion']['pais']['nombre'] %></div>
             <% end %>
