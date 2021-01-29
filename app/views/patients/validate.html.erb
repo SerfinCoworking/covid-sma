@@ -66,16 +66,18 @@
 
         <div class="row d-flex justify-content-between mt-2">
           <div class="col-12 h5"><strong>Domicilio</strong></div>
-          <% if andes_address['ubicacion']['pais'].present? %>
-            <div class="col"><strong>País </strong><br><%= andes_patient['direccion'].first['ubicacion']['pais']['nombre'] %></div>
+          <% if andes_address['ubicacion'].present? %>
+            <% if andes_address['ubicacion']['pais'].present? %>
+              <div class="col"><strong>País </strong><br><%= andes_patient['direccion'].first['ubicacion']['pais']['nombre'] %></div>
+            <% end %>
+            <% if andes_address['ubicacion']['provincia'].present? %>
+              <div class="col"><strong>Provincia </strong><br><%= andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] %></div>
+            <% end %>
+            <% if andes_address['ubicacion']['localidad'].present?%>
+              <div class="col"><strong>Ciudad </strong><br><%= andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] %></div>
+            <% end %>
+            <div class="col"><strong>Dirección </strong><br><%= andes_patient['direccion'].first['valor'] %></div>
           <% end %>
-          <% if andes_address['ubicacion']['provincia'].present? %>
-            <div class="col"><strong>Provincia </strong><br><%= andes_patient['direccion'].first['ubicacion']['provincia']['nombre'] %></div>
-          <% end %>
-          <% if andes_address['ubicacion']['localidad'].present?%>
-            <div class="col"><strong>Ciudad </strong><br><%= andes_patient['direccion'].first['ubicacion']['localidad']['nombre'] %></div>
-          <% end %>
-          <div class="col"><strong>Dirección </strong><br><%= andes_patient['direccion'].first['valor'] %></div>
         </div>
 
         <div class="row d-flex justify-content-between mt-2">
