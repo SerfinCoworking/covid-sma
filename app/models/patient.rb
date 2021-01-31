@@ -127,6 +127,14 @@ class Patient < ApplicationRecord
     end
   end
 
+  def phones_string
+    phone_string = ""
+    self.patient_phones.each do |phone|
+      phone_string = phone_string + phone.phone_type+" "+phone.number+" "
+    end
+    return phone_string
+  end
+
   def not_be_the_same_parent_contact
     if self.parent_contact_id == self.id
       errors.add(:parent_contact_id, 'No puede ser contacto padre de sí mismo')

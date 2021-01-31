@@ -41,7 +41,7 @@ class EpidemicSheet < ApplicationRecord
 
 
   # Delegations
-  delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex, 
+  delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex,  :phones_string,
     :assigned_establishment, :address_string, :current_address_get_full_address_name, to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   delegate :case_status, to: :case_definition
