@@ -1,9 +1,9 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
   sheet.add_row ["#", "DNI", "Nombre completo", "Edad", "Caso", "CEs", "Fecha (FIS)", "Fecha notificación", 
-    "Teléfono", "Domicilio", "Domicilio actual relevado", "Síntomas", "Síntomas previos", "Situación clínica" ]
+    "Teléfono", "Domicilio", "Domicilio actual relevado", "Síntomas", "Síntomas previos", "Situación clínica", "Establecimiento designado" ]
 
-  sheet.add_style 'A1:N1', bg_color: '363062', fg_color: 'FFFFFF'
+  sheet.add_style 'A1:O1', bg_color: '363062', fg_color: 'FFFFFF'
   
   @epidemic_sheets.each_with_index do |e_sheet, index|
     sheet.add_row [index + 1, e_sheet.patient_dni, e_sheet.patient_last_name+", "+e_sheet.patient_first_name, 
@@ -17,10 +17,11 @@ wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
       e_sheet.patient_current_address_get_full_address_name,
       e_sheet.presents_symptoms? ? 'Si' : 'No',
       e_sheet.present_previous_symptoms? ? 'Si' : 'No',
-      e_sheet.clinic_location.humanize
+      e_sheet.clinic_location.humanize,
+      e_sheet.patient.assigned_establishment.present? ? e_sheet.patient.assigned_establishment.name : '----'
     ]
   end
-  sheet.column_widths 5,10,40,8,10,5,15,15,20,50,50,15,15,15
+  sheet.column_widths 5,10,40,8,10,5,15,15,20,50,50,15,15,15,20
 end
 
 wb.add_worksheet(name: "Contactos estrechos") do |sheet|
