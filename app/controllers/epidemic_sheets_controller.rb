@@ -24,6 +24,9 @@ class EpidemicSheetsController < ApplicationController
     @filterrific = initialize_filterrific(
       EpidemicSheet.by_city(current_user.establishment.city),
       params[:filterrific],
+      select_options: {
+        sorted_by: EpidemicSheet.options_for_sorted_by
+      },
       persistence_id: false,
       default_filter_params: { sorted_by: 'notificacion_desc' },
     ) or return

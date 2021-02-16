@@ -39,18 +39,17 @@ class EpidemicSheet < ApplicationRecord
   validate :fis_date_cannot_be_in_the_future
   validate :notification_date_cannot_be_in_the_future
 
-
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age_string, :sex,  :phones_string,
     :assigned_establishment, :address_string, :current_address_get_full_address_name, to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   delegate :case_status, to: :case_definition
   delegate :parent_contact, to: :patient, prefix: false
-  
+
   # Callbacks
   before_create :assign_establishment
   after_validation :assign_epidemic_week, if: Proc.new { |sheet| sheet.init_symptom_date.present? }
-  
+
   filterrific(
     default_filter_params: { sorted_by: 'notificacion_desc'},
     available_filters: [
@@ -73,27 +72,30 @@ class EpidemicSheet < ApplicationRecord
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     case sort_option.to_s
+    when /^created_at_/s
+      # Ordenamiento por fecha de creación en la BD
+      order("epidemic_sheets.created_at #{direction}")
     when /^paciente_/
       # Ordenamiento por apellido de pacientes
-      reorder("patients.last_name #{ direction }, epidemic_sheets.id").joins(:patient)
+      reorder("patients.last_name #{direction}, epidemic_sheets.id").joins(:patient)
     when /^edad_/
       # Ordenamiento por fecha de nacimiento
-      reorder("patients.birthdate #{ direction }, epidemic_sheets.id").joins(:patient)
+      reorder("patients.birthdate #{direction}, epidemic_sheets.id").joins(:patient)
     when /^caso_/
       # Ordenamiento por estado
-      reorder("case_statuses.name #{ direction }, epidemic_sheets.id").joins(:case_status)
+      reorder("case_statuses.name #{direction}, epidemic_sheets.id").joins(:case_status)
     when /^fis/
       # Ordenamiento por fecha de recepción
-      reorder("epidemic_sheets.init_symptom_date #{ direction }, epidemic_sheets.id")
+      reorder("epidemic_sheets.init_symptom_date #{direction}, epidemic_sheets.id")
     when /^notificacion_/
       # Ordenamiento por fecha de recepción
-      reorder("epidemic_sheets.notification_date #{ direction }, epidemic_sheets.id")
+      reorder("epidemic_sheets.notification_date #{direction}, epidemic_sheets.id")
     when /^establecimiento_asignado_/
       # Ordenamiento por fecha de recepción
-      reorder("establishments.name #{ direction }, epidemic_sheets.id").joins(:establishment)
+      reorder("establishments.name #{direction}, epidemic_sheets.id").joins(:establishment)
     else
       # Si no existe la opcion de ordenamiento se levanta la excepcion
-      raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
     end
   }
 
@@ -147,18 +149,30 @@ class EpidemicSheet < ApplicationRecord
 
   def self.options_for_sisa
     [
-      ["Ambos", ""],
-      ["Si", "true"],
-      ["No", "false"]
+      ['Ambos', ''],
+      ['Si', 'true'],
+      ['No', 'false']
     ]
   end
-  
+
+  def self.options_for_sorted_by
+    [
+      ['Caso (a-z)', 'caso_desc'],
+      ['Caso (z-a)', 'caso_asc'],
+      ['Creación (nueva primero)', 'created_at_desc'],
+      ['Creación (antigua primero)', 'created_at_asc'],
+      ['Establecimiento (a-z)', 'establecimiento_asignado_desc'],
+      ['Establecimiento (z-a)', 'establecimiento_asignado_asc'],
+      ['Notificación (nueva primero)', 'notificacion_desc'],
+      ['Notificación (antigua primero)', 'notificacion_asc'],
+      ['Paciente (a-z)', 'paciente_desc'],
+      ['Paciente (z-a)', 'paciente_asc']
+    ]
+  end
+
   def self.current_day
-    where("epidemic_sheets.created_at >= :today_beginning AND epidemic_sheets.created_at <= :today_end", 
-      { today_beginning: DateTime.now.beginning_of_day,
-        today_end: DateTime.now.end_of_day
-      }
-    )
+    where('epidemic_sheets.created_at >= :today_beginning AND epidemic_sheets.created_at <= :today_end',
+      {today_beginning: DateTime.now.beginning_of_day, today_end: DateTime.now.end_of_day})
   end
 
   def self.last_week
@@ -204,20 +218,19 @@ class EpidemicSheet < ApplicationRecord
       errors.add(:init_symptom_date_future, "El FIS no puede estar en días futuros")
     end
   end
-  
-  
+
   def notification_date_cannot_be_in_the_future
     if notification_date.present? && notification_date > Date.today
       errors.add(:notification_date_future, "La fecha de notificación no puede estar en días futuros")
     end
   end
-  
+
   def symptoms_validate_presence?
     if self.init_symptom_date.present? && self.symptom_ids.empty?
       errors.add(:symptoms_presence, "Debe seleccionar almenos 1 síntoma")
     end
   end
-  
+
   def fis_validate_presence?
     if self.presents_symptoms.present? && self.init_symptom_date.nil?
       errors.add(:fis_validate_presence, "Debe seleccionar fecha de inicio de síntomas")
