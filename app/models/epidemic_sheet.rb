@@ -202,6 +202,10 @@ class EpidemicSheet < ApplicationRecord
       .sum(:close_contacts_count)
   end
 
+  def self.total_hospitalized_to_city(a_city)
+    return EpidemicSheet.by_city(a_city).internado.count
+  end
+
   private
   def assign_establishment
     if self.created_by.present?

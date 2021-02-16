@@ -60,4 +60,11 @@ class CaseDefinition < ApplicationRecord
       .where(case_status_id: CaseStatus.find_by_name('Negativo').id)
       .count
   end
+
+  def self.total_positives_to_city(a_city)
+    return CaseDefinition
+      .by_city(a_city)
+      .where(case_status_id: CaseStatus.find_by_name('Positivo').id)
+      .count
+  end
 end

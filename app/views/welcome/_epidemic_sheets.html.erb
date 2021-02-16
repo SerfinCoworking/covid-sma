@@ -30,6 +30,24 @@
     </div>
   </div>
 
+  <div class="d-flex justify-content-around">
+    <div class="text-center border border-danger p-2 rounded mb-0">
+      <p class="mb-0"><strong>POSITIVOS HASTA LA FECHA</strong></p>
+      <span class="h4 counter"><%= @total_historical_positives %></span>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around">
+    <div class="text-center border border-info p-2 rounded mb-0">
+      <p class="mb-0"><strong>INTERNADOS</strong></p>
+      <span class="h4 counter"><%= @total_hospitalized %></span>
+    </div>
+    <div class="text-center border border-dark p-2 rounded mb-0">
+      <p class="mb-0"><strong>FALLECIDOS</strong></p>
+      <span class="h4 counter"><%= @total_historical_deaths %></span>
+    </div>
+  </div>
+
   <%= line_chart @case_count_per_day
     .where(case_status: CaseStatus.find_by_name("Positivo"))
     .group_by_day(:created_at,
