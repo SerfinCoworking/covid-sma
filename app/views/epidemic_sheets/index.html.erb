@@ -77,29 +77,56 @@
               }
             %>
           </div>
-          <div class="col-md-2 mt-2">
-            <label><%= fa_icon 'calendar' %> Desde (FIS)</label>
-            <%= f.text_field(:since_date_fis, autocomplete: 'off',
-              class: 'datetimepicker form-control since-date',
-              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          <div class="col-2 mt-2">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-12">
+                <label><%= fa_icon 'calendar' %> FIS</label>
+              </div>
+              <div class="col-6 pr-0">
+                <%= f.text_field(:since_date_fis, autocomplete: 'off',
+                  class: 'datetimepicker form-control since-date flex-fill',
+                  placeholder: "Desde", data: { date_format: 'DD/MM/YYYY'}) %>
+              </div>
+              <div class="col-6 pl-1">
+                <%= f.text_field(:to_date_fis, autocomplete: 'off',
+                  class: 'datetimepicker form-control to-date flex-fill',
+                  placeholder: "Hasta", data: { date_format: 'DD/MM/YYYY'}) %>
+              </div>
+            </div>
           </div>
-          <div class="col-md-2 mt-2">
-            <label><%= fa_icon 'calendar' %> Hasta (FIS)</label>
-            <%= f.text_field(:to_date_fis, autocomplete: 'off',
-              class: 'datetimepicker form-control to-date',
-              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          <div class="col-2 mt-2">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-12">
+                <label><%= fa_icon 'calendar' %> Fecha de notificación</label>
+              </div>
+              <div class="col-6 pr-0">
+                <%= f.text_field(:since_date, autocomplete: 'off',
+                  class: 'datetimepicker form-control since-date flex-fill',
+                  placeholder: "Desde", data: { date_format: 'DD/MM/YYYY'}) %>
+              </div>
+              <div class="col-6 pl-1">
+                <%= f.text_field(:to_date, autocomplete: 'off',
+                  class: 'datetimepicker form-control to-date flex-fill',
+                  placeholder: "Hasta", data: { date_format: 'DD/MM/YYYY'}) %>
+              </div>
+            </div>
           </div>
-          <div class="col-md-2 mt-2">
-            <label><%= fa_icon 'calendar' %> Desde (Notificación)</label>
-            <%= f.text_field(:since_date, autocomplete: 'off',
-              class: 'datetimepicker form-control since-date',
-              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
-          </div>
-          <div class="col-md-2 mt-2">
-            <label><%= fa_icon 'calendar' %> Hasta (Notificación)</label>
-            <%= f.text_field(:to_date, autocomplete: 'off',
-              class: 'datetimepicker form-control to-date',
-              placeholder: "Una fecha", data: { date_format: 'DD/MM/YYYY'}) %>
+          <div class="col-2 mt-2">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-12">
+                <label><%= fa_icon 'calendar' %> Fecha de carga</label>
+              </div>
+              <div class="col-6 pr-0">
+                <%= f.text_field(:created_since, autocomplete: 'off',
+                  class: 'datetimepicker form-control since-date flex-fill',
+                  placeholder: "Desde", data: { date_format: 'DD/MM/YY'}) %>
+              </div>
+              <div class="col-6 pl-1">
+                <%= f.text_field(:created_to, autocomplete: 'off',
+                  class: 'datetimepicker form-control to-date flex-fill',
+                  placeholder: "Hasta", data: { date_format: 'DD/MM/YY'}) %>
+              </div>
+            </div>
           </div>
           <div class="col-md-2 mt-2">
             <label>Situación clínica</label>

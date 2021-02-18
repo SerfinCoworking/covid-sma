@@ -63,6 +63,8 @@ class EpidemicSheet < ApplicationRecord
       :to_date_fis,
       :since_date,
       :to_date,
+      :created_since,
+      :created_to,
       :by_close_contact,
       :is_in_sisa
     ]
@@ -143,6 +145,14 @@ class EpidemicSheet < ApplicationRecord
 
   scope :to_date, lambda { |a_date|
     where('epidemic_sheets.notification_date <= ?', a_date)
+  }
+
+  scope :created_since, lambda { |a_date|
+    where('epidemic_sheets.created_at >= ?', a_date)
+  }
+
+  scope :created_to, lambda { |a_date|
+    where('epidemic_sheets.created_at <= ?', a_date)
   }
 
   scope :is_in_sisa, lambda { |a_boolean| where(is_in_sisa: a_boolean) }
