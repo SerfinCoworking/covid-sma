@@ -72,7 +72,7 @@ $(document).on('turbolinks:load', function(e){
   $('#patient-dni').autocomplete({
     source: $('#patient-dni').data('autocomplete-source'),
     autoFocus: true,
-    minLength: 7,
+    minLength: 6,
     messages: {
       noResults: function() {
         $(".ui-menu-item-wrapper").html("No se encontró el paciente");
