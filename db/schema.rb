@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_161124) do
+ActiveRecord::Schema.define(version: 2021_03_25_143309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -403,6 +403,16 @@ ActiveRecord::Schema.define(version: 2021_01_20_161124) do
     t.datetime "updated_at", null: false
     t.bigint "establishment_id"
     t.index ["establishment_id"], name: "index_sectors_on_establishment_id"
+  end
+
+  create_table "sheet_comments", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "user_id"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemic_sheet_id"], name: "index_sheet_comments_on_epidemic_sheet_id"
+    t.index ["user_id"], name: "index_sheet_comments_on_user_id"
   end
 
   create_table "sheet_previous_symptoms", force: :cascade do |t|

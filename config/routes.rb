@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :sheet_comments, only: [:create]
+
   resources :covid_profiles do
     member do
       get :delete

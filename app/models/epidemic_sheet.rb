@@ -19,6 +19,7 @@ class EpidemicSheet < ApplicationRecord
   has_many :sheet_previous_symptoms
   has_many :previous_symptoms, through: :sheet_previous_symptoms
   has_many :case_evolutions, dependent: :destroy
+  has_many :comments, class_name: "SheetComment"
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true

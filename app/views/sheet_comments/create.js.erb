@@ -1,0 +1,7 @@
+<%= render 'shared/flash_message' %>
+
+$("#comments-card").append('<%= j render (@sheet_comment) %>');
+
+$("#sheet_comment_text").val('').focus();
+
+$("#comments-count").html('<%= @count %>');

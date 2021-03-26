@@ -61,6 +61,12 @@
               </div>
             </a>
           </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-toggle='tab' href='#comments' role="tab">
+              <%= fa_icon "comments" %> Comentarios
+              <span class="badge badge-secondary" id="comments-count"><%= @epidemic_sheet.comments.count %></span>
+            </a>
+          </li>
         </ul>
         <div class="tab-content mt-3" id="myTabContent">
           <%# Epidemic sheet %>
