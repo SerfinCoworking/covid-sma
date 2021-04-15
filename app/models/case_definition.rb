@@ -62,9 +62,12 @@ class CaseDefinition < ApplicationRecord
   end
 
   def self.total_positives_to_city(a_city)
+    status_ids = []
+    status_ids << CaseStatus.find_by_name('Positivo (primoinfección)').id
+    status_ids << CaseStatus.find_by_name('Positivo (reinfección)').id
     return CaseDefinition
       .by_city(a_city)
-      .where(case_status_id: CaseStatus.find_by_name('Positivo').id)
+      .where(case_status_id: status_ids)   
       .count
   end
 end

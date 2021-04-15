@@ -7,7 +7,7 @@ class CaseStatus < ApplicationRecord
   validates_presence_of :name, :badge
 
   def self.total_positives_to_city(a_city)
-    self.find_by_name('Positivo').epidemic_sheets.by_city(a_city).count
+    self.find_by_name('Positivo (primoinfección)').epidemic_sheets.by_city(a_city).count + self.find_by_name('Positivo (reinfección)').epidemic_sheets.by_city(a_city).count
   end
 
   def self.total_recovered_to_city(a_city)

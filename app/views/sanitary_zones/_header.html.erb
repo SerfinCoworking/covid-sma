@@ -12,7 +12,7 @@
 
   <% if policy(SanitaryZone).new? %>
     <li class="nav-item non-sel">
-      <%= link_to new_sector_path, class: "nav-link #{active_action_and_controller('new', 'sectors')}" do %>
+      <%= link_to new_sanitary_zone_path, class: "nav-link #{active_action('new')}" do %>
         <%= fa_icon "plus" %>
         Crear zona
       <% end %>

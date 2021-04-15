@@ -202,13 +202,13 @@ class EpidemicSheet < ApplicationRecord
       .by_city(a_city)
       .since_date(Date.yesterday)
       .to_date(Date.yesterday)
-      .by_case_statuses(CaseStatus.find_by_name('Positivo')).count
+      .by_case_statuses([CaseStatus.find_by_name('Positivo (primoinfección)').id, CaseStatus.find_by_name('Positivo (reinfección)')]).count
   end
 
   def self.total_close_contacts_to_city(a_city)
     return EpidemicSheet
       .by_city(a_city)
-      .by_case_statuses([CaseStatus.find_by_name('Positivo').id, CaseStatus.find_by_name('Sospechoso').id])
+      .by_case_statuses([CaseStatus.find_by_name('Positivo (primoinfección)').id, CaseStatus.find_by_name('Sospechoso').id, CaseStatus.find_by_name('Positivo (reinfección)').id])
       .sum(:close_contacts_count)
   end
 
