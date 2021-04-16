@@ -28,8 +28,8 @@ class WelcomeController < ApplicationController
         CaseStatus.find([2,3,4,5,11]).each do |status|
           @data = []
           current_user.establishment_city.establishments.each do |establishment|
-            if establishment.epidemic_sheets.by_case_statuses(status.id).present?
-              @data << { name: establishment.short_name, value: establishment.epidemic_sheets.by_case_statuses(status.id).count }
+            if establishment.assigned_epidemic_sheets.by_case_statuses(status.id).present?
+              @data << { name: establishment.short_name, value: establishment.assigned_epidemic_sheets.by_case_statuses(status.id).count }
             end
           end
           f.series(
