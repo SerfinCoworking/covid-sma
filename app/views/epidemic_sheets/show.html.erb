@@ -157,6 +157,25 @@
                 <p><%= @epidemic_sheet.prev_symptoms_observations %></p>
               </div>
             </div>
+            
+            <h5 class="border-bottom pt-3">Antecedentes epidemiológicos</h5>
+            <div class="row">
+              <div class="col-5">
+                <% if @epidemic_sheet.presents_epidemi_antecedents? && @epidemic_sheet.epidemi_antecedents.present? %>
+                  <% @epidemic_sheet.epidemi_antecedents.each do |epi_ant| %>
+                    <div class="ml-2 mb-1 mt-1">
+                      <%= fa_icon "dot-circle", class: "far"%>
+                      <span class="font-weight-bold"><%= epi_ant.name%></span>
+                    </div>
+                  <% end %>
+                <% else %>
+                  No presenta
+                <% end %>
+              </div>
+              <div class="col-7">
+                <p><%= @epidemic_sheet.epidemi_antecedent_observations %></p>
+              </div>
+            </div>
           </div>
           <%# Case evolutions %>
           <div class="tab-pane fade" id="case-evolutions" role="tabpanel" aria-labelledby="case-evolutions-tab">
