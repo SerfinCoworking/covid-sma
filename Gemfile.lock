@@ -157,8 +157,7 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
-    highcharts-rails (6.0.3)
-      railties (>= 3.1)
+    hash-deep-merge (0.1.1)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -188,6 +187,8 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
+    lazy_high_charts (1.6.1)
+      hash-deep-merge
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -464,10 +465,10 @@ DEPENDENCIES
   filterrific
   font_awesome5_rails
   groupdate
-  highcharts-rails
   jbuilder (~> 2.5)
   jquery-ui-rails
   jwt
+  lazy_high_charts
   listen
   mini_magick
   momentjs-rails (>= 2.9.0)

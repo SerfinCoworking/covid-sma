@@ -23,7 +23,9 @@
 //= require moment-timezone-with-data
 //= require tempusdominus-bootstrap-4.js
 //= require filterrific/filterrific-jquery
-//= require highcharts
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/highstock
 //= require chartkick
 //= require Chart.bundle
 //= require turbolinks

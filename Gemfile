@@ -49,7 +49,7 @@ gem 'groupdate'
 gem 'active_median'
 # Use chartkick and highcharts-rails to perform charts
 gem 'chartkick'
-gem 'highcharts-rails'
+gem 'lazy_high_charts'
 # Use filterrific to search, filter and sort lists
 gem 'filterrific'
 # Use will_paginate for limit the post per page

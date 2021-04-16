@@ -20,6 +20,62 @@ class WelcomeController < ApplicationController
       @total_historical_positives = CaseDefinition.total_positives_to_city(current_user.establishment_city)
       @total_hospitalized = EpidemicSheet.total_hospitalized_to_city(current_user.establishment_city)
       @total_historical_deaths = CaseStatus.total_deaths_to_city(current_user.establishment_city)
+
+
+      @efector_bubble_chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(text: "Cantidad de casos por definición y establecimiento en "+current_user.establishment_city.name)
+
+        CaseStatus.find([2,3,4,5,11]).each do |status|
+          @data = []
+          current_user.establishment_city.establishments.each do |establishment|
+            if establishment.epidemic_sheets.by_case_statuses(status.id).present?
+              @data << { name: establishment.short_name, value: establishment.epidemic_sheets.by_case_statuses(status.id).count }
+            end
+          end
+          f.series(
+            name: status.name,
+            data: @data
+          )
+        end
+        f.colors(["#292b2c", "#d9534f", "#5bc0de", "#5cb85c", "#d9534f"])
+
+        f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+        f.tooltip(
+          useHTML: true,
+          pointFormat: '<b>{point.name}:</b> {point.value}'
+        )
+        f.plot_options(packedbubble:{
+          minSize: '20%',
+          maxSize: '100%',
+          zMin: 0,
+          zMax: 1000,
+          layoutAlgorithm: {
+            gravitationalConstant: 0.05,
+            splitSeries: true,
+            seriesInteraction: false,
+            dragBetweenSeries: true,
+            parentNodeLimit: true
+          },
+          dataLabels: {
+            enabled: true,
+            format: '{point.name}',
+            filter: {
+                property: 'y',
+                operator: '>',
+                value: 1
+            },
+            style: {
+                color: 'black',
+                textOutline: 'none',
+                fontWeight: 'normal'
+            }
+          }
+        })
+        f.chart(
+          defaultSeriesType: "packedbubble",
+          height: '80%'
+        )
+      end
     else
       @permission_request = PermissionRequest.new
     end

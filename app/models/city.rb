@@ -5,5 +5,4 @@ class City < ApplicationRecord
   has_many :epidemic_sheets, through: :establishments
 
   validates_presence_of :name
-
 end
