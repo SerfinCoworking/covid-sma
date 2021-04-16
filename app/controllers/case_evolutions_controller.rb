@@ -1,0 +1,2 @@
+class CaseEvolutionsController < ApplicationController
+end

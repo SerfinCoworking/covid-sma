@@ -167,6 +167,7 @@
                   <th class="border-top-0">Estado</th>
                   <th class="border-top-0">Método</th>
                   <th class="border-top-0">Dispositivo</th>
+                  <% if policy(CaseEvolution).edit? %><th class="border-top-0">Acción</th><% end %>
                 </tr>
               </thead>
               <tbody>
@@ -180,6 +181,17 @@
                     </td>
                     <td><%= evolution.case_status.needs_diagnostic? ? evolution.diagnostic_method.name : '-' %></td>
                     <td><%= evolution.case_status.needs_diagnostic? ? evolution.special_device.name : '-' %></td>
+                    <td>
+                      <% if policy(evolution).edit? %>
+                        <%= link_to edit_case_evolution_path(evolution), remote: true, class: 'btn btn-sm btn-warning' do %>
+                          <%= fa_icon 'pen' %>
+                        <% end %>
+                      <% end %>
+                      <% if policy(evolution).destroy? %>
+                        <%= link_to destroy_case_evolution_path(evolution), remote: true, class: 'btn btn-sm btn-danger' do %>
+                          <%= fa_icon 'trash' %>
+                        <% end %>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
