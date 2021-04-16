@@ -114,7 +114,7 @@ class EpidemicSheetsController < ApplicationController
   def update
     authorize @epidemic_sheet
     respond_to do |format|
-      if @epidemic_sheet.update(epidemic_sheet_params)
+      if @epidemic_sheet.update!(epidemic_sheet_params)
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }
@@ -188,6 +188,7 @@ class EpidemicSheetsController < ApplicationController
     end
     
     def set_epidemic_sheet_symptoms
+      @epidemi_antecedents = EpidemiAntecedent.all.sort_by &:name
       @symptoms = Symptom.all.sort_by &:name
       @previous_symptoms = PreviousSymptom.all.sort_by &:name
       @occupations = Occupation.all.sort_by &:name
@@ -208,7 +209,10 @@ class EpidemicSheetsController < ApplicationController
         :prev_symptoms_observations,
         :clinic_location,
         :notification_date,
+        :presents_epidemi_antecedents,
+        :epidemi_antecedent_observations,
         symptom_ids: [],
+        epidemi_antecedent_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
@@ -251,7 +255,10 @@ class EpidemicSheetsController < ApplicationController
         :prev_symptoms_observations,
         :clinic_location,
         :notification_date,
+        :presents_epidemi_antecedents,
+        :epidemi_antecedent_observations,
         symptom_ids: [],
+        epidemi_antecedent_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,

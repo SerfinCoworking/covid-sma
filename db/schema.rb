@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_161124) do
+ActiveRecord::Schema.define(version: 2021_04_16_115537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -165,6 +165,12 @@ ActiveRecord::Schema.define(version: 2021_01_20_161124) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "epidemi_antecedents", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "epidemic_sheet_movements", force: :cascade do |t|
     t.bigint "epidemic_sheet_id"
     t.bigint "user_id"
@@ -196,6 +202,8 @@ ActiveRecord::Schema.define(version: 2021_01_20_161124) do
     t.boolean "is_in_sisa", default: false
     t.date "notification_date"
     t.integer "close_contacts_count"
+    t.boolean "presents_epidemi_antecedents"
+    t.text "epidemi_antecedent_observations"
     t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
     t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
     t.index ["establishment_id"], name: "index_epidemic_sheets_on_establishment_id"
@@ -403,6 +411,15 @@ ActiveRecord::Schema.define(version: 2021_01_20_161124) do
     t.datetime "updated_at", null: false
     t.bigint "establishment_id"
     t.index ["establishment_id"], name: "index_sectors_on_establishment_id"
+  end
+
+  create_table "sheet_epidemi_antecedents", force: :cascade do |t|
+    t.bigint "epidemic_sheet_id"
+    t.bigint "epidemi_antecedent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemi_antecedent_id"], name: "index_sheet_epidemi_antecedents_on_epidemi_antecedent_id"
+    t.index ["epidemic_sheet_id"], name: "index_sheet_epidemi_antecedents_on_epidemic_sheet_id"
   end
 
   create_table "sheet_previous_symptoms", force: :cascade do |t|

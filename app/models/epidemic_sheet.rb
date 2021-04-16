@@ -16,12 +16,17 @@ class EpidemicSheet < ApplicationRecord
   has_many :movements, class_name: "EpidemicSheetMovement"
   has_many :sheet_symptoms
   has_many :symptoms, through: :sheet_symptoms
+  
+  has_many :sheet_epidemi_antecedents
+  has_many :epidemi_antecedents, through: :sheet_epidemi_antecedents
+
   has_many :sheet_previous_symptoms
   has_many :previous_symptoms, through: :sheet_previous_symptoms
   has_many :case_evolutions, dependent: :destroy
 
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
+  accepts_nested_attributes_for :sheet_epidemi_antecedents, allow_destroy: true
   accepts_nested_attributes_for :sheet_previous_symptoms, allow_destroy: true
   accepts_nested_attributes_for :patient
   accepts_nested_attributes_for :close_contacts,
@@ -31,6 +36,7 @@ class EpidemicSheet < ApplicationRecord
   validates_presence_of :case_definition, :epidemic_week
   # validates_presence_of :init_symptom_date, if: Proc.new { |sheet| sheet.case_definition.needs_fis? }
   validate :symptoms_validate_presence?
+  validate :epidemi_antecedents_validate_presence?
   validate :fis_validate_presence?
   validates_presence_of :notification_date
   validates_presence_of :establishment, if: Proc.new { |sheet| sheet.created_by.present? }
@@ -242,6 +248,12 @@ class EpidemicSheet < ApplicationRecord
   def symptoms_validate_presence?
     if self.init_symptom_date.present? && self.symptom_ids.empty?
       errors.add(:symptoms_presence, "Debe seleccionar almenos 1 síntoma")
+    end
+  end
+
+  def epidemi_antecedents_validate_presence?
+    if self.presents_epidemi_antecedents.present? && self.presents_epidemi_antecedents && self.epidemi_antecedent_ids.empty?
+      errors.add(:epidemi_antecedent_presence, "Debe seleccionar almenos 1 antecedente")
     end
   end
 

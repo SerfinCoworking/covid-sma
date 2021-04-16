@@ -45,14 +45,14 @@ $(document).on('turbolinks:load', function(e){
     }
   });
 
-  $("#present-prev-symp, #present-symptoms").on('change', function(e){
+  $("#present-prev-symp, #present-symptoms, #present-epidemi-antecedents").on('change', function(e){
     if($(e.target).is(":checked")){
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      $(e.target).closest(".col-4").siblings(".options-fields").addClass('show');
     }else{
       /* al quitar el check, limpiamos los campos de seleccion y observaciones */
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").removeClass('show');
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
+      $(e.target).closest(".col-4").siblings(".options-fields").removeClass('show');
+      $(e.target).closest(".col-4").siblings(".options-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
+      $(e.target).closest(".col-4").siblings(".options-fields").find(".observations-field").val('');
       
     }
   });
@@ -351,6 +351,7 @@ $(document).on('turbolinks:load', function(e){
       $(closestTr).find('input.close-patient-fullname-fake').first().val(ui.item.fullname);
       $(closestTr).find('input.close-patient-dni-fake').first().val(ui.item.dni);
       $(closestTr).find('input[type="hidden"].close-patient-dni').first().val(ui.item.dni);
+      $(closestTr).find('input[type="hidden"].close-patient-fullname').first().val(ui.item.fullname);
       /* cargamos el telofono del paciente (si viene) */
       if(ui.item.phone){
         $(closestTr).find('input.close-patient-phone').first().val(ui.item.phone);
