@@ -22,14 +22,17 @@
 //= require moment/es.js
 //= require moment-timezone-with-data
 //= require tempusdominus-bootstrap-4.js
+
 //= require highcharts/highcharts
 //= require highcharts/highcharts-more
-//= require turbolinks
+
+//= require chartkick
 //= require cocoon
 //= require filterrific/filterrific-jquery
 //= require bootstrap-switch
 //= require bootstrap
 //= require bootstrap-select
+//= require turbolinks
 //= require_tree .
 
 // Se oculta el flash message
