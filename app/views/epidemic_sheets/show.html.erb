@@ -176,6 +176,22 @@
                 <p><%= @epidemic_sheet.epidemi_antecedent_observations %></p>
               </div>
             </div>
+
+            <% if @epidemic_sheet.vaccines_applied.present? %>
+              <h5 class="border-bottom pt-3">Vacuna aplicada: <%= @epidemic_sheet.vaccines_applied.vaccine.name %> </h5>
+              <div class="row">
+                <div class="col-5">
+                  <% @epidemic_sheet.vaccines_applied.vaccine_doses.each do |vaccine_dose| %>
+                    <div class="ml-2 mb-1 mt-1">
+                      <%= fa_icon "dot-circle", class: "far"%>
+                      <span class="font-weight-bold"><%= vaccine_dose.name%>
+                      <span><%= vaccine_dose.date_applied.strftime("%d/%m/%Y") %></span>
+                      </span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           </div>
           <%# Case evolutions %>
           <div class="tab-pane fade" id="case-evolutions" role="tabpanel" aria-labelledby="case-evolutions-tab">
