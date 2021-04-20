@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_115537) do
+ActiveRecord::Schema.define(version: 2021_04_16_154820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -204,12 +204,14 @@ ActiveRecord::Schema.define(version: 2021_04_16_115537) do
     t.integer "close_contacts_count"
     t.boolean "presents_epidemi_antecedents"
     t.text "epidemi_antecedent_observations"
+    t.bigint "vaccines_applied_id"
     t.index ["case_definition_id"], name: "index_epidemic_sheets_on_case_definition_id"
     t.index ["created_by_id"], name: "index_epidemic_sheets_on_created_by_id"
     t.index ["establishment_id"], name: "index_epidemic_sheets_on_establishment_id"
     t.index ["locked_close_contact_id"], name: "index_epidemic_sheets_on_locked_close_contact_id"
     t.index ["parent_contact_id"], name: "index_epidemic_sheets_on_parent_contact_id"
     t.index ["patient_id"], name: "index_epidemic_sheets_on_patient_id"
+    t.index ["vaccines_applied_id"], name: "index_epidemic_sheets_on_vaccines_applied_id"
   end
 
   create_table "establishments", force: :cascade do |t|
@@ -489,6 +491,28 @@ ActiveRecord::Schema.define(version: 2021_04_16_115537) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "vaccine_doses", force: :cascade do |t|
+    t.string "name"
+    t.date "date_applied"
+    t.bigint "vaccines_applied_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vaccines_applied_id"], name: "index_vaccine_doses_on_vaccines_applied_id"
+  end
+
+  create_table "vaccines", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "vaccines_applieds", force: :cascade do |t|
+    t.bigint "vaccine_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vaccine_id"], name: "index_vaccines_applieds_on_vaccine_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

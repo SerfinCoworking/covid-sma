@@ -218,6 +218,47 @@ $(document).on('turbolinks:load', function(e){
       }
     }
   });
+
+  $('#vaccines-selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    const value = parseInt(e.target.value);
+    if(e.target.value !== '' && !$("#vaccine-doses-list").hasClass("show")){
+      $("#vaccine-doses-list").addClass("show");
+      $("#vaccine-applied-destroy").val(false);
+    }else if(e.target.value === ''){
+      $("#vaccine-doses-list").removeClass("show");
+      $("#vaccine-applied-destroy").val(true);
+    }
+  });
+  
+  
+  $('#vaccine_doses').on('cocoon:before-insert', function(event, insertedItem) {
+    const doseCount = $(event.target).find(".dose-row").length;
+    $(insertedItem).find('input.dose-name').first().val("Dosis " + (doseCount + 1) + "°");
+
+    $(insertedItem).find('.date-applied').first().datepicker({
+      closeText: 'Cerrar',
+      prevText: '<Ant',
+      nextText: 'Sig>',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+      dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+      weekHeader: 'Sm',
+      dateFormat: 'dd/mm/yy',
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: '',
+      maxDate: 0
+    });
+  });
+
+  $('#vaccine_doses').on('cocoon:after-insert', function(e, added_task) {
+    $(added_task).find('input.date-applied').focus();
+    console.log(added_task, "<========");
+  });
   
 
   function resetPatientForm(){

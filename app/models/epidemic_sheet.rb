@@ -24,6 +24,10 @@ class EpidemicSheet < ApplicationRecord
   has_many :previous_symptoms, through: :sheet_previous_symptoms
   has_many :case_evolutions, dependent: :destroy
 
+  belongs_to :vaccines_applied, optional: true
+  
+  
+  accepts_nested_attributes_for :vaccines_applied, allow_destroy: true, reject_if: proc { |attributes| attributes['vaccine_id'].blank? }
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
   accepts_nested_attributes_for :sheet_epidemi_antecedents, allow_destroy: true

@@ -96,6 +96,8 @@
 
           <%= render 'epidemic_sheets/partials/epidemi_antecedents', f: f %>
 
+          <%= render 'epidemic_sheets/partials/vaccine', f: f %>
+          
           <%# Direccion Actual %>
           <h5 class="border-bottom">Domicilio actual</h5>
           <%= f.simple_fields_for :patient, html: { role: 'check-modified' } do |patient_form| %>

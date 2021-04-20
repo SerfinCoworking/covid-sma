@@ -1,0 +1,32 @@
+<div class="dose-row d-flex align-items-center mb-2 nested-fields">
+  <%= f.input :name, 
+  as: :string, label: false, 
+  :input_html => { 
+    class: "form-control dose-name", 
+    value: "#{f.object.name.present? ? f.object.name : ''}"
+  } %>
+  
+  <div class="ml-2">
+    <%= f.input :date_applied, as: :string, label: "Fecha", html5: true,
+      required: true,
+      :input_html => {
+        class: "form-control date-applied #{f.object.errors[:date_applied_future].any? ? 'is-invalid' : ''}",
+        autocomplete: "off",
+        value: "#{f.object.new_record? ? "" : f.object.date_applied.strftime("%d/%m/%Y")}"
+        
+      }
+    %>
+    <% if f.object.errors[:date_applied_future].any? %>
+      <div class="invalid-feedback d-block">
+        <%= f.object.errors[:date_applied_future].first %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <%= link_to_remove_association  f, class: 'ml-2 remove-tag btn btn-warning',
+    title: 'Quitar', data: { toggle: 'tooltip', placement: 'top' } do %>
+    <%= fa_icon "minus" %>
+  <% end %>
+  
+</div>

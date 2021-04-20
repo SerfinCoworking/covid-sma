@@ -61,6 +61,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
+    @epidemic_sheet.build_vaccines_applied
   end
 
   def new_contact
@@ -78,6 +79,7 @@ class EpidemicSheetsController < ApplicationController
   # GET /epidemic_sheets/1/edit
   def edit
     authorize @epidemic_sheet
+    @epidemic_sheet.vaccines_applied || @epidemic_sheet.build_vaccines_applied
   end
 
   # POST /epidemic_sheets
@@ -196,6 +198,7 @@ class EpidemicSheetsController < ApplicationController
       @diagnostic_methods = DiagnosticMethod.all
       @establishments = Establishment.by_city(current_user.establishment_city).sort_by &:name
       @special_devices = SpecialDevice.all.sort_by &:name
+      @vaccines = Vaccine.all.sort_by &:name
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -240,6 +243,17 @@ class EpidemicSheetsController < ApplicationController
           :_destroy,
           :contact_id
         ], 
+        vaccines_applied_attributes: [
+          :id,
+          :vaccine_id,
+          :_destroy,
+          vaccine_doses_attributes: [
+            :id,
+            :name,
+            :date_applied,
+            :_destroy
+          ]
+        ]
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -299,6 +313,17 @@ class EpidemicSheetsController < ApplicationController
           :_destroy,
           :contact_id
         ],
+        vaccines_applied_attributes: [
+          :id,
+          :vaccine_id,
+          :_destroy,
+          vaccine_doses_attributes: [
+            :id,
+            :name,
+            :date_applied,
+            :_destroy
+          ]
+        ]
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.

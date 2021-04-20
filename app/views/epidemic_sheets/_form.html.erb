@@ -58,8 +58,7 @@
                     :input_html => {
                       class: "form-control fis-date #{f.object.errors[:init_symptom_date_future].any? || f.object.errors[:fis_validate_presence].any? ? "is-invalid": ""}",
                       autocomplete: "off",
-                      value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}",
-
+                      value: "#{f.object.init_symptom_date.present? ? f.object.init_symptom_date.strftime("%d/%m/%Y") : ''}"
                     }
                   %>
                   <% if f.object.errors[:init_symptom_date_future].any? %>
@@ -108,7 +107,7 @@
                     <div class="invalid-feedback d-block">
                       <%= f.object.errors[:notification_date_future].first %>
                     </div>
-                  <% end %>                  
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -119,6 +118,8 @@
           <%= render 'epidemic_sheets/partials/previous_symptoms', f: f %>
 
           <%= render 'epidemic_sheets/partials/epidemi_antecedents', f: f %>
+
+          <%= render 'epidemic_sheets/partials/vaccine', f: f %>
      
           <h5 class="border-bottom d-flex justify-content-between">
             Personas que tuvieron contacto
