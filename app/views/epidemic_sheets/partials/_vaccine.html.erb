@@ -1,0 +1,39 @@
+<h5 class="border-bottom">Vacuna aplicada</h5>
+ <%= f.simple_fields_for :vaccines_applied do | vaccine_applied | %>
+  
+  <%= vaccine_applied.hidden_field :_destroy, id: "vaccine-applied-destroy", value: false%>
+
+  <div class="row">
+    <div class="col-4">      
+      <%= vaccine_applied.input :vaccine_id, label: false,
+        collection: @vaccines,
+        include_blank: "Ningúna",     
+        :input_html => {
+          required: true,
+          id: "vaccines-selectpicker",
+          class: "selectpicker-md custom-select-pick show-tick #{f.object.errors[:antecedents_validate_presence].any? ? 'is-invalid' : ''}",
+          "data-width"=>"100%",
+          "data-size"=>"10",
+          "data-live-search" => true,
+          "data-none-results-text" => "No se encontró el antecedente"
+        }
+      %>
+    </div>
+
+    <div class="col-8 fade <%= vaccine_applied.object.vaccine.present? ? 'show' : '' %>" id="vaccine-doses-list">
+      <div class="vaccine_doses" id="vaccine_doses">
+        <%= vaccine_applied.simple_fields_for :vaccine_doses do | vaccine_dose | %>
+          <%= render "epidemic_sheets/partials/vaccine_doses_fields", :f => vaccine_dose %>
+        <% end %>
+      </div>
+        
+      <%= link_to_add_association vaccine_applied, :vaccine_doses, class: 'btn btn-primary', id: "add-vaccine_dose",
+        partial: 'epidemic_sheets/partials/vaccine_doses_fields',
+        data: {"association-insertion-node" => "div#vaccine_doses", "association-insertion-method" => "append"} do %>
+        <%= fa_icon "plus" %>
+        Agregar dosis
+      <% end %>
+    </div>
+
+  </div>
+<% end %> <!-- End case definition -->

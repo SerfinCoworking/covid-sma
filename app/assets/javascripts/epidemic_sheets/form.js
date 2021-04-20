@@ -45,14 +45,14 @@ $(document).on('turbolinks:load', function(e){
     }
   });
 
-  $("#present-prev-symp, #present-symptoms").on('change', function(e){
+  $("#present-prev-symp, #present-symptoms, #present-epidemi-antecedents").on('change', function(e){
     if($(e.target).is(":checked")){
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").addClass('show');
+      $(e.target).closest(".col-4").siblings(".options-fields").addClass('show');
     }else{
       /* al quitar el check, limpiamos los campos de seleccion y observaciones */
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").removeClass('show');
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
-      $(e.target).closest(".col-4").siblings(".symptoms-fields").find(".observations-field").val('');
+      $(e.target).closest(".col-4").siblings(".options-fields").removeClass('show');
+      $(e.target).closest(".col-4").siblings(".options-fields").find(".selectpicker-md").first().selectpicker('deselectAll');
+      $(e.target).closest(".col-4").siblings(".options-fields").find(".observations-field").val('');
       
     }
   });
@@ -218,6 +218,46 @@ $(document).on('turbolinks:load', function(e){
       }
     }
   });
+
+  $('#vaccines-selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    const value = parseInt(e.target.value);
+    if(e.target.value !== '' && !$("#vaccine-doses-list").hasClass("show")){
+      $("#vaccine-doses-list").addClass("show");
+      $("#vaccine-applied-destroy").val(false);
+    }else if(e.target.value === ''){
+      $("#vaccine-doses-list").removeClass("show");
+      $("#vaccine-applied-destroy").val(true);
+    }
+  });
+  
+  
+  $('#vaccine_doses').on('cocoon:before-insert', function(event, insertedItem) {
+    const doseCount = $(event.target).find(".dose-row").length;
+    $(insertedItem).find('input.dose-name').first().val("Dosis " + (doseCount + 1) + "°");
+
+    $(insertedItem).find('.date-applied').first().datepicker({
+      closeText: 'Cerrar',
+      prevText: '<Ant',
+      nextText: 'Sig>',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+      dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+      weekHeader: 'Sm',
+      dateFormat: 'dd/mm/yy',
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: '',
+      maxDate: 0
+    });
+  });
+
+  $('#vaccine_doses').on('cocoon:after-insert', function(e, added_task) {
+    $(added_task).find('input.date-applied').focus();
+  });
   
 
   function resetPatientForm(){
@@ -351,6 +391,7 @@ $(document).on('turbolinks:load', function(e){
       $(closestTr).find('input.close-patient-fullname-fake').first().val(ui.item.fullname);
       $(closestTr).find('input.close-patient-dni-fake').first().val(ui.item.dni);
       $(closestTr).find('input[type="hidden"].close-patient-dni').first().val(ui.item.dni);
+      $(closestTr).find('input[type="hidden"].close-patient-fullname').first().val(ui.item.fullname);
       /* cargamos el telofono del paciente (si viene) */
       if(ui.item.phone){
         $(closestTr).find('input.close-patient-phone').first().val(ui.item.phone);

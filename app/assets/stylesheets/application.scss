@@ -259,3 +259,15 @@ a {
 .patient-avatar{
   max-width: 150px!important;
 }
+
+.dose-row .form-group{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+  label{
+    white-space: nowrap;
+    margin-right: .75rem;
+    margin-bottom: 0;
+  }
+}

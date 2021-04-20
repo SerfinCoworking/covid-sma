@@ -61,8 +61,9 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.build_address
     @epidemic_sheet.patient.build_current_address
     @epidemic_sheet.patient.patient_phones.build
+    @epidemic_sheet.build_vaccines_applied
   end
-
+  
   def new_contact
     authorize EpidemicSheet
     @epidemic_sheet = EpidemicSheet.new
@@ -73,11 +74,13 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.patient_phones.build
     @origin_contact_patient = Patient.find(params[:parent_contact_id])
     @close_contact = CloseContact.find(params[:close_contact_id])
+    @epidemic_sheet.build_vaccines_applied
   end
   
   # GET /epidemic_sheets/1/edit
   def edit
     authorize @epidemic_sheet
+    @epidemic_sheet.vaccines_applied || @epidemic_sheet.build_vaccines_applied
   end
 
   # POST /epidemic_sheets
@@ -114,7 +117,7 @@ class EpidemicSheetsController < ApplicationController
   def update
     authorize @epidemic_sheet
     respond_to do |format|
-      if @epidemic_sheet.update(epidemic_sheet_params)
+      if @epidemic_sheet.update!(epidemic_sheet_params)
         EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @epidemic_sheet, action: "editó", sector: current_user.sector)
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         format.json { render :show, status: :ok, location: @epidemic_sheet }
@@ -188,6 +191,7 @@ class EpidemicSheetsController < ApplicationController
     end
     
     def set_epidemic_sheet_symptoms
+      @epidemi_antecedents = EpidemiAntecedent.all.sort_by &:name
       @symptoms = Symptom.all.sort_by &:name
       @previous_symptoms = PreviousSymptom.all.sort_by &:name
       @occupations = Occupation.all.sort_by &:name
@@ -195,6 +199,7 @@ class EpidemicSheetsController < ApplicationController
       @diagnostic_methods = DiagnosticMethod.all
       @establishments = Establishment.by_city(current_user.establishment_city).sort_by &:name
       @special_devices = SpecialDevice.all.sort_by &:name
+      @vaccines = Vaccine.all.sort_by &:name
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -208,7 +213,10 @@ class EpidemicSheetsController < ApplicationController
         :prev_symptoms_observations,
         :clinic_location,
         :notification_date,
+        :presents_epidemi_antecedents,
+        :epidemi_antecedent_observations,
         symptom_ids: [],
+        epidemi_antecedent_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
@@ -236,6 +244,17 @@ class EpidemicSheetsController < ApplicationController
           :_destroy,
           :contact_id
         ], 
+        vaccines_applied_attributes: [
+          :id,
+          :vaccine_id,
+          :_destroy,
+          vaccine_doses_attributes: [
+            :id,
+            :name,
+            :date_applied,
+            :_destroy
+          ]
+        ]
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -251,7 +270,10 @@ class EpidemicSheetsController < ApplicationController
         :prev_symptoms_observations,
         :clinic_location,
         :notification_date,
+        :presents_epidemi_antecedents,
+        :epidemi_antecedent_observations,
         symptom_ids: [],
+        epidemi_antecedent_ids: [],
         previous_symptom_ids: [],
         case_definition_attributes: [ 
           :id,
@@ -292,6 +314,17 @@ class EpidemicSheetsController < ApplicationController
           :_destroy,
           :contact_id
         ],
+        vaccines_applied_attributes: [
+          :id,
+          :vaccine_id,
+          :_destroy,
+          vaccine_doses_attributes: [
+            :id,
+            :name,
+            :date_applied,
+            :_destroy
+          ]
+        ]
       )
     end
     # Never trust parameters from the scary internet, only allow the white list through.
