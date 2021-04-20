@@ -63,7 +63,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.patient_phones.build
     @epidemic_sheet.build_vaccines_applied
   end
-
+  
   def new_contact
     authorize EpidemicSheet
     @epidemic_sheet = EpidemicSheet.new
@@ -74,6 +74,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.patient_phones.build
     @origin_contact_patient = Patient.find(params[:parent_contact_id])
     @close_contact = CloseContact.find(params[:close_contact_id])
+    @epidemic_sheet.build_vaccines_applied
   end
   
   # GET /epidemic_sheets/1/edit

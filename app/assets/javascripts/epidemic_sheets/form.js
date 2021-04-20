@@ -257,7 +257,6 @@ $(document).on('turbolinks:load', function(e){
 
   $('#vaccine_doses').on('cocoon:after-insert', function(e, added_task) {
     $(added_task).find('input.date-applied').focus();
-    console.log(added_task, "<========");
   });
   
 
