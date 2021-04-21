@@ -1,0 +1,32 @@
+// Style modal
+$('.modal-header').addClass('bg-primary text-white');
+
+// Add the dialog title
+$('.modal-title').html("<i class='fa fa-pen'></i>  Editando evolución");
+
+// Render the new form
+$('.modal-body').html('<%= j render("form_remote") %>');
+
+// Add form button
+$('.modal-footer').html(
+  "<button type='button' class='btn' data-dismiss='modal'>Volver</button>"+
+  "<button type='submit' name='commit' class='btn btn-success pull-right' form='edit_case_evolution_<%= @case_evolution %>' value='remote'><i class='fa fa-check'></i> Guardar cambios</button>"
+);
+
+// Show the dynamic dialog
+$('#dialog').modal("show");
+
+// Set focus to the first element
+$('#dialog').on('shown.bs.modal', function () {
+  $('#patient_last_name').focus();
+});
+
+// Remove style
+$('#dialog').on('hidden.bs.modal', function () {
+  $('.modal-header').removeClass('bg-primary text-white');
+});
+
+$('#case_evolution_created_at').datepicker({
+  format: 'DD/MM/YYYY',
+  locale: 'es'
+});

@@ -188,9 +188,10 @@
                         <% end %>
                       <% end %>
                       <% if policy(evolution).destroy? %>
-                        <%= link_to destroy_case_evolution_path(evolution), remote: true, class: 'btn btn-sm btn-danger' do %>
+                        <%= link_to case_evolution_path(evolution), method: :destroy, remote: true, class: 'btn btn-sm btn-danger' do %>
                           <%= fa_icon 'trash' %>
                         <% end %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>

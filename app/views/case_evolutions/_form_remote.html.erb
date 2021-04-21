@@ -1,0 +1,11 @@
+<%= simple_form_for @case_evolution, remote: true, html: { role: 'check-modified' } do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :created_at, as: :string, label: "Fecha", html5: true,
+    required: true,
+    :input_html => {
+      class: "form-control notification-date #{f.object.errors[:created_at_future].any? ? 'is-invalid' : ''}",
+      autocomplete: "off",
+      value: "#{f.object.created_at.strftime("%d/%m/%Y")}"
+    }
+  %>
+<% end %>
