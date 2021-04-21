@@ -50,7 +50,7 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
       patient_contact_type = contact.contact_type.present? ? contact.contact_type_name : '---'
       ce_row = []
       if contact.contact.present?
-        ce_row[0] = contact.contact_fullname
+        ce_row[0] = contact.contact_full_name
         ce_row[1] = contact.contact_dni
         ce_row[2] = contact.contact_patient_phones.present? ? contact.contact_patient_phones.last.number : ''
         ce_row[3] = contact.contact_address.present? ? contact.contact_address_string : ''
