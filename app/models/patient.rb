@@ -119,11 +119,14 @@ class Patient < ApplicationRecord
   end
 
   def age_string
+    self.age.present? ? self.age.to_s+" años" : "---"
+  end
+
+  def age
     if self.birthdate.present?
-      age = ((Time.zone.now - self.birthdate.to_time) / 1.year.seconds).floor
-      age.to_s+" años"
+      return ((Time.zone.now - self.birthdate.to_time) / 1.year.seconds).floor
     else
-      "----"
+      return nil
     end
   end
 
