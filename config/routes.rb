@@ -130,4 +130,10 @@ Rails.application.routes.draw do
       get :delete
     end
   end
+
+  resources :case_evolutions, only: [:edit, :update, :destroy] do
+    member do 
+      get :delete
+    end
+  end
 end

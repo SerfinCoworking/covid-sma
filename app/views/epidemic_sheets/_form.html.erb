@@ -18,7 +18,6 @@
         <%= simple_form_for @epidemic_sheet, html: { role: 'check-modified' } do |f| %>
           <%= f.error_notification %>
 
-
           <h5 class="border-bottom">Definición de caso</h5>
           <%= f.simple_fields_for :case_definition do |case_d| %>
             <%= render "case_definition", :case_d => case_d %>

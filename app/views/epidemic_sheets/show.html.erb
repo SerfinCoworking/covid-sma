@@ -202,11 +202,12 @@
                   <th class="border-top-0">Estado</th>
                   <th class="border-top-0">Método</th>
                   <th class="border-top-0">Dispositivo</th>
+                  <% if policy(CaseEvolution).edit? %><th class="border-top-0">Acción</th><% end %>
                 </tr>
               </thead>
               <tbody>
                 <% @epidemic_sheet.case_evolutions.order(created_at: :desc).each do |evolution| %>
-                  <tr>
+                  <tr id="case_evolution_<%= evolution.id %>">
                     <td><%= evolution.created_at.strftime("%d/%m/%Y") %></td>
                     <td>
                       <span class="badge badge-<%= evolution.case_status_badge %>">
@@ -215,6 +216,18 @@
                     </td>
                     <td><%= evolution.case_status.needs_diagnostic? ? evolution.diagnostic_method.name : '-' %></td>
                     <td><%= evolution.case_status.needs_diagnostic? ? evolution.special_device.name : '-' %></td>
+                    <td>
+                      <% if policy(evolution).edit? %>
+                        <%= link_to edit_case_evolution_path(evolution), remote: true, class: 'btn btn-sm btn-warning' do %>
+                          <%= fa_icon 'pen' %>
+                        <% end %>
+                      <% end %>
+                      <% if policy(evolution).destroy? %>
+                        <%= link_to case_evolution_path(evolution), method: :destroy, remote: true, class: 'btn btn-sm btn-danger' do %>
+                          <%= fa_icon 'trash' %>
+                        <% end %>
+                      <% end %>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
@@ -315,19 +328,19 @@
             <table class="table table-hover table-striped table-sm">
               <thead>
                 <tr>
+                  <th class="border-top-0">Fecha</th>
                   <th class="border-top-0">Establecimiento</th>
                   <th class="border-top-0">Usuario</th>
                   <th class="border-top-0">Acción</th>
-                  <th class="border-top-0">Fecha</th>
                 </tr>
               </thead>
               <tbody>
                 <% @epidemic_sheet.movements.order(created_at: :desc).each do |movement| %>
                   <tr>
-                    <td><%= movement.sector.establishment.name %></td>
+                    <td><%= movement.created_at.strftime("%d/%m/%Y") %></td>
+                    <td><%= movement.sector.establishment.short_name %></td>
                     <td><%= movement.user.full_name %></td>
                     <td><%= movement.action %></td>
-                    <td><%= movement.created_at.strftime("%d/%m/%Y") %></td>
                   </tr>
                 <% end %>
               </tbody>
