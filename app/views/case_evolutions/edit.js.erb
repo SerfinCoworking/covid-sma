@@ -10,7 +10,7 @@ $('.modal-body').html('<%= j render("form_remote") %>');
 // Add form button
 $('.modal-footer').html(
   "<button type='button' class='btn' data-dismiss='modal'>Volver</button>"+
-  "<button type='submit' name='commit' class='btn btn-success pull-right' form='edit_case_evolution_<%= @case_evolution %>' value='remote'><i class='fa fa-check'></i> Guardar cambios</button>"
+  "<button type='submit' name='commit' class='btn btn-success pull-right' form='edit_case_evolution_<%= @case_evolution.id %>' value='remote'><i class='fa fa-check'></i> Guardar cambios</button>"
 );
 
 // Show the dynamic dialog
@@ -18,7 +18,7 @@ $('#dialog').modal("show");
 
 // Set focus to the first element
 $('#dialog').on('shown.bs.modal', function () {
-  $('#patient_last_name').focus();
+  $('.notification-date').focus();
 });
 
 // Remove style
@@ -26,7 +26,20 @@ $('#dialog').on('hidden.bs.modal', function () {
   $('.modal-header').removeClass('bg-primary text-white');
 });
 
-$('#case_evolution_created_at').datepicker({
-  format: 'DD/MM/YYYY',
-  locale: 'es'
+$('.notification-date').datepicker({
+  closeText: 'Cerrar',
+  prevText: '<Ant',
+  nextText: 'Sig>',
+  currentText: 'Hoy',
+  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+  dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+  weekHeader: 'Sm',
+  dateFormat: 'dd/mm/yy',
+  firstDay: 1,
+  isRTL: false,
+  showMonthAfterYear: false,
+  yearSuffix: ''
 });

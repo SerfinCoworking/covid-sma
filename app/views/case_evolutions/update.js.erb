@@ -1,0 +1,14 @@
+<%# Change the case_evolution status label %>
+$('#case_evolution_<%= @case_evolution.id %>').replaceWith('<%= j render (@case_evolution) %>');
+
+<%# Render flash message %>
+$("#flash_messages").html('<%= j render partial: "layouts/flash_notices" %>');
+
+<%# Animation effect %>
+$('#case_evolution_<%= @case_evolution.id %>').addClass('table-success');
+
+setTimeout(function() {
+ $("#case_evolution_<%= @case_evolution.id %>").removeClass("table-success");
+}, 3000);
+
+$('#dialog').modal("hide");

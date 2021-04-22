@@ -172,7 +172,7 @@
               </thead>
               <tbody>
                 <% @epidemic_sheet.case_evolutions.order(created_at: :desc).each do |evolution| %>
-                  <tr>
+                  <tr id="case_evolution_<%= evolution.id %>">
                     <td><%= evolution.created_at.strftime("%d/%m/%Y") %></td>
                     <td>
                       <span class="badge badge-<%= evolution.case_status_badge %>">
@@ -293,19 +293,19 @@
             <table class="table table-hover table-striped table-sm">
               <thead>
                 <tr>
+                  <th class="border-top-0">Fecha</th>
                   <th class="border-top-0">Establecimiento</th>
                   <th class="border-top-0">Usuario</th>
                   <th class="border-top-0">Acción</th>
-                  <th class="border-top-0">Fecha</th>
                 </tr>
               </thead>
               <tbody>
                 <% @epidemic_sheet.movements.order(created_at: :desc).each do |movement| %>
                   <tr>
-                    <td><%= movement.sector.establishment.name %></td>
+                    <td><%= movement.created_at.strftime("%d/%m/%Y") %></td>
+                    <td><%= movement.sector.establishment.short_name %></td>
                     <td><%= movement.user.full_name %></td>
                     <td><%= movement.action %></td>
-                    <td><%= movement.created_at.strftime("%d/%m/%Y") %></td>
                   </tr>
                 <% end %>
               </tbody>

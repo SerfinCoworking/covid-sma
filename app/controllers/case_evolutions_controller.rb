@@ -7,10 +7,12 @@ class CaseEvolutionsController < ApplicationController
 
   def update
     authorize @case_evolution
+
     respond_to do |format|
       if @case_evolution.update(case_evolution_params)
-        EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @case_evolution.epidemic_sheet, action: "editó", sector: current_user.sector)
-        format.html { redirect_to @case_evolution, notice: 'La evolución de caso se ha modificado correctamente.' }
+        EpidemicSheetMovement.create(user: current_user, epidemic_sheet: @case_evolution.epidemic_sheet, action: "editó evolución de caso", sector: current_user.sector)
+        flash.now[:success] = 'La evolución de caso se ha modificado correctamente.'
+        format.js
       else
         format.html { render :edit }
       end
