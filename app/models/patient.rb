@@ -138,6 +138,33 @@ class Patient < ApplicationRecord
     return phone_string
   end
 
+  def age_range
+    case self.age 
+    when 0..10
+      '0-10'
+    when 11..20
+      '11-20'
+    when 21..30
+      '21-30'
+    when 31..40
+      '31-40'
+    when 41..50
+      '41-50'
+    when 51..60
+      '51-60'
+    when 61..70
+      '61-70'
+    when 71..80
+      '71-80'
+    when 81..90
+      '81-90'
+    when 91..100
+      '91-100'
+    when 101..110
+      '101-110'
+    end
+  end
+
   def not_be_the_same_parent_contact
     if self.parent_contact_id == self.id
       errors.add(:parent_contact_id, 'No puede ser contacto padre de sí mismo')
