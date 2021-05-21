@@ -40,8 +40,8 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
   sheet.add_style 'A1', bg_color: 'cfdac8', b: true
   sheet.add_style 'I1', bg_color: 'e8eae6', b: true
   
-  sheet.add_row ["Apellido y nombre", "DNI", "Teléfono", "Domicilio", "Fecha último contacto",  "Tipo de contacto",
-    "Estado", "Tiene ficha?", "Apellido y nombre", "DNI", "Teléfono", "Domicilio", "Domicilio actual relevado", "Fecha (FIS)", "Fecha notificación"]
+  sheet.add_row ["DNI", "Apellido y nombre", "Teléfono", "Domicilio", "Fecha último contacto",  "Tipo de contacto",
+    "Estado", "Tiene ficha?", "DNI", "Apellido y nombre", "Teléfono", "Domicilio", "Domicilio actual relevado", "Fecha (FIS)", "Fecha notificación"]
   sheet.add_style 'A2:O2', bg_color: '363062', fg_color: 'FFFFFF'
 
   ce = sheet.styles.add_style bg_color: 'cfdac8', :border => { :style => :thin, :color =>"FFCDCDCD" }
@@ -54,8 +54,8 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
       patient_contact_type = contact.contact_type.present? ? contact.contact_type_name : '---'
       ce_row = []
       if contact.contact.present?
-        ce_row[0] = contact.contact_fullname
-        ce_row[1] = contact.contact_dni
+        ce_row[0] = contact.contact_dni
+        ce_row[1] = contact.contact_fullname
         ce_row[2] = contact.contact_patient_phones.present? ? contact.contact_patient_phones.last.number : ''
         ce_row[3] = contact.contact_address.present? ? contact.contact_address_string : ''
         ce_row[4] = patient_contact_date
@@ -63,8 +63,8 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
         ce_row[6] = contact.contact.epidemic_sheet.case_definition_case_status_name
         ce_row[7] = 'Si'
       else
-        ce_row[0] = contact.full_name
-        ce_row[1] = contact.dni
+        ce_row[0] = contact.dni
+        ce_row[1] = contact.full_name
         ce_row[2] = contact.phone
         ce_row[3] = contact.address
         ce_row[4] = patient_contact_date
@@ -72,8 +72,8 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
         ce_row[6] = ''
         ce_row[7] = 'No'
       end
-      ce_row[8] = contact.patient.fullname
-      ce_row[9] = contact.patient.dni
+      ce_row[8] = contact.patient.dni
+      ce_row[9] = contact.patient.fullname
       ce_row[10] = contact.patient.patient_phones.present? ? contact.patient.patient_phones.last.number : ''
       ce_row[11] = contact.patient.address_string
       ce_row[12] = contact.patient.current_address_get_full_address_name
@@ -83,7 +83,7 @@ wb.add_worksheet(name: "Contactos estrechos") do |sheet|
     end
   end
 
-  sheet.column_widths 40,10,20,40,15,10,10,8,40,10,20,40,40,15,15
+  sheet.column_widths 10,40,20,40,15,10,10,8,10,40,20,40,40,15,15
 end
 
 wb.add_worksheet(name: "Parámetros del filtro") do |sheet|
