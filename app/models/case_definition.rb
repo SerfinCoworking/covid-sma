@@ -54,8 +54,8 @@ class CaseDefinition < ApplicationRecord
 
   def self.total_new_negatives_to_city(a_city)
     return CaseDefinition
-      .updated_since_date(Date.yesterday.beginning_of_day)
-      .updated_to_date(Date.yesterday.end_of_day)
+      .updated_since_date(Date.yesterday.strftime("%d/%m/%y"))
+      .updated_to_date(Date.yesterday.strftime("%d/%m/%y"))
       .by_city(a_city)
       .where(case_status_id: CaseStatus.find_by_name('Negativo').id)
       .count
