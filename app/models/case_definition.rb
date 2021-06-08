@@ -32,11 +32,11 @@ class CaseDefinition < ApplicationRecord
   end
 
   scope :updated_since_date, lambda { |a_date|
-    where('case_definitions.updated_at >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
+    where('case_definitions.updated_at >= ?', DateTime.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :updated_to_date, lambda { |a_date|
-    where('case_definitions.updated_at <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
+    where('case_definitions.updated_at <= ?', DateTime.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :by_city, lambda {|ids_ary| 
