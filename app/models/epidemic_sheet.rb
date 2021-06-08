@@ -150,11 +150,11 @@ class EpidemicSheet < ApplicationRecord
   }
 
   scope :since_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date >= ?', a_date)
+    where('epidemic_sheets.notification_date >= ?', DateTime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :to_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date <= ?', a_date)
+    where('epidemic_sheets.notification_date <= ?', DateTime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :created_since, lambda { |a_date|
