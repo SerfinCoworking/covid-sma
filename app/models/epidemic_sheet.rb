@@ -142,19 +142,19 @@ class EpidemicSheet < ApplicationRecord
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }
 
   scope :since_date_fis, lambda { |a_date|
-    where('epidemic_sheets.init_symptom_date >= ?', a_date)
+    where('epidemic_sheets.init_symptom_date >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :to_date_fis, lambda { |a_date|
-    where('epidemic_sheets.init_symptom_date <= ?', a_date)
+    where('epidemic_sheets.init_symptom_date <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :since_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date >= ?', a_date)
+    where('epidemic_sheets.notification_date >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :to_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date <= ?', a_date)
+    where('epidemic_sheets.notification_date <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :created_since, lambda { |a_date|
@@ -210,8 +210,8 @@ class EpidemicSheet < ApplicationRecord
   def self.total_new_positives_to_city(a_city)
     return EpidemicSheet
       .by_city(a_city)
-      .since_date(Date.yesterday)
-      .to_date(Date.yesterday)
+      .since_date(Date.yesterday.strftime("%d/%m/%y"))
+      .to_date(Date.yesterday.strftime("%d/%m/%y"))
       .by_case_statuses([CaseStatus.find_by_name('Positivo (primoinfección)').id, CaseStatus.find_by_name('Positivo (reinfección)')]).count
   end
 

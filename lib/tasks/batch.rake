@@ -10,7 +10,7 @@ namespace :batch do
           .by_city(city)
           .joins(:case_definition)
           .where(case_definitions: { case_status_id: status.id })
-          .to_date(Date.today.end_of_day)
+          .to_date(Date.today.strftime("%d/%m/%y"))
 
         CaseCountPerDay.create(
           case_status_id: status.id,
