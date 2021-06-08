@@ -142,27 +142,27 @@ class EpidemicSheet < ApplicationRecord
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }
 
   scope :since_date_fis, lambda { |a_date|
-    where('epidemic_sheets.init_symptom_date >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
+    where('epidemic_sheets.init_symptom_date >= ?', DateTime.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :to_date_fis, lambda { |a_date|
-    where('epidemic_sheets.init_symptom_date <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
+    where('epidemic_sheets.init_symptom_date <= ?', DateTime.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :since_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
+    where('epidemic_sheets.notification_date >= ?', DateTime.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :to_date, lambda { |a_date|
-    where('epidemic_sheets.notification_date <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
+    where('epidemic_sheets.notification_date <= ?', DateTime.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :created_since, lambda { |a_date|
-    where('epidemic_sheets.created_at >= ?', Date.strptime(a_date, '%d/%m/%y').beginning_of_day)
+    where('epidemic_sheets.created_at >= ?', DateTime.strptime(a_date, '%d/%m/%y').beginning_of_day)
   }
 
   scope :created_to, lambda { |a_date|
-    where('epidemic_sheets.created_at <= ?', Date.strptime(a_date, '%d/%m/%y').end_of_day)
+    where('epidemic_sheets.created_at <= ?', DateTime.strptime(a_date, '%d/%m/%y').end_of_day)
   }
 
   scope :is_in_sisa, lambda { |a_boolean| where(is_in_sisa: a_boolean) }
