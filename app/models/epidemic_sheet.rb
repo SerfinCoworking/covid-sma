@@ -25,7 +25,7 @@ class EpidemicSheet < ApplicationRecord
   has_many :case_evolutions, dependent: :destroy
 
   belongs_to :vaccines_applied, optional: true
-  
+  has_many :vaccine_doses, through: :vaccines_applied
   
   accepts_nested_attributes_for :vaccines_applied, allow_destroy: true, reject_if: proc { |attributes| attributes['vaccine_id'].blank? }
   accepts_nested_attributes_for :case_definition, allow_destroy: true

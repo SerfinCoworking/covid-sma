@@ -2,9 +2,9 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
   sheet.add_row ["#", "DNI", "Nombre completo", "Edad", "Rango etario", "Sexo", "Caso", "Método", "CEs", "Fecha (FIS)", "Fecha notificación", 
     "Teléfono", "Domicilio", "Domicilio actual relevado", "Signos y síntomas", "Observaciones SyS.",  "Comorbilidades", "Observaciones C.",
-    "Antecedentes", "Situación clínica", "Establecimiento designado" ]
+    "Antecedentes", "Situación clínica", "Establecimiento designado", "Vacuna aplicada", "Cantidad de dosis", "1° Dosis", "2° Dosis", "3° Dosis" ]
 
-  sheet.add_style 'A1:U1', bg_color: '363062', fg_color: 'FFFFFF'
+  sheet.add_style 'A1:Z1', bg_color: '363062', fg_color: 'FFFFFF'
   
   @epidemic_sheets.each_with_index do |e_sheet, index|
     sheet.add_row [index + 1, 
@@ -27,10 +27,15 @@ wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
       e_sheet.prev_symptoms_observations,
       e_sheet.presents_epidemi_antecedents? ? e_sheet.epidemi_antecedents.map(&:name).join(', ') : 'No',
       e_sheet.clinic_location.humanize,
-      e_sheet.patient.assigned_establishment.present? ? e_sheet.patient.assigned_establishment.name : '---'
+      e_sheet.patient.assigned_establishment.present? ? e_sheet.patient.assigned_establishment.name : '---',
+      e_sheet.vaccines_applied.present? ? e_sheet.vaccines_applied.vaccine.name : 'Ninguna',
+      e_sheet.vaccine_doses.count,
+      e_sheet.vaccine_doses.first.present? ? e_sheet.vaccine_doses.first.date_applied.strftime("%d/%m/%y") : '---',
+      e_sheet.vaccine_doses.second.present? ? e_sheet.vaccine_doses.second.date_applied.strftime("%d/%m/%y") : '---',
+      e_sheet.vaccine_doses.third.present? ? e_sheet.vaccine_doses.third.date_applied.strftime("%d/%m/%y") : '---'
     ]
   end
-  sheet.column_widths 5,10,40,6,12,10,22,26,5,15,15,20,50,35,17,17,17,17,17,17,60
+  sheet.column_widths 5,10,40,6,12,10,22,26,5,15,15,20,50,35,17,17,17,17,17,17,60,17,17,17,17
 end
 
 wb.add_worksheet(name: "Contactos estrechos") do |sheet|
