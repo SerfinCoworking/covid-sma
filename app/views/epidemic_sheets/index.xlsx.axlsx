@@ -1,13 +1,14 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
-  sheet.add_row ["#", "DNI", "Nombre completo", "Edad", "Rango etario", "Sexo", "Caso", "Método", "CEs", "Fecha (FIS)", "Fecha notificación", 
+  sheet.add_row ["#", "DNI", "Nombre completo", "Edad", "Rango etario", "Sexo", "Caso", "Método", "Fecha de alta", "CEs", "Fecha (FIS)", "Fecha notificación", 
     "Teléfono", "Domicilio", "Domicilio actual relevado", "Signos y síntomas", "Observaciones SyS.",  "Comorbilidades", "Observaciones C.",
     "Antecedentes", "Situación clínica", "Establecimiento designado", "Vacuna aplicada", "Cantidad de dosis", "1° Dosis", "2° Dosis", "3° Dosis" ]
 
-  sheet.add_style 'A1:Z1', bg_color: '363062', fg_color: 'FFFFFF'
+  sheet.add_style 'A1:AA1', bg_color: '363062', fg_color: 'FFFFFF'
   
   @epidemic_sheets.each_with_index do |e_sheet, index|
-    sheet.add_row [index + 1, 
+    sheet.add_row [
+      index + 1,
       e_sheet.patient_dni,
       e_sheet.patient_last_name+", "+e_sheet.patient_first_name,
       e_sheet.patient_age,
@@ -15,6 +16,7 @@ wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
       e_sheet.patient_sex,
       e_sheet.case_definition_case_status_name.humanize,
       e_sheet.case_definition.diagnostic_method.present? ? e_sheet.case_definition.diagnostic_method.name : '---',
+      e_sheet.case_definition.case_status_id == 5 ? e_sheet.created_at.strftime("%d/%m/%y") : '---',
       e_sheet.close_contacts_count,
       e_sheet.init_symptom_date.present? ? e_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---',
       e_sheet.notification_date.strftime("%d/%m/%Y"),
@@ -35,7 +37,7 @@ wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
       e_sheet.vaccine_doses.third.present? ? e_sheet.vaccine_doses.third.date_applied.strftime("%d/%m/%y") : '---'
     ]
   end
-  sheet.column_widths 5,10,40,6,12,10,22,26,5,15,15,20,50,35,17,17,17,17,17,17,60,17,17,17,17
+  sheet.column_widths 5,10,40,6,12,10,22,26,15,5,15,15,20,50,35,17,17,17,17,17,17,60,17,17,17,17
 end
 
 wb.add_worksheet(name: "Contactos estrechos") do |sheet|
