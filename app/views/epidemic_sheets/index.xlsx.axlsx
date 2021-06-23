@@ -16,7 +16,7 @@ wb.add_worksheet(name: "Fichas epidemiológicas") do |sheet|
       e_sheet.patient_sex,
       e_sheet.case_definition_case_status_name.humanize,
       e_sheet.case_definition.diagnostic_method.present? ? e_sheet.case_definition.diagnostic_method.name : '---',
-      e_sheet.case_definition.case_status_id == 5 ? e_sheet.created_at.strftime("%d/%m/%y") : '---',
+      e_sheet.case_definition.case_status_id == 5 ? e_sheet.case_evolutions.last.created_at.strftime("%d/%m/%y") : '---',
       e_sheet.close_contacts_count,
       e_sheet.init_symptom_date.present? ? e_sheet.init_symptom_date.strftime("%d/%m/%Y") : '---',
       e_sheet.notification_date.strftime("%d/%m/%Y"),
