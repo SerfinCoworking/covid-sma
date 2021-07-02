@@ -13,10 +13,10 @@ class EpidemicSheet < ApplicationRecord
   has_one :current_address, through: :patient
   has_many :sub_contacts, class_name: 'EpidemicSheet', foreign_key: :parent_contact_id
   has_many :close_contacts
-  has_many :movements, class_name: "EpidemicSheetMovement"
+  has_many :movements, class_name: 'EpidemicSheetMovement'
   has_many :sheet_symptoms
   has_many :symptoms, through: :sheet_symptoms
-  
+
   has_many :sheet_epidemi_antecedents
   has_many :epidemi_antecedents, through: :sheet_epidemi_antecedents
 
@@ -26,15 +26,16 @@ class EpidemicSheet < ApplicationRecord
 
   belongs_to :vaccines_applied, optional: true
   has_many :vaccine_doses, through: :vaccines_applied
-  
-  accepts_nested_attributes_for :vaccines_applied, allow_destroy: true, reject_if: proc { |attributes| attributes['vaccine_id'].blank? }
+
+  accepts_nested_attributes_for :vaccines_applied, allow_destroy: true,
+                                reject_if: proc { |attributes| attributes['vaccine_id'].blank? }
   accepts_nested_attributes_for :case_definition, allow_destroy: true
   accepts_nested_attributes_for :sheet_symptoms, allow_destroy: true
   accepts_nested_attributes_for :sheet_epidemi_antecedents, allow_destroy: true
   accepts_nested_attributes_for :sheet_previous_symptoms, allow_destroy: true
   accepts_nested_attributes_for :patient
   accepts_nested_attributes_for :close_contacts,
-    :allow_destroy => true
+                                allow_destroy: true
 
   # Validations
   validates_presence_of :case_definition, :epidemic_week
@@ -51,14 +52,15 @@ class EpidemicSheet < ApplicationRecord
 
   # Delegations
   delegate :fullname, :dni, :last_name, :first_name, :age, :age_string, :sex,  :phones_string,
-    :assigned_establishment, :address_string, :current_address_get_full_address_name, :age_range, to: :patient, prefix: true
+           :assigned_establishment, :address_string, :current_address_get_full_address_name, :age_range, 
+           to: :patient, prefix: true
   delegate :case_status_name, :case_status_badge, to: :case_definition, prefix: true
   delegate :case_status, to: :case_definition
   delegate :parent_contact, to: :patient, prefix: false
 
   # Callbacks
   before_create :assign_establishment
-  after_validation :assign_epidemic_week, if: Proc.new { |sheet| sheet.init_symptom_date.present? }
+  after_validation :assign_epidemic_week, if: proc { |sheet| sheet.init_symptom_date.present? }
 
   filterrific(
     default_filter_params: { sorted_by: 'notificacion_desc'},
@@ -82,7 +84,7 @@ class EpidemicSheet < ApplicationRecord
 
   scope :sorted_by, lambda { |sort_option|
     # extract the sort direction from the param value.
-    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    direction = sort_option =~ /desc$/ ? 'desc' : 'asc'
     case sort_option.to_s
     when /^created_at_/s
       # Ordenamiento por fecha de creación en la BD
@@ -112,31 +114,31 @@ class EpidemicSheet < ApplicationRecord
   }
 
   pg_search_scope :search_dni,
-    :associated_against => { patient: [:dni] },
-    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
-    :ignoring => :accents # Ignorar tildes.
+                  associated_against: { patient: [:dni] },
+                  using: { tsearch: { prefix: true } }, # Buscar coincidencia desde las primeras letras.
+                  ignoring: :accents # Ignorar tildes.
 
   pg_search_scope :search_fullname,
-    :associated_against => { patient: [ :first_name, :last_name ]},
-    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
-    :ignoring => :accents # Ignorar tildes.
+                  associated_against: { patient: [:first_name, :last_name]},
+                  using: { tsearch: { prefix: true } }, # Buscar coincidencia desde las primeras letras.
+                  ignoring: :accents # Ignorar tildes.
 
   pg_search_scope :by_close_contact,
-    :associated_against => { close_contacts: [ :dni, :full_name ]},
-    :using => { :tsearch => {:prefix => true} }, # Buscar coincidencia desde las primeras letras.
-    :ignoring => :accents # Ignorar tildes.
+                  associated_against: { close_contacts: [:dni, :full_name]},
+                  using: { tsearch: { prefix: true } }, # Buscar coincidencia desde las primeras letras.
+                  ignoring: :accents # Ignorar tildes.
 
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
-  scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: {case_status_id: ids_ary}) }
- 
+  scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: { case_status_id: ids_ary }) }
+
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
 
-  scope :by_establishment, lambda {|ids_ary| 
-    left_joins(:patient).where(patients: {assigned_establishment_id: ids_ary} ) 
+  scope :by_establishment, lambda {|ids_ary|
+    left_joins(:patient).where(patients: { assigned_establishment_id: ids_ary })
   }
 
-  scope :by_city, lambda {|ids_ary| 
-    left_joins(:establishment).where(establishments: {city_id: ids_ary} )
+  scope :by_city, lambda {|ids_ary|
+    left_joins(:establishment).where(establishments: { city_id: ids_ary })
   }
 
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }

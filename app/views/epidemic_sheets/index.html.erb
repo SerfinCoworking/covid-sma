@@ -144,12 +144,6 @@
               }
             %>
           </div>
-          <div class="col-md-2 mt-2">
-            <label>Ordernar por</label>
-            <%= f.select(:sorted_by,
-              @filterrific.select_options[:sorted_by],{},
-              { class: "selectpicker-md show-tick custom-select-pick", "data-width"=>"100%"}) %>
-          </div>
         </div>
       <% end %>
     </div>

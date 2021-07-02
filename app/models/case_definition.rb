@@ -9,7 +9,7 @@ class CaseDefinition < ApplicationRecord
   delegate :needs_diagnostic?, to: :case_status
 
   validates_presence_of :special_device, :case_status_id
-  validates_presence_of :diagnostic_method_id, :special_device, if: Proc.new { |case_d| case_d.case_status.needs_diagnostic? }
+  validates_presence_of :diagnostic_method_id, :special_device, if: proc { |case_d| case_d.case_status.needs_diagnostic? }
 
   after_save :record_case_evolution, if: :saved_changes?
 
@@ -44,18 +44,18 @@ class CaseDefinition < ApplicationRecord
   }
 
   def self.total_new_recovered_to_city(a_city)
-    return CaseDefinition
-      .updated_since_date(Date.yesterday.strftime("%d/%m/%y"))
-      .updated_to_date(Date.yesterday.strftime("%d/%m/%y"))
+    CaseDefinition
+      .updated_since_date(Date.yesterday.strftime('%d/%m/%y'))
+      .updated_to_date(Date.yesterday.strftime('%d/%m/%y'))
       .by_city(a_city)
       .where(case_status_id: CaseStatus.find_by_name('Recuperado').id)
       .count
   end
 
   def self.total_new_negatives_to_city(a_city)
-    return CaseDefinition
-      .updated_since_date(Date.yesterday.strftime("%d/%m/%y"))
-      .updated_to_date(Date.yesterday.strftime("%d/%m/%y"))
+    CaseDefinition
+      .updated_since_date(Date.yesterday.strftime('%d/%m/%y'))
+      .updated_to_date(Date.yesterday.strftime('%d/%m/%y'))
       .by_city(a_city)
       .where(case_status_id: CaseStatus.find_by_name('Negativo').id)
       .count
@@ -65,9 +65,9 @@ class CaseDefinition < ApplicationRecord
     status_ids = []
     status_ids << CaseStatus.find_by_name('Positivo (primoinfección)').id
     status_ids << CaseStatus.find_by_name('Positivo (reinfección)').id
-    return CaseDefinition
+    CaseDefinition
       .by_city(a_city)
-      .where(case_status_id: status_ids)   
+      .where(case_status_id: status_ids)
       .count
   end
 end

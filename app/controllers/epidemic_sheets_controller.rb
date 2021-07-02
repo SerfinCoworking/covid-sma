@@ -31,14 +31,11 @@ class EpidemicSheetsController < ApplicationController
       default_filter_params: { sorted_by: 'notificacion_desc' },
     ) or return
     @epidemic_sheets = @filterrific.find.page(params[:page]).per_page(15)
-    if request.format.xlsx?
-      @epidemic_sheets = @filterrific.find
-    end
+    @epidemic_sheets = @filterrific.find if request.format.xlsx?
     respond_to do |format|
       format.html
       format.js
-      # format.xls { headers["Content-Disposition"] = "attachment; filename=\"FichasEpidemio_#{DateTime.now.strftime('%d/%m/%Y')}.xls\"" }
-      format.xlsx { headers["Content-Disposition"] = "attachment; filename=\"FichasEpidemio_#{DateTime.now.strftime('%d/%m/%Y')}.xlsx\"" }
+      format.xlsx { headers['Content-Disposition'] = "attachment; filename=\"FichasEpidemio_#{DateTime.now.strftime('%d/%m/%Y')}.xlsx\"" }
     end
   end
 
@@ -63,7 +60,7 @@ class EpidemicSheetsController < ApplicationController
     @epidemic_sheet.patient.patient_phones.build
     @epidemic_sheet.build_vaccines_applied
   end
-  
+
   def new_contact
     authorize EpidemicSheet
     @epidemic_sheet = EpidemicSheet.new
@@ -76,7 +73,7 @@ class EpidemicSheetsController < ApplicationController
     @close_contact = CloseContact.find(params[:close_contact_id])
     @epidemic_sheet.build_vaccines_applied
   end
-  
+
   # GET /epidemic_sheets/1/edit
   def edit
     authorize @epidemic_sheet
@@ -102,7 +99,6 @@ class EpidemicSheetsController < ApplicationController
           @close_contact.update(contact: @epidemic_sheet.patient)
           format.html { redirect_to @close_contact.patient.epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
         end
-        
         format.html { redirect_to @epidemic_sheet, notice: 'La ficha epidemiológica se ha creado correctamente.' }
         format.json { render :show, status: :created, location: @epidemic_sheet }
       else
