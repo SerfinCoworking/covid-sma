@@ -71,6 +71,7 @@ class EpidemicSheet < ApplicationRecord
       :by_case_statuses,
       :by_establishment,
       :by_clinic_location,
+      :by_special_device,
       :since_date_fis,
       :to_date_fis,
       :since_date,
@@ -135,6 +136,10 @@ class EpidemicSheet < ApplicationRecord
 
   scope :by_establishment, lambda {|ids_ary|
     left_joins(:patient).where(patients: { assigned_establishment_id: ids_ary })
+  }
+
+  scope :by_special_device, lambda { |ids_ary|
+    left_joins(:case_definition).where(case_definitions: { special_device_id: ids_ary })
   }
 
   scope :by_city, lambda {|ids_ary|
