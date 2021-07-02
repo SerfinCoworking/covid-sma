@@ -1,5 +1,5 @@
 class Establishment < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
 
   # Relaciones
   has_many :sectors

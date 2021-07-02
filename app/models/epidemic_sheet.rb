@@ -1,5 +1,5 @@
 class EpidemicSheet < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   enum clinic_location: { ambulatorio: 0, internado: 1 }
 
   # Relations

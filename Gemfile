@@ -25,9 +25,9 @@ gem 'rack-cors'
 # To serialize API
 gem 'active_model_serializers'
 # To resize images
-gem "mini_magick"
+gem 'mini_magick'
 # To ldap athentication
-gem "devise_ldap_authenticatable"
+gem 'devise_ldap_authenticatable'
 # To generate reports
 gem 'thinreports'
 # To notifications
@@ -39,13 +39,14 @@ gem 'bootstrap-select-rails'
 # For full text search
 gem 'pg_search'
 # To avoid delete records
-gem "paranoia", "~> 2.2"
+gem 'paranoia', '~> 2.2'
 # For bootstrap toggle buttons
-gem "bootstrap-switch-rails"
+gem 'bootstrap-switch-rails'
 # For a lot of jquery functions
 gem 'jquery-ui-rails'
 # To group by date
 gem 'groupdate'
+
 gem 'active_median'
 # Use chartkick and highcharts-rails to perform charts
 gem 'chartkick'
@@ -57,13 +58,14 @@ gem 'will_paginate', '~> 3.1.0'
 gem 'will_paginate-bootstrap4'
 # Use momentjs and bootstrap3-datettimepicker for datetimepicker
 gem 'momentjs-rails', '>= 2.9.0'
+
 gem 'bootstrap4-datetime-picker-rails'
 # Use chosen-rails for autocomplete on select
 gem 'chosen-rails'
 # Use simple_form for do forms more easily
 gem 'simple_form'
 # Use cocoon for nested forms
-gem "cocoon"
+gem 'cocoon'
 # Use bootstrap 4.5 to layouts
 gem 'bootstrap', '~> 4.5.0'
 # Use Pundit for permissions in classes
