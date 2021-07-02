@@ -63,7 +63,7 @@ class EpidemicSheet < ApplicationRecord
   after_validation :assign_epidemic_week, if: proc { |sheet| sheet.init_symptom_date.present? }
 
   filterrific(
-    default_filter_params: { sorted_by: 'notificacion_desc'},
+    default_filter_params: { sorted_by: 'notificacion_desc' },
     available_filters: [
       :sorted_by,
       :search_dni,
@@ -134,7 +134,7 @@ class EpidemicSheet < ApplicationRecord
 
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
 
-  scope :by_establishment, lambda {|ids_ary|
+  scope :by_establishment, lambda { |ids_ary|
     left_joins(:patient).where(patients: { assigned_establishment_id: ids_ary })
   }
 
@@ -142,7 +142,7 @@ class EpidemicSheet < ApplicationRecord
     left_joins(:case_definition).where(case_definitions: { special_device_id: ids_ary })
   }
 
-  scope :by_city, lambda {|ids_ary|
+  scope :by_city, lambda { |ids_ary|
     left_joins(:establishment).where(establishments: { city_id: ids_ary })
   }
 

@@ -129,13 +129,13 @@ class EpidemicSheetsController < ApplicationController
     if params[:close_contact_id].present?
       @close_contact = CloseContact.find(params[:close_contact_id])
     end
-    
+
     @patient = Patient.search_dni(params[:contact_patient_dni]).first
     respond_to do |format|
       format.js
     end
   end
-  
+
   def associate_epidemic_sheet
     # id de contacto (del contacto estrecho de la ficha padre)
     # id_paciente ( cuando se encuentra la ficha del contacto estrecho)
@@ -147,7 +147,7 @@ class EpidemicSheetsController < ApplicationController
       format.html { redirect_to @close_contact.patient.epidemic_sheet, notice: 'La ficha epidemiológica se ha modificado correctamente.' }
     end
   end
-  
+
   # DELETE /epidemic_sheets/1
   # DELETE /epidemic_sheets/1.json
   def destroy
@@ -158,7 +158,7 @@ class EpidemicSheetsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   # SET_IN_SISA_MODAL /epidemic_sheets/1
   # SET_IN_SISA_MODAL /epidemic_sheets/1.json
   def set_in_sisa_modal
@@ -167,7 +167,7 @@ class EpidemicSheetsController < ApplicationController
       format.js { @epidemic_sheet }
     end
   end
-  
+
   # SET_IN_SISA /epidemic_sheets/1
   # SET_IN_SISA /epidemic_sheets/1.json
   def set_in_sisa
@@ -181,162 +181,163 @@ class EpidemicSheetsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_epidemic_sheet
-      @epidemic_sheet = EpidemicSheet.find(params[:id])
-    end
-    
-    def set_epidemic_sheet_symptoms
-      @epidemi_antecedents = EpidemiAntecedent.all.sort_by &:name
-      @symptoms = Symptom.all.sort_by &:name
-      @previous_symptoms = PreviousSymptom.all.sort_by &:name
-      @occupations = Occupation.all.sort_by &:name
-      @case_definitions = CaseDefinition.all
-      @diagnostic_methods = DiagnosticMethod.all
-      @establishments = Establishment.by_city(current_user.establishment_city).sort_by &:name
-      @special_devices = SpecialDevice.all.sort_by &:name
-      @vaccines = Vaccine.all.sort_by &:name
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def epidemic_sheet_update_params
-      params.require(:epidemic_sheet).permit(
+  # Use callbacks to share common setup or constraints between actions.
+  def set_epidemic_sheet
+    @epidemic_sheet = EpidemicSheet.find(params[:id])
+  end
+
+  def set_epidemic_sheet_symptoms
+    @epidemi_antecedents = EpidemiAntecedent.all.sort_by &:name
+    @symptoms = Symptom.all.sort_by &:name
+    @previous_symptoms = PreviousSymptom.all.sort_by &:name
+    @occupations = Occupation.all.sort_by &:name
+    @case_definitions = CaseDefinition.all
+    @diagnostic_methods = DiagnosticMethod.all
+    @establishments = Establishment.by_city(current_user.establishment_city).sort_by &:name
+    @special_devices = SpecialDevice.all.sort_by &:name
+    @vaccines = Vaccine.all.sort_by &:name
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def epidemic_sheet_update_params
+    params.require(:epidemic_sheet).permit(
+      :occupation_id,
+      :init_symptom_date, 
+      :presents_symptoms, 
+      :symptoms_observations, 
+      :present_previous_symptoms, 
+      :prev_symptoms_observations,
+      :clinic_location,
+      :notification_date,
+      :presents_epidemi_antecedents,
+      :epidemi_antecedent_observations,
+      symptom_ids: [],
+      epidemi_antecedent_ids: [],
+      previous_symptom_ids: [],
+      case_definition_attributes: [ 
+        :id,
+        :case_status_id,
+        :special_device_id,
+        :diagnostic_method_id
+      ],
+      patient_attributes: [
+        :assigned_establishment_id,
+        current_address_attributes: [
+          :neighborhood,
+          :street,
+          :street_number
+        ],
+      ],
+      close_contacts_attributes: [ 
+        :id,
+        :full_name,
+        :dni,
+        :phone,
+        :sex,
+        :address,
+        :last_contact_date,
+        :contact_type_id,
+        :_destroy,
+        :contact_id
+      ], 
+      vaccines_applied_attributes: [
+        :id,
+        :vaccine_id,
+        :_destroy,
+        vaccine_doses_attributes: [
+          :id,
+          :name,
+          :date_applied,
+          :_destroy
+        ]
+      ]
+    )
+  end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def epidemic_sheet_params
+    params.require(:epidemic_sheet).permit(
+      :parent_contact_id,
+      :locked_close_contact_id,
+      :init_symptom_date,
+      :epidemic_week,
+      :presents_symptoms,
+      :symptoms_observations,
+      :present_previous_symptoms,
+      :prev_symptoms_observations,
+      :clinic_location,
+      :notification_date,
+      :presents_epidemi_antecedents,
+      :epidemi_antecedent_observations,
+      symptom_ids: [],
+      epidemi_antecedent_ids: [],
+      previous_symptom_ids: [],
+      case_definition_attributes: [ 
+        :id,
+        :case_status_id,
+        :special_device_id,
+        :diagnostic_method_id
+      ],
+      patient_attributes: [ 
+        :id,
+        :dni,
+        :last_name,
+        :first_name,
+        :sex,
+        :birthdate,
+        :status,
         :occupation_id,
-        :init_symptom_date, 
-        :presents_symptoms, 
-        :symptoms_observations, 
-        :present_previous_symptoms, 
-        :prev_symptoms_observations,
-        :clinic_location,
-        :notification_date,
-        :presents_epidemi_antecedents,
-        :epidemi_antecedent_observations,
-        symptom_ids: [],
-        epidemi_antecedent_ids: [],
-        previous_symptom_ids: [],
-        case_definition_attributes: [ 
+        :assigned_establishment_id,
+        patient_phones_attributes: [
           :id,
-          :case_status_id,
-          :special_device_id,
-          :diagnostic_method_id
+          :phone_type,
+          :number
         ],
-        patient_attributes: [
-          :assigned_establishment_id,
-          current_address_attributes: [
-            :neighborhood,
-            :street,
-            :street_number
-          ],
+        current_address_attributes: [
+          :neighborhood,
+          :street,
+          :street_number
         ],
-        close_contacts_attributes: [ 
+      ],
+      close_contacts_attributes: [ 
+        :id,
+        :full_name,
+        :dni,
+        :phone,
+        :sex,
+        :address,
+        :last_contact_date,
+        :contact_type_id,
+        :_destroy,
+        :contact_id
+      ],
+      vaccines_applied_attributes: [
+        :id,
+        :vaccine_id,
+        :_destroy,
+        vaccine_doses_attributes: [
           :id,
-          :full_name,
-          :dni,
-          :phone,
-          :sex,
-          :address,
-          :last_contact_date,
-          :contact_type_id,
-          :_destroy,
-          :contact_id
-        ], 
-        vaccines_applied_attributes: [
-          :id,
-          :vaccine_id,
-          :_destroy,
-          vaccine_doses_attributes: [
-            :id,
-            :name,
-            :date_applied,
-            :_destroy
-          ]
+          :name,
+          :date_applied,
+          :_destroy
         ]
-      )
-    end
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def epidemic_sheet_params
-      params.require(:epidemic_sheet).permit(
-        :parent_contact_id,
-        :locked_close_contact_id,
-        :init_symptom_date,
-        :epidemic_week,
-        :presents_symptoms,
-        :symptoms_observations,
-        :present_previous_symptoms,
-        :prev_symptoms_observations,
-        :clinic_location,
-        :notification_date,
-        :presents_epidemi_antecedents,
-        :epidemi_antecedent_observations,
-        symptom_ids: [],
-        epidemi_antecedent_ids: [],
-        previous_symptom_ids: [],
-        case_definition_attributes: [ 
-          :id,
-          :case_status_id,
-          :special_device_id,
-          :diagnostic_method_id
-        ],
-        patient_attributes: [ 
-          :id,
-          :dni,
-          :last_name,
-          :first_name,
-          :sex,
-          :birthdate,
-          :status,
-          :occupation_id,
-          :assigned_establishment_id,
-          patient_phones_attributes: [
-            :id,
-            :phone_type,
-            :number
-          ],
-          current_address_attributes: [
-            :neighborhood,
-            :street,
-            :street_number
-          ],
-        ],
-        close_contacts_attributes: [ 
-          :id,
-          :full_name,
-          :dni,
-          :phone,
-          :sex,
-          :address,
-          :last_contact_date,
-          :contact_type_id,
-          :_destroy,
-          :contact_id
-        ],
-        vaccines_applied_attributes: [
-          :id,
-          :vaccine_id,
-          :_destroy,
-          vaccine_doses_attributes: [
-            :id,
-            :name,
-            :date_applied,
-            :_destroy
-          ]
+      ]
+    )
+  end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def patient_address_params
+    params.require(:epidemic_sheet).permit(
+      patient_attributes:[
+        address_attributes: [
+          :country,
+          :state,
+          :city,
+          :line,
+          :latitude,
+          :longitude,
+          :postal_code
         ]
-      )
-    end
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def patient_address_params
-      params.require(:epidemic_sheet).permit(
-        patient_attributes:[
-          address_attributes: [
-            :country,
-            :state,
-            :city,
-            :line,
-            :latitude,
-            :longitude,
-            :postal_code
-          ]
-        ]
-      )
-    end
+      ]
+    )
+  end
 end
