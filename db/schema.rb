@@ -66,10 +66,10 @@ ActiveRecord::Schema.define(version: 2021_04_16_154820) do
 
   create_table "case_definitions", force: :cascade do |t|
     t.bigint "diagnostic_method_id"
+    t.bigint "case_status_id", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "special_device_id", default: 1
-    t.bigint "case_status_id", default: 1
     t.index ["case_status_id"], name: "index_case_definitions_on_case_status_id"
     t.index ["diagnostic_method_id"], name: "index_case_definitions_on_diagnostic_method_id"
     t.index ["special_device_id"], name: "index_case_definitions_on_special_device_id"
@@ -92,11 +92,13 @@ ActiveRecord::Schema.define(version: 2021_04_16_154820) do
 
   create_table "case_statuses", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "case_status_id", default: 1
     t.string "badge", default: "secondary"
     t.boolean "needs_diagnostic", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "needs_fis", default: false
+    t.index ["case_status_id"], name: "index_case_statuses_on_case_status_id"
   end
 
   create_table "cities", force: :cascade do |t|

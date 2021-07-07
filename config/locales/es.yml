@@ -306,6 +306,14 @@ es:
         one: "no tiene la longitud correcta (1 carácter exactos)"
         other: "no tiene la longitud correcta (%{count} caracteres exactos)"
       other_than: debe ser distinto de %{count}
+      invalid_date: "no es una fecha válida"
+      invalid_time: "no es un horario válido"
+      invalid_datetime: "no es una fecha válida"
+      is_at: "debe estar en %{restriction}"
+      before: "debe ser antes del %{restriction}"
+      on_or_before: "debe estar en o antes del %{restriction}"
+      after: "debe estar luego del %{restriction}"
+      on_or_after: "debe estar en o despues de %{restriction}"
     template:
       body: 'Se encontraron problemas con los siguientes campos:'
       header:
@@ -386,3 +394,8 @@ es:
     all_notifications: "Todas las notificaciones"
     no_records: "No hay notificaciones"
     clean_all: "Limpiar todas"
+  validates_timeliness:
+    error_value_formats:
+      date: '%d/%m/%Y'
+      time: '%H:%M:%S'
+      datetime: '%d/%m/%Y %H:%M:%S'

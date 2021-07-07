@@ -7,6 +7,7 @@ end
 
 ruby "2.6.5"
 
+gem 'validates_timeliness', '~> 6.0.0.alpha1'
 # To generate xlsx reports
 gem 'axlsx_styler'
 gem 'caxlsx'
