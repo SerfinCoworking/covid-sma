@@ -1,5 +1,5 @@
-# COVID SMA
-###### Sistema de seguimiento COVID SMA
+# EpiCOV
+###### Sistema de seguimiento de pacientes Covid para Neuquén
 
 ***
 ## Installation guide tested in Ubuntu 16.04LTS:
@@ -30,9 +30,9 @@ Full guide [here](https://www.digitalocean.com/community/tutorials/how-to-instal
 ```
 rvm install ruby-2.4.2
 
-rvm gemset create covid-sma
+rvm gemset create epicov
 
-rvm ruby-2.4.2@covid-sma
+rvm ruby-2.4.2@epicov
 ```
 3. #### Install PostgreSQL  9.5.14
 ```
@@ -42,10 +42,10 @@ sudo apt-get install postgresql postgresql-contrib
 ```
 4. #### Clone the repo and install dependencies 
 
-Place in covid-sma directory and run:
+Place in epicov directory and run:
 
 ```
-rvm use ruby-2.4.2@covid-sma
+rvm use ruby-2.4.2@epicov
 
 /bin/bash --login
 
