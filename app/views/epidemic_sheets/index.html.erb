@@ -159,6 +159,22 @@
               }
             %>
           </div>
+          <div class="col-md-2 mt-2">
+            <label>Antecedentes epidemiológicos</label>
+            <%= f.select :by_epidemic_antecedent,
+              options_for_select(
+                EpidemiAntecedent.all.collect {|cs| [cs.name, cs.id]},
+                selected: params[:filterrific].present? ? params[:filterrific][:by_epidemic_antecedent] : "",
+              ),
+              {include_blank: false, include_hidden: false},
+              {
+                class: "form-control selectpicker-md show-tick custom-select-pick",
+                "title"=>"Seleccionar",
+                multiple: true,
+                "data-actions-box"=>true
+              }
+            %>
+          </div>
         </div>
       <% end %>
     </div>

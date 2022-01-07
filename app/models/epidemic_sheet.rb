@@ -72,6 +72,7 @@ class EpidemicSheet < ApplicationRecord
       :by_establishment,
       :by_clinic_location,
       :by_special_device,
+      :by_epidemic_antecedent,
       :since_date_fis,
       :to_date_fis,
       :since_date,
@@ -140,6 +141,10 @@ class EpidemicSheet < ApplicationRecord
 
   scope :by_special_device, lambda { |ids_ary|
     left_joins(:case_definition).where(case_definitions: { special_device_id: ids_ary })
+  }
+  
+  scope :by_epidemic_antecedent, lambda { |ids_ary|
+    includes(:sheet_epidemi_antecedents).where(sheet_epidemi_antecedents: { epidemi_antecedent_id: ids_ary }, presents_epidemi_antecedents: true)
   }
 
   scope :by_city, lambda { |ids_ary|
