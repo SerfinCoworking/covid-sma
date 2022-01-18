@@ -24,7 +24,13 @@ namespace :batch do
   desc 'Update in database the positive cases that the FIS is graeater than 10 days'
   task update_restored_positive_cases: :environment do
     positive_status_id = CaseStatus.where('name LIKE ? OR name LIKE ?', 'Positivo (primoinfección)', 'Positivo (reinfección)').pluck(:id)
-    positive_sheets = EpidemicSheet.ambulatorio.includes(:case_definition).where(case_definitions: { case_status_id: positive_status_id }).where("init_symptom_date < ?", (Date.today - 10.days))
+    exclude_establishment = Establishment.select(:id).find(70)
+    positive_sheets = EpidemicSheet.ambulatorio
+                                    .includes(:case_definition)
+                                    .where(case_definitions: { case_status_id: positive_status_id })
+                                    .where("init_symptom_date < ?", (Date.today - 10.days))
+                                    .where
+                                    .not("establishment_id = ?", exclude_establishment.id)
 
     positive_sheets.find_each do |sheet|
       sheet.case_definition.case_status_id = CaseStatus.find_by_name('Recuperado').id
