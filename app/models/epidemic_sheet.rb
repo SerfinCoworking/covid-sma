@@ -131,16 +131,16 @@ class EpidemicSheet < ApplicationRecord
                   ignoring: :accents # Ignorar tildes.
 
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
-  scope :by_case_statuses, ->(ids_ary) { joins(:case_definition).where(case_definitions: { case_status_id: ids_ary }) }
+  scope :by_case_statuses, ->(ids_ary) { includes(:case_definition).where(case_definitions: { case_status_id: ids_ary }) }
 
   # scope :by_establishment, ->(ids_ary) { where(patients: {assigned_establishment_id: ids_ary} ).joins(:patient) }
 
   scope :by_establishment, lambda { |ids_ary|
-    left_joins(:patient).where(patients: { assigned_establishment_id: ids_ary })
+    includes(:patient).where(patients: { assigned_establishment_id: ids_ary })
   }
 
   scope :by_special_device, lambda { |ids_ary|
-    left_joins(:case_definition).where(case_definitions: { special_device_id: ids_ary })
+    includes(:case_definition).where(case_definitions: { special_device_id: ids_ary })
   }
   
   scope :by_epidemic_antecedent, lambda { |ids_ary|
@@ -148,7 +148,7 @@ class EpidemicSheet < ApplicationRecord
   }
 
   scope :by_city, lambda { |ids_ary|
-    left_joins(:establishment).where(establishments: { city_id: ids_ary })
+    includes(:establishment).where(establishments: { city_id: ids_ary })
   }
 
   scope :by_clinic_location, ->(ids_ary) { where(clinic_location: ids_ary) }
